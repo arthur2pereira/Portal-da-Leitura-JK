@@ -1,0 +1,28 @@
+BIBLIOTECA JK
+
+Onde o aluno vai poder ver os livros que tem na biblioteca, vai poder explorar pra ver se algum livro o interessa, ou então pesquisar sobre o livro que ela está interessada em ver se está disponível ou não. 
+
+
+ALUNO SEM CADASTRO -> visitar o site, ver livro, fazer login
+
+PARA CADASTRO SERÁ NECESSARIO -> Nome, qual curso esta cursando, turma, matricula, senha, confirmação de senha 
+
+ALUNO COM CADASTRO -> visitar o site, ver os livros, reservas livros e nota de 0 a 5 nos livros 
+NA ABA PERFIL DOS ALUNO -> ver suas reservas (terá a opção de cancela   r reserva), ver tempo de ficar com o livro, modificar informações pessoais, deletar conta e sair da conta.
+NOTIFICAÇÃO DO ALUNO -> mostra se o tempo de reserva expirou, mostra se o tempo do aluno com o livro expirou, mostrar se a reserva for cancelada pela coordenação
+
+NA CONTA DE ADMIM 
+NA ABA DE ADMIN -> ele tem a opção de deletar livro, adicionar livro e quantas quantidades, deletar contas, monitorar contas (se tem livro reservado, se tem algum livro em mão, ver se tem algum livro a ser devolvido), deletar reservas, avisar se o livro foi retirado pelo aluno e interromper processo do tempo de devolução caso o aluno devolva antes do fim do prazo 
+NOTIFICAÇÃO DO ADMIN -> avisa quando um aluno reservou um livro, avisa se o aluno cancelou a reserva, avisa se o tempo de reserva já inspirou, avisa se o tempo de o aluno ficar com o livro expirou
+
+
+SCRIPT 
+
+Se o aluno cadastrado encontrar um livro que o interessa ele vai ter a opção de reservar por 48 horas para poder busca-lo na escola, Mas se após esse horário o aluno não for buscar ele perde a reserva (deverá aparecer um notificação em seu perfil que sua reserva foi perdida) e ficara disponível novamente no site pra qualquer outro aluno poder reservar.
+
+Se o aluno não cadastrado encontrar o livro que o interessa ele vai ser direcionado a aba de login na qual deverá fazer para poder fazer a reserva do mesmo.
+
+A partir do momento da reserva devera aparecer uma notificação para o admin q tal livro está reservado e mostrar por qual aluno foi reservado (se for um livro único mostrar no site que o livro foi reservado). 
+
+O admin vai poder informar ao sistema se esse livro foi retirado pelo aluno, caso tenha sido retirado esse livro  
+esse aluno terá 2 semanas para devolver o livro ( se for um livro unico a partir desse momento deve aparecer no site q o livro está indisponível até o prazo de devolução) ou então cancelar a reserva (deverá aparecer para o aluno que sua reserva foi cancelada pela coordenação).

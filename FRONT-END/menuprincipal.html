@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal da Leitura JK</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #005500, #117711); /* Verde gradiente */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .search-bar {
+            background: #F5E8C7;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+        }
+        .menu-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            text-align: left;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="mt-4">📖 A modernização da biblioteca JK chegou! 📖</h1>
+        
+        <!-- Barra de pesquisa -->
+        <div class="search-bar mt-4">
+            <input type="text" placeholder="Procure seu livro..">
+            <button class="btn btn-light">🔍</button>
+        </div>
+
+        <!-- Botões do menu -->
+        <button class="menu-btn btn btn-light">📚 Ver Livros</button>
+        <button class="menu-btn btn btn-light">👤 Área do aluno</button>
+        <button class="menu-btn btn btn-success">📌 Por Categorias</button>
+        <button class="menu-btn btn btn-warning">📖 Por Cursos</button>
+        <button class="menu-btn btn btn-danger">🏆 Principais Autores</button>
+        <button class="menu-btn btn btn-danger">⭐ Maiores Avaliações</button>
+        <button class="menu-btn btn btn-dark">💡 Conheça a Biblioteca</button>
+    </div>
+
+</body>
+</html>

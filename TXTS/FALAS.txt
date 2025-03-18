@@ -1,0 +1,48 @@
+FALAS
+
+## *Parte 1 - Introdução e Motivação (Aproximadamente 2 minutos)*  
+
+*"Bom dia/boa tarde a todos! Hoje vamos apresentar nosso projeto, que busca modernizar a forma como os alunos acessam os livros da biblioteca da nossa escola. Atualmente, temos um problema sério: muitos estudantes querem pegar livros emprestados, mas não sabem se eles estão disponíveis. Além disso, a falta de um sistema eficiente de busca e reserva faz com que os alunos percam tempo indo até a biblioteca sem necessidade.  
+
+Outro ponto é que os alunos não conseguem avaliar ou recomendar livros uns para os outros. Isso faz com que muitas obras fiquem esquecidas, porque ninguém sabe se são bons ou interessantes. Nosso projeto resolve esses problemas com um site que facilita a pesquisa, reserva e avaliação dos livros da biblioteca, tornando a experiencia mais produtiva e atrativa para todos os estudantes!"*  
+
+---
+
+## *Parte 2 - Como o sistema funciona (Aproximadamente 3 minutos)*  
+
+
+
+*"Nosso site foi desenvolvido para ser simples e eficiente. Ele tem quatro funcionalidades principais.  
+
+Primeiro, um *catálogo digital* onde qualquer pessoa pode visualizar os livros disponíveis e pesquisar pelo título, autor, gênero ou até mesmo por recomendações baseadas nos cursos da escola.  
+
+Segundo, um *sistema de reserva* onde os alunos cadastrados podem reservar um livro online. A reserva dura 3 dias e, se o aluno não retirar o livro a tempo, ela é cancelada automaticamente.  
+
+Terceiro, um *sistema de avaliação e feedback*, onde os alunos cadastrados podem dar notas de 0 a 5 e deixar comentários sobre os livros. Isso ajuda outros alunos a escolherem o que ler.  
+
+E por último, um *sistema de notificações*, que envia alertas por e-mail e dentro do site para lembrar os alunos sobre reservas e prazos de devolução. Os administradores também recebem notificações sobre novos pedidos de reserva e livros atrasados.  
+
+Com essas funcionalidades, garantimos que os alunos tenham mais controle sobre os livros disponíveis e que a biblioteca funcione de forma mais organizada!"*  
+
+## *Parte 3 - Regras de Uso e Penalidades (Aproximadamente 2 minutos)*  
+
+
+
+*"Para que o sistema funcione bem, criamos algumas regras para evitar abusos.  
+
+Se um aluno atrasar a devolução de um livro, ele receberá penalidades que aumentam progressivamente. No primeiro atraso, o aluno ficará *5 dias sem poder reservar livros*. Se atrasar mais vezes, esse bloqueio aumenta para 10 e até 30 dias.  
+
+Caso um aluno reserve um livro e não retire 3 vezes seguidas, ele será bloqueado por 7 dias sem poder fazer novas reservas. Além disso, se alguém tentar burlar o sistema reservando vários livros sem necessidade, a administração poderá excluir a conta.  
+
+Nosso objetivo com essas regras não é punir os alunos, mas garantir que todos possam ter acesso aos livros de forma justa!"*  
+
+## *Parte 4 - O que o sistema NÃO faz e Conclusão (Aproximadamente 2 minutos)*  
+
+
+*"É importante deixar claro que o nosso sistema tem algumas limitações. Ele não terá livros digitais, pagamentos de multas online, inteligência artificial para recomendar livros, nem um sistema de chat ao vivo, nem parte de doação de livros.  
+
+Nosso foco é criar uma ferramenta simples, funcional e eficiente para melhorar a experiência de empréstimo de livros na escola.  
+
+Com isso, conseguimos modernizar a biblioteca, tornar a leitura mais acessível e incentivar os alunos a utilizarem mais os recursos disponíveis. Acreditamos que essa solução pode trazer grandes benefícios para a nossa comunidade escolar.  
+
+Muito obrigado pela atenção! Agora, estamos abertos para perguntas."*

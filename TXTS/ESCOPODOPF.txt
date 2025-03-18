@@ -1,0 +1,96 @@
+OQUE NOS MOTIVOU A CRIAR O PROJETO E AUAL PUBLICO ALVO
+
+Atualmente, a biblioteca da escola enfrenta desafios que dificultam o acesso dos alunos aos livros disponíveis. Um dos principais problemas é a falta de um sistema eficiente de pesquisa, o que impede que os estudantes verifiquem rapidamente se um determinado livro tem dentro da biblioteca. Muitas vezes, os alunos sabem exatamente qual obra desejam ler, mas não têm um meio prático de confirmar sua disponibilidade antes de se deslocarem até a biblioteca.
+
+Além disso, não há um mecanismo que permita aos alunos avaliarem os livros, o que dificulta a escolha de obras adequadas para a faixa etária e interesses do público estudantil. Essa ausência de informações torna a experiência de busca e seleção de livros menos eficiente e atrativa.
+
+Diante desse cenário, este projeto propõe o desenvolvimento de um site direcionado exclusivamente aos alunos da escola, os leitores e os não leitores já que o site vai trazer uma atratividade para a biblioteca.
+
+
+O QUE O SISTEMA VAI FAZER  
+
+
+O sistema desenvolvido será um site, permitirá que os alunos tenham um acesso mais organizado e prático aos livros disponíveis. O site oferecerá diversas funcionalidades que facilitarão a busca, reserva e avaliação dos livros, além de um sistema de notificações para melhorar a experiência do usuário e alertar caso possível esquecimento.
+
+Funcionalidades do Site
+
+Catálogo de Livros
+
+Qualquer usuário poderá visualizar todos os livros disponíveis na biblioteca.
+O sistema permitirá a pesquisa de livros com filtros avançados, como título, autor, gênero e até mesmo recomendação baseada nos cursos oferecidos pela escola.
+
+Sistema de Avaliação e Feedback
+
+Somente os alunos cadastrados poderão avaliar os livros com notas de 0 a 5.
+Será possível adicionar um comentário opcional junto à avaliação, permitindo que os alunos compartilhem suas opiniões e recomendações sobre os livros.
+
+Reserva de Livros
+
+Somente os alunos cadastrados poderão reservar livros de qualquer lugar, sem necessidade de ir até a biblioteca.
+A reserva terá duração de 3 dias, período no qual o aluno deve comparecer à biblioteca para retirar o livro. Caso ele não retire dentro desse prazo, a reserva será cancelada automaticamente.
+Assim que o aluno retirar o livro, iniciará um prazo de 7 dias para devolução. Caso necessário, o aluno poderá solicitar uma renovação pelo site, ganhando mais 7 dias.
+Após essas 2 semanas no total, não será possível prorrogar mais o prazo, e o livro deverá ser devolvido para análise da biblioteca, podendo posteriormente ser prolongado por mais tempo pela bibliotecária. 
+
+Sistema de Notificações
+
+O site terá um sistema de notificações embutido para manter os usuários informados, além de Notificação via e-mail, pra lembrar o aluno.
+
+Alunos cadastrados receberão notificações sobre:
+Se caso sua reserva for cancelada pelo bibliotecário.
+Caso o a sua reserva tenha inspirado.
+O fim do prazo de posse do livro.
+
+Administradores receberão notificações sobre:
+Novas reservas realizadas.
+Tempo de reserva inspirado.
+Caso  um livro tenha inspirado na mão de algum aluno.
+Novos comentários adicionados aos livros.
+
+Regras de Penalidade e Bloqueio de Reservas
+
+Para garantir o bom funcionamento da biblioteca e evitar atrasos ou reservas indevidas, os alunos devem seguir as seguintes regras ao utilizar o sistema de empréstimos:
+
+Atraso na Devolução do Livro
+Se um aluno não devolver o livro dentro do prazo de 7 dias (ou 14 dias caso tenha solicitado prorrogação), ele sofrerá a seguinte punição: a cada 1 dia de atraso equivale a 2 dias de punição sem poder reserva livros nem alugar livros.
+
+Reserva Não Retirada
+Se um aluno reservar um livro e não retirá-lo dentro do prazo de 3 dias, a reserva será cancelada automaticamente.
+
+Se isso acontecer 3 vezes seguidas, o aluno sofrerá um bloqueio de 15 dias sem poder reservar novamente.
+
+Uso Indevido do Sistema
+O sistema foi desenvolvido para facilitar o acesso aos livros da biblioteca. Caso um aluno tente burlar as regras (exemplo: reservar vários livros sem necessidade), a administração poderá até mesmo remover a conta do usuário.
+
+Comentários Inadequados
+O sistema permite que os alunos avaliem os livros com notas de 0 a 5 e deixem um feedback. Porém, qualquer comentário que contenha:
+
+Linguagem ofensiva
+Spam ou avaliações sem sentido
+poderá ser removido pela administração, e o aluno poderá sofrer advertência.
+
+Observação Final
+Todas as penalidades são aplicadas automaticamente pelo sistema, mas a administração tem o direito de analisar casos específicos e decidir se um bloqueio pode ser reduzido ou removido.
+	
+Acesso ao Sistema
+Usuários não cadastrados
+
+Poderão acessar livremente o site, visualizar os livros disponíveis e suas descrições.
+Para acessar recursos avançados, como reserva e avaliação de livros, será necessário realizar um cadastro.
+
+Alunos cadastrados
+
+Terão acesso total ao sistema, podendo visualizar todas as informações dos livros, reservar exemplares e avaliar as obras e ver seu prazo de tempo que tem com a obra.
+Poderão deixar feedbacks e criar uma comunidade ativa dentro do site.
+
+Administradores (ADM)
+
+Terão controle total sobre o sistema, incluindo:
+Adicionar ou remover livros do catálogo.
+Gerenciar reservas e monitorar o status de cada livro (reservado, emprestado, atrasado).
+Gerenciar contas de alunos (se tiver livros em posse quanto tempo falta pra devolução), terá controle sobre quais livros esse aluno mais se interessou ,podendo excluir usuários se necessário.
+Excluir comentários maliciosos ou inadequados.
+Registrar manualmente se o livro foi retirado pelo aluno após a reserva.
+Registrar manualmente a devolução de um livro caso seja entregue antes do prazo.
+
+
+
