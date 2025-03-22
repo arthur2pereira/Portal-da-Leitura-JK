@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+         /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Estilização do formulário */
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .linha {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .coluna-md-6, .coluna-12 {
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .campo-formulario-senha {
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px; 
+        }
+
+        .campo-formulario {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .botao {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #333;
+            color: white;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+    <main>
+
+        <nav class="logo tela principal">
+            <a class="logo" href="">
+                <img src="imagens/logo.png" width="150" height="50" alt="Logo">
+            </a>
+        </nav>
+
+        <h1>Faça seu cadastro pra fazer parte dessa familia de leitores</h1> 
+
+        <form class="linha espaco-3">
+            <div class="coluna-md-6">
+                <label for="nomeEntrada" class="rotulo-formulario">Nome Completo</label>
+                <input type="text" class="campo-formulario" id="nomeEntrada" placeholder="Digite seu nome" required>
+            </div>
+            <div class="coluna-md-6">
+                <label for="matriculaEntrada" class="rotulo-formulario">Matrícula</label>
+                <input type="text" class="campo-formulario" id="matriculaEntrada" placeholder="Digite sua matrícula" pattern="\d{8}" maxlength="8" required>
+            </div>
+            <div class="coluna-md-6">
+              <label for="emailEntrada" class="rotulo-formulario">E-mail</label>
+              <input type="email" class="campo-formulario" id="emailEntrada" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="margem-3 linha">
+                <label for="entradaSenha" class="coluna-pequena-2 rotulo-formulario">Senha</label>
+                <input type="password" class="campo-formulario-senha" id="entradaSenha" pattern=".{4,8}" placeholder="4 a 8 caracteres" required>
+            </div>  
+            <div class="coluna-md-6">
+                <label for="nascimentoEntrada" class="rotulo-formulario">Data de Nascimento</label>
+                <input type="date" class="campo-formulario" id="nascimentoEntrada">
+              </div>
+            <div class="coluna-12">
+              <button type="submit" class="botao botao-primario">Entrar</button>
+            </div>
+        </form>
+        
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
+                <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+            </div>
+        </footer> 
+    </main>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal da Leitura JK</title>
+</head>
+<body>
+    <style>
+    /* Reset básico */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #f4f4f4;
+        color: #333;
+        text-align: center;
+    }
+
+    .cabecalho {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        font-size: 1.5em;
+    }
+
+    .menu {
+        background-color: #0056b3;
+        padding: 10px;
+    }
+
+    .menu ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .menu ul li {
+        display: inline;
+    }
+
+    .menu ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.2em;
+    }
+
+    .conteudo {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .secao {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    h2 {
+        color: #0056b3;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul li {
+        background: #eee;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .rodape {
+        margin-top: 20px;
+        padding: 10px;
+        background: #333;
+        color: white;
+    }
+    </style>
+
+    <header>
+        <nav class="logo cabecalho">
+            <a class="logo" href="">
+              <img src="imagens/logo.png" width="150" height="50" alt="250">
+            </a>
+        </nav>
+        <nav class="cabecalho">
+            <div class="menu-colapsado" id="menuNavegacao">
+              <ul class="lista-navegacao">
+                <li class="Inicio">
+                  <a class="link-principal" href="menuprincipal.html">Início</a>
+                </li>
+                <li class="Livros">
+                  <a class="link-livros" href="lugarlivros.html">Livros</a>
+                </li>
+                <li class="Sobre">
+                  <a class="link-sobre" href="nossabiblioteca.html">Sobre</a>
+                </li>
+                <li class="Alunos">
+                  <a class="link-aluno" href="areaaluno.html"> Área aluno</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+    </header>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="#notificacoes">Notificações</a></li>
+            <li><a href="#reservas">Minhas Reservas</a></li>
+            <li><a href="#feedbacks">Meus Feedbacks</a></li>
+            <li><a href="#configuracoes">Configurações</a></li>
+        </ul>
+    </nav>
+
+    <main class="conteudo">
+        <section id="notificacoes" class="secao">
+            <h2>Notificações</h2>
+            <p>Você não tem novas notificações.</p>
+        </section>
+
+        <section id="reservas" class="secao">
+            <h2>Minhas Reservas</h2>
+        </section>
+
+        <section id="feedbacks" class="secao">
+            <h2>Meus Feedbacks</h2>
+        </section>
+
+        <section id="configuracoes" class="secao">
+            <h2>Configurações</h2>
+            <form>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" value="João Silva">
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" value="joao@email.com">
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha">
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
+        <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+    </footer>
+
+</body>
+</html>

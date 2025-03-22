@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Livros</title>
+</head>
+<body>
+
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Corpo da página */
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: -moz-repeating-linear-gradient(135deg, #1a936f, #114b5f);
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding-bottom: 60px;
+        }
+
+        /* Cabeçalho */
+        header {
+            padding: 15px 0;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        /* Título */
+        h1 {
+            color: #007bff;
+            margin: 20px 0;
+        }
+
+        /* Barra de pesquisa e filtros */
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #pesquisa, #categoria {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Catálogo de livros */
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .livro {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+
+        .livro h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .livro a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .livro a:hover {
+            color: #0056b3;
+        }
+
+        footer{
+            background-color: #fff;
+            position: absolute; bottom: 0; width: 100%;
+        }
+    </style>
+
+    <header>
+        <nav class="logo cabecalho">
+            <a class="logo" href="#">
+                <img src="imagens/logo.png" width="150" height="50" alt="Logo da Biblioteca">
+            </a>
+        </nav>
+        <nav class="cabecalho">
+            <ul class="lista-navegacao">
+                <li><a href="menuprincipal.html">Início</a></li>
+                <li><a href="lugarlivros.html">Livros</a></li>
+                <li><a href="nossabiblioteca.html">Sobre</a></li>
+                <li><a href="areaaluno.html">Área do Aluno</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Catálogo de Livros</h1>
+
+        <div class="filtros">
+            <input type="text" id="pesquisa" placeholder="Pesquisar por livros..." onkeyup="filtrarLivros()">
+            <select id="categoria" onchange="filtrarLivros()">
+                <option value="todos">Todas as Categorias</option>
+                <option value="romance">Romance</option>
+                <option value="ficcao">Ficção</option>
+                <option value="tecnologia">Tecnologia</option>
+                <option value="educacao">Educação</option>
+            </select>
+        </div>
+
+        <div class="catalogo" id="catalogo">
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
+        <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+    </footer>
+
+    <script>
+        function filtrarLivros() {
+            let pesquisa = document.getElementById('pesquisa').value.toLowerCase();
+            let categoria = document.getElementById('categoria').value;
+            let livros = document.querySelectorAll('.livro');
+
+            livros.forEach(livro => {
+                let titulo = livro.textContent.toLowerCase();
+                let categoriaLivro = livro.getAttribute('data-categoria');
+
+                let matchPesquisa = titulo.includes(pesquisa);
+                let matchCategoria = categoria === 'todos' || categoriaLivro === categoria;
+
+                livro.style.display = matchPesquisa && matchCategoria ? 'block' : 'none';
+            });
+        }
+    </script>
+
+</body>
+</html>
