@@ -1,31 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Livros</title>
-</head>
-<body>
-
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-
-        /* Corpo da página */
         body {
             font-family: 'Fredoka One', cursive;
-            background: -moz-repeating-linear-gradient(135deg, #1a936f, #114b5f);
+            background: linear-gradient(135deg, #1a936f, #114b5f);
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
             text-align: center;
             padding-bottom: 60px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: #fff;
+            box-shadow: 4px 0px 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar select, .sidebar input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
         /* Cabeçalho */
@@ -49,65 +69,50 @@
             font-size: 1.2em;
         }
 
-        /* Título */
-        h1 {
-            color: #007bff;
-            margin: 20px 0;
-        }
-
-        /* Barra de pesquisa e filtros */
-        .filtros {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        #pesquisa, #categoria {
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* Catálogo de livros */
-        .catalogo {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .livro {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 250px;
             text-align: center;
+            color: #fff;
         }
 
-        .livro h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                padding: 10px;
+            }
 
-        .livro a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 1.1em;
-            transition: color 0.3s;
-        }
+            .sidebar h2 {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
 
-        .livro a:hover {
-            color: #0056b3;
-        }
+            .cabecalho {
+                text-align: center;
+            }
 
-        footer{
-            background-color: #fff;
-            position: absolute; bottom: 0; width: 100%;
+            header nav ul {
+                display: block;
+                margin-top: 10px;
+            }
+
+            header nav ul li {
+                display: block;
+                margin: 5px 0;
+            }
+
+            header nav ul li a {
+                font-size: 1em;
+            }
         }
     </style>
+  </head>
+  <body>
 
     <header>
         <nav class="logo cabecalho">
@@ -125,23 +130,51 @@
         </nav>
     </header>
 
-    <main>
-        <h1>Catálogo de Livros</h1>
+    <div class="sidebar">
+        <h2>Filtros Disponíveis</h2>
+        <input type="text" id="pesquisa" placeholder="Pesquisar por livro...">
+        <select id="autor">
+            <option value="">Autor</option>
+            <option value="shakespeare">William Shakespeare</option>
+            <option value="jorgeAmado">Jorge Amado</option>
+            <option value="machadoDeAssis">Machado de Assis</option>
+            <option value="calosDrummond">Carlos Drummond de Andrade</option>
+            <option value="guimaraesRosa">João Guimarães Rosa</option>
+            <option value="csLewis">C.S. Lewis</option>
+            <option value="frankKafka">Franz Kafka</option>
+            <option value="lispector">Clarice Lispector</option>
+        </select>
+        <select id="editora">
+            <option value="">Editora</option>
+            <option value="compLetras">Companhia da Letras</option>
+            <option value="rocco">Editora Rocco</option>
+            <option value="globo">Globo Livros</option>
+            <option value="harperCollins">Harper Collins</option>
+            <option value="somosEducacao">Somos Educação</option>
+            <option value="saraiva">Editora Saraiva</option>
+        </select>
+        <select id="categoria">
+            <option value="">Categoria</option>
+            <option value="romance">Romance</option>
+            <option value="ficcao">Ficção</option>
+            <option value="tecnologia">Tecnologia</option>
+            <option value="ficçãoCientífica">Ficção Científica</option>
+            <option value="terror">Terror</option>
+            <option value="fantasia">Fantasia</option>
+            <option value="acao">Ação</option>
+            <option value="misterio">Mistério</option>
+            <option value="brasileira">Literatura Brasileira</option>
+        </select>
+        <select id="curso">
+            <option value="">Curso</option>
+            <option value="administracao">Administração</option>
+            <option value="informatica">Informática</option>
+            <option value="guiaTurismo">Guia de Turismo</option>
+            <option value="eletrotecnica">Eletrotécnica</option>
+            <option value="analisesClinicas">Análises Clínicas</option>
+        </select>
+    </div>
 
-        <div class="filtros">
-            <input type="text" id="pesquisa" placeholder="Pesquisar por livros..." onkeyup="filtrarLivros()">
-            <select id="categoria" onchange="filtrarLivros()">
-                <option value="todos">Todas as Categorias</option>
-                <option value="romance">Romance</option>
-                <option value="ficcao">Ficção</option>
-                <option value="tecnologia">Tecnologia</option>
-                <option value="educacao">Educação</option>
-            </select>
-        </div>
-
-        <div class="catalogo" id="catalogo">
-        </div>
-    </main>
 
     <footer>
         <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
@@ -149,22 +182,37 @@
     </footer>
 
     <script>
-        function filtrarLivros() {
-            let pesquisa = document.getElementById('pesquisa').value.toLowerCase();
-            let categoria = document.getElementById('categoria').value;
-            let livros = document.querySelectorAll('.livro');
+        // Adicionar funcionalidades para os filtros
+        const pesquisaInput = document.getElementById('pesquisa');
+        const categoriaSelect = document.getElementById('categoria');
+        const autorSelect = document.getElementById('autor');
+        const editoraSelect = document.getElementById('editora');
+        const cursoSelect = document.getElementById('curso');
 
+        function aplicarFiltros() {
+            const pesquisa = pesquisaInput.value.toLowerCase();
+            const categoria = categoriaSelect.value;
+            const autor = autorSelect.value;
+            const editora = editoraSelect.value;
+            const curso = cursoSelect.value;
+
+            const livros = document.querySelectorAll('.livro');
             livros.forEach(livro => {
-                let titulo = livro.textContent.toLowerCase();
-                let categoriaLivro = livro.getAttribute('data-categoria');
-
-                let matchPesquisa = titulo.includes(pesquisa);
-                let matchCategoria = categoria === 'todos' || categoriaLivro === categoria;
-
-                livro.style.display = matchPesquisa && matchCategoria ? 'block' : 'none';
+                let mostrar = true;
+                // Verifica a pesquisa por título
+                if (pesquisa && !livro.textContent.toLowerCase().includes(pesquisa)) {
+                    mostrar = false;
+                }
+                // Aqui você pode adicionar lógica para filtrar por autor, editora, etc.
+                livro.style.display = mostrar ? 'inline-block' : 'none';
             });
         }
-    </script>
 
-</body>
+        pesquisaInput.addEventListener('input', aplicarFiltros);
+        categoriaSelect.addEventListener('change', aplicarFiltros);
+        autorSelect.addEventListener('change', aplicarFiltros);
+        editoraSelect.addEventListener('change', aplicarFiltros);
+        cursoSelect.addEventListener('change', aplicarFiltros);
+    </script>
+  </body>
 </html>

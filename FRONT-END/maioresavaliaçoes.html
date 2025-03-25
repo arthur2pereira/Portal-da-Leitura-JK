@@ -3,9 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Livros mais Avaliados - Portal da Leitura JK</title>
 </head>
 <body>
+    <style>
+            /* Reset básico */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
     
+            body {
+                background-color: #f4f4f4;
+                color: #333;
+                text-align: center;
+            }
+    
+            header {
+                background-color: #007bff;
+                color: white;
+                padding: 20px;
+                font-size: 2em;
+            }
+    
+            nav ul {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                list-style: none;
+            }
+    
+            nav ul li {
+                display: inline;
+            }
+    
+            nav ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 1.2em;
+            }
+    
+            .livros {
+                margin: 20px;
+            }
+    
+            .livros-lista {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+    
+            .livro {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: left;
+            }
+    
+            .livro h3 {
+                color: #007bff;
+                margin-bottom: 10px;
+            }
+    
+            .livro p {
+                margin: 10px 0;
+            }
+    
+            footer {
+                background-color: #333;
+                color: white;
+                padding: 10px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+            }
+    </style>
+    <header>
+        <nav class="logo cabecalho">
+            <a class="logo" href="#">
+                <img src="imagens/logo.png" width="150" height="50" alt="Logo da Biblioteca">
+            </a>
+        </nav>
+        <nav class="cabecalho">
+            <ul class="lista-navegacao">
+                <li><a href="menuprincipal.html">Início</a></li>
+                <li><a href="lugarlivros.html">Livros</a></li>
+                <li><a href="nossabiblioteca.html">Sobre</a></li>
+                <li><a href="areaaluno.html">Área do Aluno</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="livros">
+        <h2>Os livros mais avaliados pelos leitores</h2>
+        <div id="livros-lista" class="livros-lista">
+            <!-- Os livros serão inseridos aqui via JavaScript -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
+            <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Dados dos livros com avaliações (simulação)
+        const livros = [
+            {
+                titulo: "O Senhor dos Anéis",
+                autor: "J.R.R. Tolkien",
+                avaliacao: 4.8,
+                numeroAvaliacoes: 1200,
+            },
+            {
+                titulo: "Harry Potter e a Pedra Filosofal",
+                autor: "J.K. Rowling",
+                avaliacao: 4.9,
+                numeroAvaliacoes: 1500,
+            },
+            {
+                titulo: "Dom Quixote",
+                autor: "Miguel de Cervantes",
+                avaliacao: 4.7,
+                numeroAvaliacoes: 800,
+            },
+            {
+                titulo: "1984",
+                autor: "George Orwell",
+                avaliacao: 4.6,
+                numeroAvaliacoes: 1000,
+            },
+        ];
+
+        // Função para exibir os livros mais avaliados
+        function exibirLivros() {
+            const livrosLista = document.getElementById('livros-lista');
+
+            // Ordenando os livros por avaliação (da maior para a menor)
+            livros.sort((a, b) => b.avaliacao - a.avaliacao);
+
+            livros.forEach(livro => {
+                const livroElement = document.createElement('div');
+                livroElement.classList.add('livro');
+                livroElement.innerHTML = `
+                    <h3>${livro.titulo}</h3>
+                    <p><strong>Autor:</strong> ${livro.autor}</p>
+                    <p><strong>Avaliação:</strong> ${livro.avaliacao} (${livro.numeroAvaliacoes} avaliações)</p>
+                `;
+                livrosLista.appendChild(livroElement);
+            });
+        }
+
+        // Chama a função para exibir os livros ao carregar a página
+        window.onload = exibirLivros;
+    </script>
 </body>
 </html>
