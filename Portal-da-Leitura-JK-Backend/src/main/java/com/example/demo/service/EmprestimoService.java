@@ -1,11 +1,36 @@
 package com.example.demo.service;
 
-import com.example.demo.model.EmprestimoModel; // Modelo de Emprestimo
-import com.example.demo.repository.EmprestimoRepository; // Repositório de Emprestimo
-import org.springframework.beans.factory.annotation.Autowired; // Para injeção de dependência
-import org.springframework.stereotype.Service; // Para a anotação @Service
-import java.util.List; // Para listas
-import java.util.Optional; // Para valores opcionais
+import com.example.demo.model.EmprestimoModel;
+import com.example.demo.repository.EmprestimoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
 public class EmprestimoService {
+
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
+
+    public List<EmprestimoModel> buscarPorAluno(Long alunoId) {
+        return emprestimoRepository.findByAlunoId(alunoId);
+    }
+
+    public List<EmprestimoModel> buscarPorLivro(Long livroId) {
+        return emprestimoRepository.findByLivroId(livroId);
+    }
+
+    public List<EmprestimoModel> buscarEmprestimosAtrasados(LocalDate data) {
+        return emprestimoRepository.findByDataVencimentoBeforeAndDataDevolucaoIsNull(data);
+    }
+
+    public EmprestimoModel salvar(EmprestimoModel emprestimo) {
+        return emprestimoRepository.save(emprestimo);
+    }
+
+    public void devolverEmprestimo(Long emprestimoId) {
+        emprestimoRepository.deleteById(emprestimoId);
+    }
 }

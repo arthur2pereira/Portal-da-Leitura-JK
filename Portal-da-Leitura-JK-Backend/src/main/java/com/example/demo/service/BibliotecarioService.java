@@ -1,11 +1,27 @@
 package com.example.demo.service;
 
-import com.example.demo.model.BibliotecarioModel; // Modelo de Bibliotecario
-import com.example.demo.repository.BibliotecarioRepository; // Repositório de Bibliotecario
-import org.springframework.beans.factory.annotation.Autowired; // Para injeção de dependência
-import org.springframework.stereotype.Service; // Para a anotação @Service
-import java.util.List; // Para listas
-import java.util.Optional; // Para valores opcionais
+import com.example.demo.model.BibliotecarioModel;
+import com.example.demo.repository.BibliotecarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public class BibliotecarioService {
+
+    @Autowired
+    private BibliotecarioRepository bibliotecarioRepository;
+
+    public Optional<BibliotecarioModel> buscarPorEmail(String email) {
+        return bibliotecarioRepository.findByEmail(email);
+    }
+
+    public BibliotecarioModel salvar(BibliotecarioModel bibliotecario) {
+        return bibliotecarioRepository.save(bibliotecario);
+    }
+
+    public Optional<BibliotecarioModel> buscarPorId(Long id) {
+        return bibliotecarioRepository.findById(id);
+    }
 }

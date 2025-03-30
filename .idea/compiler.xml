@@ -6,10 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BACK-END" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="BACK-END" target="22" />
       <module name="main" target="22" />
       <module name="PLJK" target="22" />
     </bytecodeTargetLevel>
