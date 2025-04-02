@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d03ff740-98b9-4369-adca-35185a7f32f1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Portal-da-Leitura-JK.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BANCO DE DADOS/PLJK.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/IMG-20250316-WA0005.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/IMG-20250316-WA0006.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/IMG-20250316-WA0007.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/IMG-20250316-WA0008.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/IMG-20250316-WA0010.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ESCOPOHTML/Imagem do WhatsApp de 2025-03-16 à(s) 13.17.55_af60cc84.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONT-END/imagens/biblioteca.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONT-END/imagens/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/PortalDaLeituraJkBackendApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/AlunoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/AvaliacaoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/BibliotecarioController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/EmprestimoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/LivroController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/NotificacaoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/PenalidadeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/controller/ReservaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/AlunoModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/AvaliacaoModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/BibliotecarioModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/EmprestimoModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/LivroModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/NotificacaoModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/PenalidadeModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/model/ReservaModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/AlunoRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/AvaliacaoRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/BibliotecarioRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/EmprestimoRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/LivroRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/NotificacaoRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/PenalidadeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/repository/ReservaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/security/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/AlunoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/AvaliacaoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/BibliotecarioService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/EmprestimoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/LivroService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/NotificacaoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/PenalidadeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/java/com/example/demo/service/ReservaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/areaaluno.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/bemvindo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/cadastrar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/entrar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/lugarlivros.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/maioresavaliaçoes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/menu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/menuprincipal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/nossabiblioteca.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/main/resources/static/paglivro.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Portal-da-Leitura-JK-Backend/src/test/java/com/example/demo/PortalDaLeituraJkBackendApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2v9UqFjtpGhNe0uGEp5Ov4TdvHi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Arthur/OneDrive/Documents/GitHub/Portal-da-Leitura-JK/Portal-da-Leitura-JK"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d03ff740-98b9-4369-adca-35185a7f32f1" name="Changes" comment="" />
+      <created>1743556973455</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743556973455</updated>
+    </task>
+    <servers />
+  </component>
+</project>
