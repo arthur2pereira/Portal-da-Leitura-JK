@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface BibliotecarioRepository extends JpaRepository<BibliotecarioModel, Long> {
     Optional<BibliotecarioModel> findByEmail(String email);
+    boolean existsByEmail(String email);
 }
 

@@ -18,14 +18,12 @@ public class BooksService {
         this.livroRepository = livroRepository;
     }
 
-    // Corrigido: Agora retorna uma lista de LivroModel
     public List<LivroModel> buscarLivros(String query) {
         List<BooksDTO> livrosDTO = booksClient.buscarLivros(query);
 
-        // Convertendo BooksDTO para LivroModel antes de retornar
         return livrosDTO.stream()
                 .map(dto -> new LivroModel(
-                        null,  // ID gerado pelo banco de dados
+                        null,
                         dto.getTitulo(),
                         dto.getAutor(),
                         dto.getGenero(),
@@ -35,6 +33,26 @@ public class BooksService {
                         dto.getQuantidade()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public List<LivroModel> buscarSalvarSemDuplicar(String query) {
+        List<BooksDTO> livrosDTO = booksClient.buscarLivros(query);
+
+        List<LivroModel> novosLivros = livrosDTO.stream()
+                .filter(dto -> !livroRepository.existsByTituloAndAutor(dto.getTitulo(), dto.getAutor()))
+                .map(dto -> new LivroModel(
+                        null,
+                        dto.getTitulo(),
+                        dto.getAutor(),
+                        dto.getGenero(),
+                        dto.getDescricao(),
+                        dto.getAnoPublicacao(),
+                        dto.getCurso(),
+                        dto.getQuantidade()
+                ))
+                .collect(Collectors.toList());
+
+        return livroRepository.saveAll(novosLivros);
     }
 
     public List<LivroModel> salvarLivros(List<BooksDTO> livrosDTO) {

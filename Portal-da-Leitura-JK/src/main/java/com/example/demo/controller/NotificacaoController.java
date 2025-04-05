@@ -16,16 +16,38 @@ public class NotificacaoController {
     @Autowired
     private NotificacaoService notificacaoService;
 
+    // Endpoint para buscar notificações por matrícula
     @GetMapping("/aluno/{matricula}")
     public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable Long matricula) {
-        List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(matricula);
-        return notificacoes.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(notificacoes);
+        try {
+            List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(matricula);
+            // Verifica se as notificações estão vazias
+            if (notificacoes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notificacoes);
+            }
+            return ResponseEntity.ok(notificacoes);
+        } catch (IllegalArgumentException e) {
+            // Retorna BAD REQUEST se a matrícula for inválida
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            // Para casos não tratados, retorna INTERNAL SERVER ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+    // Endpoint para salvar uma nova notificação
     @PostMapping
     public ResponseEntity<NotificacaoModel> salvar(@RequestBody NotificacaoModel notificacao) {
-        NotificacaoModel novaNotificacao = notificacaoService.salvar(notificacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaNotificacao);
+        try {
+            // Salvando a notificação
+            NotificacaoModel novaNotificacao = notificacaoService.salvar(notificacao);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novaNotificacao);
+        } catch (IllegalArgumentException e) {
+            // Caso faltem dados obrigatórios, retorna BAD REQUEST
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            // Para falhas não tratadas, retorna INTERNAL SERVER ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

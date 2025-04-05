@@ -21,4 +21,9 @@ public class BooksController {
     public List<LivroModel> buscarLivros(@RequestParam String query) {
         return booksService.buscarLivros(query);
     }
+
+    @GetMapping("/buscar-salvar-unico")
+    public List<LivroModel> buscarSalvarSemDuplicar(@RequestParam String query) {
+        return booksService.buscarSalvarSemDuplicar(query);
+    }
 }

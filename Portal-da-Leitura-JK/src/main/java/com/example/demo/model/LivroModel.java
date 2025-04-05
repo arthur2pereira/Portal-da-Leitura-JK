@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
@@ -14,18 +15,30 @@ public class LivroModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
+    @NotBlank
+    @Size(max = 150)
+    private String titulo; // nome do livro não pode vir vazio
 
-    private String autor;
+    @NotBlank
+    @Size(max = 100)
+    private String autor; // quem escreveu a obra, também obrigatório
 
-    private String genero;
+    @NotBlank
+    @Size(max = 50)
+    private String genero; // tipo "ficção", "romance", etc.
 
-    private String curso; // Pode ser nulo
+    // Curso da escola relacionado ao livro, tipo "Informática", mas pode ser nulo
+    @Size(max = 100)
+    private String curso;
 
+    @Min(1500) // só pra garantir que ninguém coloque o ano 1300
+    @Max(2100) // não vai dar pra publicar livro de 3000
     private Integer anoPublicacao;
 
+    // Descrição grandona do livro, tipo sinopse, por isso é TEXT
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    private Integer quantidade = 1;
+    @Min(0) // quantidade não pode ser negativa
+    private Integer quantidade = 1; // por padrão tem 1 exemplar
 }

@@ -20,4 +20,8 @@ public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Lon
 
     // Qual Bibliotecario aceitou tal emprestimo
     List<EmprestimoModel> findByBibliocarioId(Long bibliotecarioId);
+
+    // Se o aluno já pegou o livro tal livro ou não
+    boolean existsByAlunoMatriculaAndLivroId(String matricula, Long livroId);
+
 }
