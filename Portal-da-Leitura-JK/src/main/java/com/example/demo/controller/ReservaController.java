@@ -17,9 +17,9 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    @GetMapping("/aluno/{alunoId}")
-    public ResponseEntity<List<ReservaModel>> buscarPorAluno(@PathVariable Long alunoId) {
-        List<ReservaModel> reservas = reservaService.buscarPorAluno(alunoId);
+    @GetMapping("/aluno/{matricula}")
+    public ResponseEntity<List<ReservaModel>> buscarPorAluno(@PathVariable Long matricula) {
+        List<ReservaModel> reservas = reservaService.buscarPorAluno(matricula);
         return reservas.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(reservas);
     }

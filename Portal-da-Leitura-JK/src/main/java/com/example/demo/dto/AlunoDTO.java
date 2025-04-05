@@ -3,14 +3,14 @@ package com.example.demo.dto;
 import java.time.LocalDate;
 
 public class AlunoDTO {
-    private Long id;
+    private Long matricula;
     private String nome;
     private String email;
     private LocalDate dataNascimento;
     private String status;
 
-    public AlunoDTO(Long id, String nome, String email, LocalDate dataNascimento, String status) {
-        this.id = id;
+    public AlunoDTO(Long matricula, String nome, String email, LocalDate dataNascimento, String status) {
+        this.matricula = matricula;
         this.nome = nome;
         this.email = email;
         this.dataNascimento = dataNascimento;
@@ -18,12 +18,12 @@ public class AlunoDTO {
     }
 
     // Getters e Setters
-    public Long getId() {
-        return id;
+    public Long getMatricula() {
+        return matricula;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public String getNome() {

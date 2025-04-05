@@ -13,8 +13,8 @@ public class NotificacaoService {
     @Autowired
     private NotificacaoRepository notificacaoRepository;
 
-    public List<NotificacaoModel> buscarPorAluno(Long alunoId) {
-        return notificacaoRepository.findByAlunoId(alunoId);
+    public List<NotificacaoModel> buscarPorAluno(Long matricula) {
+        return notificacaoRepository.findByMatricula(matricula);
     }
 
     public List<NotificacaoModel> buscarPorTipo(String tipo) {

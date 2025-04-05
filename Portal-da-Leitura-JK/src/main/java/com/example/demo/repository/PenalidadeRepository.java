@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface PenalidadeRepository extends JpaRepository<PenalidadeModel, Long> {
     // Consultar penalidades por aluno
-    List<PenalidadeModel> findByAlunoId(Long alunoId);
+    List<PenalidadeModel> findByMatricula(Long matricula);
 
     // Consultar penalidades por tipo (ex: atraso, comentário ofensivo)
     List<PenalidadeModel> findByTipo(String tipo);

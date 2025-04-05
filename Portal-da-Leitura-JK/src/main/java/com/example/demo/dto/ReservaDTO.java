@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class ReservaDTO {
     private Long id;
-    private Long alunoId;
+    private Long matricula;
     private Long livroId;
     private LocalDate dataReserva;
     private LocalDate dataVencimento;
 
-    public ReservaDTO(Long id, Long alunoId, Long livroId, LocalDate dataReserva, LocalDate dataVencimento) {
+    public ReservaDTO(Long id, Long matricula, Long livroId, LocalDate dataReserva, LocalDate dataVencimento) {
         this.id = id;
-        this.alunoId = alunoId;
+        this.matricula = matricula;
         this.livroId = livroId;
         this.dataReserva = dataReserva;
         this.dataVencimento = dataVencimento;
@@ -26,12 +26,12 @@ public class ReservaDTO {
         this.id = id;
     }
 
-    public Long getAlunoId() {
-        return alunoId;
+    public Long getMatricula() {
+        return matricula;
     }
 
-    public void setAlunoId(Long alunoId) {
-        this.alunoId = alunoId;
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public Long getLivroId() {

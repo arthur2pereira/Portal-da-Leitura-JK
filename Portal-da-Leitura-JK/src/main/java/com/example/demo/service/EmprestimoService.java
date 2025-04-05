@@ -14,8 +14,8 @@ public class EmprestimoService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
-    public List<EmprestimoModel> buscarPorAluno(Long alunoId) {
-        return emprestimoRepository.findByAlunoId(alunoId);
+    public List<EmprestimoModel> buscarPorAluno(Long matricula) {
+        return emprestimoRepository.findByMatricula(matricula);
     }
 
     public List<EmprestimoModel> buscarPorLivro(Long livroId) {

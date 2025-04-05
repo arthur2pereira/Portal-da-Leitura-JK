@@ -2,14 +2,14 @@ package com.example.demo.dto;
 
 public class AvaliacaoDTO {
     private Long id;
-    private Long alunoId;
+    private Long matricula;
     private Long livroId;
     private int nota;
     private String comentario;
 
-    public AvaliacaoDTO(Long id, Long alunoId, Long livroId, int nota, String comentario) {
+    public AvaliacaoDTO(Long id, Long matricula, Long livroId, int nota, String comentario) {
         this.id = id;
-        this.alunoId = alunoId;
+        this.matricula = matricula;
         this.livroId = livroId;
         this.nota = nota;
         this.comentario = comentario;
@@ -24,12 +24,12 @@ public class AvaliacaoDTO {
         this.id = id;
     }
 
-    public Long getAlunoId() {
-        return alunoId;
+    public Long getMatricula() {
+        return matricula;
     }
 
-    public void setAlunoId(Long alunoId) {
-        this.alunoId = alunoId;
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public Long getLivroId() {

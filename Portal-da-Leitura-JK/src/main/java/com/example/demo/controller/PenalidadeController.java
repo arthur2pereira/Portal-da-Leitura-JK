@@ -16,9 +16,9 @@ public class PenalidadeController {
     @Autowired
     private PenalidadeService penalidadeService;
 
-    @GetMapping("/aluno/{alunoId}")
-    public ResponseEntity<List<PenalidadeModel>> buscarPorAluno(@PathVariable Long alunoId) {
-        List<PenalidadeModel> penalidades = penalidadeService.buscarPorAluno(alunoId);
+    @GetMapping("/aluno/{matricula}")
+    public ResponseEntity<List<PenalidadeModel>> buscarPorAluno(@PathVariable Long matricula) {
+        List<PenalidadeModel> penalidades = penalidadeService.buscarPorAluno(matricula);
         return penalidades.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(penalidades);
     }

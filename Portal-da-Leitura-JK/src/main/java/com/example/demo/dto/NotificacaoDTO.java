@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class NotificacaoDTO {
     private Long id;
-    private Long alunoId;
+    private Long matricula;
     private String mensagem;
     private LocalDate dataEnvio;
 
-    public NotificacaoDTO(Long id, Long alunoId, String mensagem, LocalDate dataEnvio) {
+    public NotificacaoDTO(Long id, Long matricula, String mensagem, LocalDate dataEnvio) {
         this.id = id;
-        this.alunoId = alunoId;
+        this.matricula = matricula;
         this.mensagem = mensagem;
         this.dataEnvio = dataEnvio;
     }
@@ -24,12 +24,12 @@ public class NotificacaoDTO {
         this.id = id;
     }
 
-    public Long getAlunoId() {
-        return alunoId;
+    public Long getMatricula() {
+        return matricula;
     }
 
-    public void setAlunoId(Long alunoId) {
-        this.alunoId = alunoId;
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public String getMensagem() {

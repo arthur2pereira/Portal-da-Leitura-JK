@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 public class EmprestimoDTO {
     private Long id;
-    private Long alunoId;
+    private Long matricula;
     private Long livroId;
     private Long bibliotecarioId;
     private LocalDate dataEmprestimo;
     private LocalDate dataVencimento;
     private LocalDate dataDevolucao;
 
-    public EmprestimoDTO(Long id, Long alunoId, Long livroId, Long bibliotecarioId,
+    public EmprestimoDTO(Long id, Long matricula, Long livroId, Long bibliotecarioId,
                          LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao) {
         this.id = id;
-        this.alunoId = alunoId;
+        this.matricula = matricula;
         this.livroId = livroId;
         this.bibliotecarioId = bibliotecarioId;
         this.dataEmprestimo = dataEmprestimo;
@@ -31,12 +31,12 @@ public class EmprestimoDTO {
         this.id = id;
     }
 
-    public Long getAlunoId() {
-        return alunoId;
+    public Long getMatricula() {
+        return matricula;
     }
 
-    public void setAlunoId(Long alunoId) {
-        this.alunoId = alunoId;
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public Long getLivroId() {

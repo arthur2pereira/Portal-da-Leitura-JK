@@ -13,8 +13,8 @@ public class PenalidadeService {
     @Autowired
     private PenalidadeRepository penalidadeRepository;
 
-    public List<PenalidadeModel> buscarPorAluno(Long alunoId) {
-        return penalidadeRepository.findByAlunoId(alunoId);
+    public List<PenalidadeModel> buscarPorAluno(Long matricula) {
+        return penalidadeRepository.findByMatricula(matricula);
     }
 
     public List<PenalidadeModel> buscarPorTipo(String tipo) {

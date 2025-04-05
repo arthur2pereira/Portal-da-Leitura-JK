@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Long> {
     // Consultar empréstimos por aluno
-    List<EmprestimoModel> findByAlunoId(Long alunoId);
+    List<EmprestimoModel> findByMatricula(Long matricula);
 
     // Consultar empréstimos por livro
     List<EmprestimoModel> findByLivroId(Long livroId);

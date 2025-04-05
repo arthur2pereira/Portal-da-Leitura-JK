@@ -17,8 +17,8 @@ public class AvaliacaoService {
         return avaliacaoRepository.findByLivroId(livroId);
     }
 
-    public List<AvaliacaoModel> buscarPorAluno(Long alunoId) {
-        return avaliacaoRepository.findByAlunoId(alunoId);
+    public List<AvaliacaoModel> buscarPorAluno(Long matricula) {
+        return avaliacaoRepository.findByMatricula(matricula);
     }
 
     public AvaliacaoModel salvar(AvaliacaoModel avaliacao) {

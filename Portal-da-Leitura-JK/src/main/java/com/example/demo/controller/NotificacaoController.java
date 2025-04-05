@@ -16,9 +16,9 @@ public class NotificacaoController {
     @Autowired
     private NotificacaoService notificacaoService;
 
-    @GetMapping("/aluno/{alunoId}")
-    public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable Long alunoId) {
-        List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(alunoId);
+    @GetMapping("/aluno/{matricula}")
+    public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable Long matricula) {
+        List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(matricula);
         return notificacoes.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(notificacoes);
     }
