@@ -17,7 +17,7 @@ public class AlunoModel {
     @NotBlank(message = "A matrícula é obrigatória.")
     @Pattern(regexp = "\\d{13}", message = "A matrícula deve conter exatamente 13 dígitos numéricos.")
     @Column(length = 13, unique = true) // garante unicidade e define tamanho fixo no banco
-    private String matricula;
+    private Long matricula;
 
     @NotBlank(message = "O nome é obrigatório.")
     @Column(length = 100)

@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.model.AlunoModel;
 import com.example.demo.model.NotificacaoModel;
 import com.example.demo.repository.NotificacaoRepository;
+import com.example.demo.repository.AlunoRepository;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,9 @@ public class NotificacaoService {
     private NotificacaoRepository notificacaoRepository;
 
     @Autowired
+    private AlunoRepository alunoRepository;
+
+    @Autowired
     private SendGrid sendGrid;
 
     @Value("${sendgrid.from.email}")
@@ -28,82 +34,118 @@ public class NotificacaoService {
 
     // Buscar notificações por matrícula
     public List<NotificacaoModel> buscarPorAluno(Long matricula) {
-        // Verificar se a matrícula existe
-        if (matricula == null || matricula <= 0) {
-            throw new IllegalArgumentException("Matrícula inválida");
-        }
+        validarAlunoExistente(matricula);
         return notificacaoRepository.findByMatricula(matricula);
     }
 
-    // Buscar notificações por tipo
-    public List<NotificacaoModel> buscarPorTipo(String tipo) {
-        // Verificar se o tipo é válido
-        if (tipo == null || tipo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tipo de notificação inválido");
-        }
-        return notificacaoRepository.findByTipo(tipo);
+    // Buscar notificações não lidas
+    public List<NotificacaoModel> buscarNaoLidasPorAluno(Long matricula) {
+        validarAlunoExistente(matricula);
+        return notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
     }
 
-    // Salvar notificação no banco e enviar por e-mail
+    // Buscar por tipo e matrícula
+    public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, Long matricula) {
+        validarAlunoExistente(matricula);
+        return notificacaoRepository.findByTipoAndMatricula(tipo, matricula);
+    }
+
+    // Buscar notificações recentes
+    public List<NotificacaoModel> buscarAposDataPorAluno(LocalDate data, Long matricula) {
+        validarAlunoExistente(matricula);
+        return notificacaoRepository.findByDataEnvioAfterAndAlunoMatricula(data, matricula);
+    }
+
+    // Buscar por ID
+    public Optional<NotificacaoModel> buscarPorId(Long id) {
+        return notificacaoRepository.findById(id);
+    }
+
+    // Marcar como lida
+    public NotificacaoModel marcarComoLida(Long id) {
+        NotificacaoModel notificacao = notificacaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
+        notificacao.setLida(true);
+        return notificacaoRepository.save(notificacao);
+    }
+
+    // Salvar e enviar
     public NotificacaoModel salvar(NotificacaoModel notificacao) {
-        // Verificar se os campos obrigatórios estão presentes
-        if (notificacao == null || notificacao.getAluno() == null || notificacao.getTipo() == null) {
-            throw new IllegalArgumentException("Campos obrigatórios não preenchidos");
+        validarNotificacao(notificacao);
+        validarAlunoExistente(notificacao.getAluno().getMatricula());
+
+        if (notificacao.getDataEnvio() == null) {
+            notificacao.setDataEnvio(LocalDate.now());
         }
 
-        // Salvar a notificação no banco de dados
-        NotificacaoModel savedNotificacao = notificacaoRepository.save(notificacao);
+        NotificacaoModel salva = notificacaoRepository.save(notificacao);
 
         try {
-            // Enviar a notificação por e-mail
-            sendEmail(savedNotificacao);
+            sendEmail(salva);
         } catch (IOException e) {
-            // Logar a falha ao enviar e-mail
             System.err.println("Erro ao enviar e-mail: " + e.getMessage());
-            // Você pode lançar uma exceção personalizada aqui, se quiser lidar com falhas de envio de forma diferente
         }
 
-        // Verificar se a notificação está relacionada a penalidades e aplicar se necessário
-        verificarPenalidade(notificacao);
-
-        return savedNotificacao;
+        verificarPenalidade(salva);
+        return salva;
     }
 
-    // Enviar e-mail via SendGrid
+    // Deletar notificação
+    public void deletar(Long id) {
+        if (!notificacaoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Notificação com ID " + id + " não existe.");
+        }
+        notificacaoRepository.deleteById(id);
+    }
+
+    // ========= MÉTODOS PRIVADOS ========= //
+
+    private void validarNotificacao(NotificacaoModel notificacao) {
+        if (notificacao == null ||
+                notificacao.getAluno() == null ||
+                notificacao.getAluno().getMatricula() == null ||
+                notificacao.getTipo() == null ||
+                notificacao.getMensagem() == null ||
+                notificacao.getMensagem().isBlank()) {
+            throw new IllegalArgumentException("Campos obrigatórios da notificação não preenchidos.");
+        }
+    }
+
+    private void validarAlunoExistente(Long matricula) {
+        boolean existe = alunoRepository.existsByMatricula(matricula);
+        if (!existe) {
+            throw new IllegalArgumentException("Aluno com matrícula " + matricula + " não encontrado.");
+        }
+    }
+
     private void sendEmail(NotificacaoModel notificacao) throws IOException {
-        // Criar o e-mail
         Email from = new Email(fromEmail);
-        // Aqui é que ajustamos: pegar o e-mail do aluno
         Email to = new Email(notificacao.getAluno().getEmail());
         String subject = "Notificação: " + notificacao.getTipo();
         Content content = new Content("text/plain", notificacao.getMensagem());
-        Mail mail = new Mail(from, subject, to, content);
 
-        // Enviar o e-mail
+        Mail mail = new Mail(from, subject, to, content);
         Request request = new Request();
+
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
         request.setBody(mail.build());
 
-        // Enviar a requisição para o SendGrid
         Response response = sendGrid.api(request);
         if (response.getStatusCode() != 202) {
             throw new IOException("Falha ao enviar e-mail. Status: " + response.getStatusCode());
         }
     }
 
-    // Métdo para verificar se a notificação envolve penalidade e tratá-la
     private void verificarPenalidade(NotificacaoModel notificacao) {
-        // Lógica para penalidade - exemplo simples de penalidade por atraso
-        if ("atraso".equals(notificacao.getTipo())) {
-            // Aqui você pode aplicar uma penalidade, por exemplo, bloquear a conta por X dias
-            System.out.println("Aplicando penalidade de atraso para o aluno: " + notificacao.getAluno().getMatricula());
-            // Talvez criar um métoo para registrar a penalidade no banco de dados
+        if ("atraso".equalsIgnoreCase(notificacao.getTipo())) {
+            System.out.println("Aplicar penalidade para matrícula: " + notificacao.getAluno().getMatricula());
+            // Chamar serviço de penalidade aqui se tiver
+            // penalidadeService.aplicarPenalidade(notificacao.getAluno(), tipo, diasBloqueio);
         }
     }
 
-    // Métdo para buscar uma notificação por ID
-    public Optional<NotificacaoModel> buscarPorId(Long id) {
-        return notificacaoRepository.findById(id);
+    public List<NotificacaoModel> buscarPorAlunoMaisRecentes(Long matricula) {
+        return null;
     }
 }

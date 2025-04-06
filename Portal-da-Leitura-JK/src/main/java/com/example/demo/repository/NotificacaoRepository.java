@@ -4,8 +4,8 @@ import com.example.demo.model.NotificacaoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, Long> {
@@ -13,18 +13,18 @@ public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, L
     // Consultar notificações por matrícula de aluno
     List<NotificacaoModel> findByMatricula(Long matricula);
 
-    // Consultar notificações por tipo (ex: alerta, penalidade)
+    // Consultar notificações por tipo
     List<NotificacaoModel> findByTipo(String tipo);
 
-    // Consultar notificações por tipo e matrícula (ex: alerta para um aluno específico)
+    // Consultar notificações por tipo e matrícula
     List<NotificacaoModel> findByTipoAndMatricula(String tipo, Long matricula);
 
-    // Consultar notificações não lidas por aluno (adicionar campo 'lida' no modelo)
-    List<NotificacaoModel> findByMatriculaAndLidaFalse(Long matricula);
+    // Consultar notificações não lidas por aluno
+    List<NotificacaoModel> findByAlunoMatriculaAndLidaFalse(Long matricula);
 
-    // Consultar notificações por data de criação (adicionar 'dataCriacao' no modelo)
-    List<NotificacaoModel> findByDataCriacaoAfterAndMatricula(String data, Long matricula);
+    // Consultar notificações por data de envio (ex: depois de certa data)
+    List<NotificacaoModel> findByDataEnvioAfterAndAlunoMatricula(LocalDate data, Long matricula);
 
-    // Consultar uma notificação por id (exemplo para detalhes)
-    Optional<NotificacaoModel> findById(Long id);
+    List<NotificacaoModel> findByAlunoMatriculaOrderByDataEnvioDesc(Long matricula);
+
 }

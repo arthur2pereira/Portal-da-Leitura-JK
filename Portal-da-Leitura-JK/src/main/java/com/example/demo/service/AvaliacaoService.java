@@ -30,7 +30,7 @@ public class AvaliacaoService {
     }
 
     public AvaliacaoModel criarAvaliacao(AvaliacaoModel avaliacao) {
-        String matricula = avaliacao.getAluno().getMatricula();
+        Long matricula = avaliacao.getAluno().getMatricula();
         Long livroId = avaliacao.getLivro().getId();
         boolean jaEmprestou = emprestimoRepository.existsByAlunoMatriculaAndLivroId(matricula, livroId);
         if (!jaEmprestou) {

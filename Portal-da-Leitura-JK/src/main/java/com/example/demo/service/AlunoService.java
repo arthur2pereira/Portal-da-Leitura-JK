@@ -14,7 +14,7 @@ public class AlunoService {
     @Autowired
     private AlunoRepository alunoRepository;
 
-    public Optional<AlunoModel> buscarPorMatricula(String matricula) {
+    public Optional<AlunoModel> buscarPorMatricula(Long matricula) {
         return alunoRepository.findByMatricula(matricula);
     }
 
@@ -26,7 +26,7 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
-    public Optional<AlunoModel> buscarPorId(Long id) {
-        return alunoRepository.findById(id);
+    public boolean alunoExiste(Long matricula) {
+        return alunoRepository.existsByMatricula(matricula);
     }
 }

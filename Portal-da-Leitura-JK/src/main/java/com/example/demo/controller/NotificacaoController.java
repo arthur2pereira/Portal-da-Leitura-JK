@@ -50,4 +50,34 @@ public class NotificacaoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    // Endpoint para buscar notificações mais recentes de um aluno
+    @GetMapping("/aluno/{matricula}/recentes")
+    public ResponseEntity<List<NotificacaoModel>> buscarMaisRecentes(@PathVariable Long matricula) {
+        try {
+            List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAlunoMaisRecentes(matricula);
+            if (notificacoes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notificacoes);
+            }
+            return ResponseEntity.ok(notificacoes);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/aluno/{matricula}/nao-lidas")
+    public ResponseEntity<List<NotificacaoModel>> buscarNaoLidas(@PathVariable Long matricula) {
+        try {
+            List<NotificacaoModel> notificacoes = notificacaoService.buscarNaoLidasPorAluno(matricula);
+            return notificacoes.isEmpty()
+                    ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                    : ResponseEntity.ok(notificacoes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 }
