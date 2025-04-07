@@ -11,13 +11,13 @@ import java.util.List;
 public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, Long> {
 
     // Consultar notificações por matrícula de aluno
-    List<NotificacaoModel> findByMatricula(Long matricula);
+    List<NotificacaoModel> findByAlunoMatricula(Long matricula);
 
     // Consultar notificações por tipo
     List<NotificacaoModel> findByTipo(String tipo);
 
     // Consultar notificações por tipo e matrícula
-    List<NotificacaoModel> findByTipoAndMatricula(String tipo, Long matricula);
+    List<NotificacaoModel> findByTipoAndAlunoMatricula(String tipo, Long matricula);
 
     // Consultar notificações não lidas por aluno
     List<NotificacaoModel> findByAlunoMatriculaAndLidaFalse(Long matricula);
@@ -26,5 +26,6 @@ public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, L
     List<NotificacaoModel> findByDataEnvioAfterAndAlunoMatricula(LocalDate data, Long matricula);
 
     List<NotificacaoModel> findByAlunoMatriculaOrderByDataEnvioDesc(Long matricula);
+
 
 }

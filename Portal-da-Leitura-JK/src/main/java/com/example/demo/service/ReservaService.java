@@ -16,7 +16,7 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
     public List<ReservaModel> buscarPorAluno(Long matricula) {
-        return reservaRepository.findByMatricula(matricula);
+        return reservaRepository.findByAlunoMatricula(matricula);
     }
 
     public List<ReservaModel> buscarPorLivro(Long livroId) {
@@ -28,7 +28,7 @@ public class ReservaService {
     }
 
     public Optional<ReservaModel> buscarPorAlunoELivro(Long matricula, Long livroId) {
-        return reservaRepository.findByMatriculaAndLivroId(matricula, livroId);
+        return reservaRepository.findByAlunoMatriculaAndLivroId(matricula, livroId);
     }
 
     public ReservaModel salvar(ReservaModel reserva) {

@@ -37,7 +37,7 @@ public class EmprestimoModel {
     // pode ser null se ainda não devolveu
     private LocalDate dataDevolucao;
 
-    // contar as renovações
+    //  contar as renovações
     private int renovacoes = 0;
 
 }

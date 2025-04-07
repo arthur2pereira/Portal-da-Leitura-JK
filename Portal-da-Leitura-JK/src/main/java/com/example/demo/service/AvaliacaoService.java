@@ -22,7 +22,7 @@ public class AvaliacaoService {
     }
 
     public List<AvaliacaoModel> buscarPorAluno(Long matricula) {
-        return avaliacaoRepository.findByMatricula(matricula);
+        return avaliacaoRepository.findByAlunoMatricula(matricula);
     }
 
     public AvaliacaoModel salvar(AvaliacaoModel avaliacao) {

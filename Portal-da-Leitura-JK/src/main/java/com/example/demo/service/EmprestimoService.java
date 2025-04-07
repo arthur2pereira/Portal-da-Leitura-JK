@@ -14,10 +14,11 @@ public class EmprestimoService {
 
     @Autowired
     private EmprestimoRepository emprestimoRepository;
+    @Autowired
     private BibliotecarioRepository bibliotecarioRepository;
 
     public List<EmprestimoModel> buscarPorAluno(Long matricula) {
-        return emprestimoRepository.findByMatricula(matricula);
+        return emprestimoRepository.findByAlunoMatricula(matricula);
     }
 
     public List<EmprestimoModel> buscarPorLivro(Long livroId) {
@@ -25,7 +26,7 @@ public class EmprestimoService {
     }
 
     public List<EmprestimoModel> buscarPorBibliotecario(Long bibliotecarioId) {
-        return emprestimoRepository.findByBibliocarioId(bibliotecarioId);
+        return emprestimoRepository.findByBibliotecarioId(bibliotecarioId);
     }
 
     public List<EmprestimoModel> buscarEmprestimosAtrasados(LocalDate data) {

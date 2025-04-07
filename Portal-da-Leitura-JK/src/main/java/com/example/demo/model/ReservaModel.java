@@ -21,6 +21,8 @@ public class ReservaModel {
     @ManyToOne
     private LivroModel livro;
 
+    private String status;
+
     private LocalDate dataReserva;
 
     private LocalDate dataVencimento;

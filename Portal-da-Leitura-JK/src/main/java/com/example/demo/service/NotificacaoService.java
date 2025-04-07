@@ -35,7 +35,7 @@ public class NotificacaoService {
     // Buscar notificações por matrícula
     public List<NotificacaoModel> buscarPorAluno(Long matricula) {
         validarAlunoExistente(matricula);
-        return notificacaoRepository.findByMatricula(matricula);
+        return notificacaoRepository.findByAlunoMatricula(matricula);
     }
 
     // Buscar notificações não lidas
@@ -47,7 +47,7 @@ public class NotificacaoService {
     // Buscar por tipo e matrícula
     public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, Long matricula) {
         validarAlunoExistente(matricula);
-        return notificacaoRepository.findByTipoAndMatricula(tipo, matricula);
+        return notificacaoRepository.findByTipoAndAlunoMatricula(tipo, matricula);
     }
 
     // Buscar notificações recentes
@@ -146,6 +146,8 @@ public class NotificacaoService {
     }
 
     public List<NotificacaoModel> buscarPorAlunoMaisRecentes(Long matricula) {
-        return null;
+        validarAlunoExistente(matricula);
+        return notificacaoRepository.findByAlunoMatriculaOrderByDataEnvioDesc(matricula);
     }
+
 }

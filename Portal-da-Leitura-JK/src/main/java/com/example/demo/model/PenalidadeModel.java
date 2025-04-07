@@ -23,4 +23,7 @@ public class PenalidadeModel {
     private Integer diasBloqueio;
 
     private LocalDate dataAplicacao;
+
+    private String tipo;
+
 }

@@ -14,7 +14,7 @@ public class PenalidadeService {
     private PenalidadeRepository penalidadeRepository;
 
     public List<PenalidadeModel> buscarPorAluno(Long matricula) {
-        return penalidadeRepository.findByMatricula(matricula);
+        return penalidadeRepository.findByAlunoMatricula(matricula);
     }
 
     public List<PenalidadeModel> buscarPorTipo(String tipo) {
