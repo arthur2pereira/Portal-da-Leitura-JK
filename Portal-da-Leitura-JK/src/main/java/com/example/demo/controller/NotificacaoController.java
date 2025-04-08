@@ -18,7 +18,7 @@ public class NotificacaoController {
 
     // Endpoint para buscar notificações por matrícula
     @GetMapping("/aluno/{matricula}")
-    public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable Long matricula) {
+    public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable String matricula) {
         try {
             List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(matricula);
             // Verifica se as notificações estão vazias
@@ -53,7 +53,7 @@ public class NotificacaoController {
 
     // Endpoint para buscar notificações mais recentes de um aluno
     @GetMapping("/aluno/{matricula}/recentes")
-    public ResponseEntity<List<NotificacaoModel>> buscarMaisRecentes(@PathVariable Long matricula) {
+    public ResponseEntity<List<NotificacaoModel>> buscarMaisRecentes(@PathVariable String matricula) {
         try {
             List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAlunoMaisRecentes(matricula);
             if (notificacoes.isEmpty()) {
@@ -68,7 +68,7 @@ public class NotificacaoController {
     }
 
     @GetMapping("/aluno/{matricula}/nao-lidas")
-    public ResponseEntity<List<NotificacaoModel>> buscarNaoLidas(@PathVariable Long matricula) {
+    public ResponseEntity<List<NotificacaoModel>> buscarNaoLidas(@PathVariable String matricula) {
         try {
             List<NotificacaoModel> notificacoes = notificacaoService.buscarNaoLidasPorAluno(matricula);
             return notificacoes.isEmpty()

@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class PenalidadeDTO {
     private Long id;
-    private Long matricula;
+    private String matricula;
     private String tipoPenalidade;
     private LocalDate dataAplicacao;
     private int diasBloqueado;
 
-    public PenalidadeDTO(Long id, Long matricula, String tipoPenalidade, LocalDate dataAplicacao, int diasBloqueado) {
+    public PenalidadeDTO(Long id, String matricula, String tipoPenalidade, LocalDate dataAplicacao, int diasBloqueado) {
         this.id = id;
         this.matricula = matricula;
         this.tipoPenalidade = tipoPenalidade;
@@ -26,11 +26,11 @@ public class PenalidadeDTO {
         this.id = id;
     }
 
-    public Long getMatricula() {
+    public String getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(Long matricula) {
+    public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 

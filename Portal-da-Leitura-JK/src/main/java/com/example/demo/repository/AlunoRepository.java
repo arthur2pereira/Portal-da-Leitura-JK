@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AlunoRepository extends JpaRepository<AlunoModel, Long> {
+public interface AlunoRepository extends JpaRepository<AlunoModel, String> {
 
     List<AlunoModel> findByNomeContainingIgnoreCase(String nome);
-    Optional<AlunoModel> findByMatricula(Long matricula);
-    boolean existsByMatricula(Long matricula);
+    Optional<AlunoModel> findByMatricula(String matricula);
+    boolean existsByMatricula(String matricula);
 }
 

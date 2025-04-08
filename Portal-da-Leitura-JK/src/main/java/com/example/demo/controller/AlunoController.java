@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AlunoDTO;
+import com.example.demo.dto.LoginDTO;
 import com.example.demo.model.AlunoModel;
 import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,13 @@ public class AlunoController {
     private AlunoService alunoService;
 
     @GetMapping("/{matricula}")
-    public ResponseEntity<AlunoDTO> buscarPorMatricula(@PathVariable Long matricula) {
+    public ResponseEntity<AlunoDTO> buscarPorMatricula(@PathVariable String matricula) {
         Optional<AlunoModel> aluno = alunoService.buscarPorMatricula(matricula);
         return aluno.map(a -> ResponseEntity.ok(new AlunoDTO(
                 a.getMatricula(),
                 a.getNome(),
                 a.getEmail(),
+                a.getSenha(),
                 a.getDataNascimento(),
                 a.getStatus() ? "Ativo" : "Inativo"
         ))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,30 +42,47 @@ public class AlunoController {
                 a.getMatricula(),
                 a.getNome(),
                 a.getEmail(),
+                a.getSenha(),
                 a.getDataNascimento(),
                 a.getStatus() ? "Ativo" : "Inativo"
         )).toList();
 
         return ResponseEntity.ok(dtos);
     }
-
     @PostMapping
-    public ResponseEntity<?> salvar(@Valid @RequestBody AlunoModel aluno) {
-        if (alunoService.alunoExiste(aluno.getMatricula())) {
+    public ResponseEntity<?> salvar(@Valid @RequestBody AlunoDTO dto) {
+        if (alunoService.alunoExiste(dto.getMatricula())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Já existe um aluno com essa matrícula.");
         }
 
-        AlunoModel novoAluno = alunoService.salvar(aluno);
+        AlunoModel novoAluno = alunoService.salvarDTO(dto);
+        AlunoDTO resposta = alunoService.converterParaDTO(novoAluno);
 
-        AlunoDTO dto = new AlunoDTO(
-                novoAluno.getMatricula(),
-                novoAluno.getNome(),
-                novoAluno.getEmail(),
-                novoAluno.getDataNascimento(),
-                novoAluno.getStatus() ? "Ativo" : "Inativo"
+        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        Optional<AlunoModel> alunoOpt = alunoService.autenticar(
+                loginDTO.getMatricula(),
+                loginDTO.getSenha()
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        if (alunoOpt.isPresent()) {
+            AlunoModel aluno = alunoOpt.get();
+            AlunoDTO dto = new AlunoDTO(
+                    aluno.getMatricula(),
+                    aluno.getNome(),
+                    aluno.getEmail(),
+                    aluno.getSenha(),
+                    aluno.getDataNascimento(),
+                    aluno.getStatus() ? "Ativo" : "Inativo"
+            );
+            return ResponseEntity.ok(dto);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula ou senha inválida");
     }
+
 }

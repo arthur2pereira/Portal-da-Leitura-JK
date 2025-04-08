@@ -17,7 +17,7 @@ public class EmprestimoService {
     @Autowired
     private BibliotecarioRepository bibliotecarioRepository;
 
-    public List<EmprestimoModel> buscarPorAluno(Long matricula) {
+    public List<EmprestimoModel> buscarPorAluno(String matricula) {
         return emprestimoRepository.findByAlunoMatricula(matricula);
     }
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ReservaRepository extends JpaRepository<ReservaModel, Long> {
     // Consultar reservas por aluno
-    List<ReservaModel> findByAlunoMatricula(Long matricula);
+    List<ReservaModel> findByAlunoMatricula(String matricula);
 
     // Consultar reservas por livro
     List<ReservaModel> findByLivroId(Long livroId);
@@ -20,5 +20,5 @@ public interface ReservaRepository extends JpaRepository<ReservaModel, Long> {
     List<ReservaModel> findByStatusAndDataVencimentoBefore(String status, LocalDate data);
 
     // Consultar uma reserva específica por aluno e livro
-    Optional<ReservaModel> findByAlunoMatriculaAndLivroId(Long matricula, Long livroId);
+    Optional<ReservaModel> findByAlunoMatriculaAndLivroId(String matricula, Long livroId);
 }

@@ -14,10 +14,10 @@ import java.time.LocalDate;
 public class AlunoModel {
 
     @Id
-    @NotNull
+    @NotBlank
     @Pattern(regexp = "\\d{13}", message = "A matrícula deve conter exatamente 13 dígitos numéricos.")
     @Column(length = 13, unique = true) // garante unicidade e define tamanho fixo no banco
-    private Long matricula;
+    private String matricula;
 
     @NotBlank(message = "O nome é obrigatório.")
     @Column(length = 100)

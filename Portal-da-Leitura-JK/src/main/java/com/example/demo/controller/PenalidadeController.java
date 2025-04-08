@@ -17,7 +17,7 @@ public class PenalidadeController {
     private PenalidadeService penalidadeService;
 
     @GetMapping("/aluno/{matricula}")
-    public ResponseEntity<List<PenalidadeModel>> buscarPorAluno(@PathVariable Long matricula) {
+    public ResponseEntity<List<PenalidadeModel>> buscarPorAluno(@PathVariable String matricula) {
         List<PenalidadeModel> penalidades = penalidadeService.buscarPorAluno(matricula);
         return penalidades.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(penalidades);

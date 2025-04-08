@@ -15,7 +15,7 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
-    public List<ReservaModel> buscarPorAluno(Long matricula) {
+    public List<ReservaModel> buscarPorAluno(String matricula) {
         return reservaRepository.findByAlunoMatricula(matricula);
     }
 
@@ -27,7 +27,7 @@ public class ReservaService {
         return reservaRepository.findByStatusAndDataVencimentoBefore(status, data);
     }
 
-    public Optional<ReservaModel> buscarPorAlunoELivro(Long matricula, Long livroId) {
+    public Optional<ReservaModel> buscarPorAlunoELivro(String matricula, Long livroId) {
         return reservaRepository.findByAlunoMatriculaAndLivroId(matricula, livroId);
     }
 

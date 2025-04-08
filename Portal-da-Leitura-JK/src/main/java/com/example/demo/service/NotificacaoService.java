@@ -33,25 +33,25 @@ public class NotificacaoService {
     private String fromEmail;
 
     // Buscar notificações por matrícula
-    public List<NotificacaoModel> buscarPorAluno(Long matricula) {
+    public List<NotificacaoModel> buscarPorAluno(String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByAlunoMatricula(matricula);
     }
 
     // Buscar notificações não lidas
-    public List<NotificacaoModel> buscarNaoLidasPorAluno(Long matricula) {
+    public List<NotificacaoModel> buscarNaoLidasPorAluno(String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
     }
 
     // Buscar por tipo e matrícula
-    public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, Long matricula) {
+    public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByTipoAndAlunoMatricula(tipo, matricula);
     }
 
     // Buscar notificações recentes
-    public List<NotificacaoModel> buscarAposDataPorAluno(LocalDate data, Long matricula) {
+    public List<NotificacaoModel> buscarAposDataPorAluno(LocalDate data, String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByDataEnvioAfterAndAlunoMatricula(data, matricula);
     }
@@ -111,7 +111,7 @@ public class NotificacaoService {
         }
     }
 
-    private void validarAlunoExistente(Long matricula) {
+    private void validarAlunoExistente(String matricula) {
         boolean existe = alunoRepository.existsByMatricula(matricula);
         if (!existe) {
             throw new IllegalArgumentException("Aluno com matrícula " + matricula + " não encontrado.");
@@ -145,7 +145,7 @@ public class NotificacaoService {
         }
     }
 
-    public List<NotificacaoModel> buscarPorAlunoMaisRecentes(Long matricula) {
+    public List<NotificacaoModel> buscarPorAlunoMaisRecentes(String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByAlunoMatriculaOrderByDataEnvioDesc(matricula);
     }

@@ -21,7 +21,7 @@ public class AvaliacaoService {
         return avaliacaoRepository.findByLivroId(livroId);
     }
 
-    public List<AvaliacaoModel> buscarPorAluno(Long matricula) {
+    public List<AvaliacaoModel> buscarPorAluno(String matricula) {
         return avaliacaoRepository.findByAlunoMatricula(matricula);
     }
 
@@ -30,7 +30,7 @@ public class AvaliacaoService {
     }
 
     public AvaliacaoModel criarAvaliacao(AvaliacaoModel avaliacao) {
-        Long matricula = avaliacao.getAluno().getMatricula();
+        String matricula = avaliacao.getAluno().getMatricula();
         Long livroId = avaliacao.getLivro().getId();
         boolean jaEmprestou = emprestimoRepository.existsByAlunoMatriculaAndLivroId(matricula, livroId);
         if (!jaEmprestou) {

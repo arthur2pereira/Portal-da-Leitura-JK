@@ -18,7 +18,7 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping("/aluno/{matricula}")
-    public ResponseEntity<List<ReservaModel>> buscarPorAluno(@PathVariable Long matricula) {
+    public ResponseEntity<List<ReservaModel>> buscarPorAluno(@PathVariable String matricula) {
         List<ReservaModel> reservas = reservaService.buscarPorAluno(matricula);
         return reservas.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(reservas);

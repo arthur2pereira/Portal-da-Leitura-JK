@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Long> {
     // Consultar empréstimos por aluno
-    List<EmprestimoModel> findByAlunoMatricula(Long matricula);
+    List<EmprestimoModel> findByAlunoMatricula(String matricula);
 
     // Consultar empréstimos por livro
     List<EmprestimoModel> findByLivroId(Long livroId);
@@ -22,6 +22,6 @@ public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Lon
     List<EmprestimoModel> findByBibliotecarioId(Long bibliotecarioId);
 
     // Se o aluno já pegou o livro tal livro ou não
-    boolean existsByAlunoMatriculaAndLivroId(Long matricula, Long livroId);
+    boolean existsByAlunoMatriculaAndLivroId(String matricula, Long livroId);
 
 }

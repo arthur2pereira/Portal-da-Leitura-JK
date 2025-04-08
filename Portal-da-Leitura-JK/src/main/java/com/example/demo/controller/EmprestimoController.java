@@ -17,7 +17,7 @@ public class EmprestimoController {
     private EmprestimoService emprestimoService;
 
     @GetMapping("/aluno/{matricula}")
-    public ResponseEntity<List<EmprestimoModel>> buscarPorAluno(@PathVariable Long matricula) {
+    public ResponseEntity<List<EmprestimoModel>> buscarPorAluno(@PathVariable String matricula) {
         List<EmprestimoModel> emprestimos = emprestimoService.buscarPorAluno(matricula);
         return emprestimos.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(emprestimos);

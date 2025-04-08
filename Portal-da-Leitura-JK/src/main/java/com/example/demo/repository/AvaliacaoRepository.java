@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long> {
     List<AvaliacaoModel> findByLivroId(Long livroId);
-    List<AvaliacaoModel> findByAlunoMatricula(Long matricula);
+    List<AvaliacaoModel> findByAlunoMatricula(String matricula);
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class NotificacaoDTO {
     private Long id;
-    private Long matricula;
+    private String matricula;
     private String mensagem;
     private LocalDate dataEnvio;
 }
