@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
   
         if (response.ok) {
-          alert('Login realizado com sucesso!');
+          const usuario = await response.json();
+
+          localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+          
+          alert(`Bem-vindo(a), ${usuario.nome}!`);
           window.location.href = 'menuprincipal.html';
         } else {
           alert('Matrícula ou senha inválida.');
