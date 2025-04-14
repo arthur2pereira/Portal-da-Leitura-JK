@@ -23,24 +23,22 @@ public class EmprestimoController {
                 : ResponseEntity.ok(emprestimos);
     }
 
-    // Endpoint pro ALUNO renovar (só 1x)
-    @PutMapping("/{id}/renovar")
+    @PutMapping("/{emprestimoId}/renovar")
     public ResponseEntity<String> renovarEmprestimoAluno(
-            @PathVariable Long id,
+            @PathVariable Long emprestimoId,
             @RequestParam String matricula
     ) {
-        emprestimoService.renovarEmprestimoPorAluno(id, matricula);
+        emprestimoService.renovarEmprestimoPorAluno(emprestimoId, matricula);
         return ResponseEntity.ok("Empréstimo renovado com sucesso por mais 7 dias.");
     }
 
-    // Endpoint pro BIBLIOTECÁRIO renovar manualmente
-    @PutMapping("/{id}/renovar-admin")
+    @PutMapping("/{emprestimoId}/renovar-admin")
     public ResponseEntity<String> renovarEmprestimoBibliotecario(
-            @PathVariable Long id,
+            @PathVariable Long emprestimoId,
             @RequestParam int dias,
             @RequestParam String emailBibliotecario
     ) {
-        emprestimoService.renovarEmprestimoPorBibliotecario(id, dias, emailBibliotecario);
+        emprestimoService.renovarEmprestimoPorBibliotecario(emprestimoId, dias, emailBibliotecario);
         return ResponseEntity.ok("Prazo do empréstimo prorrogado pelo bibliotecário.");
     }
 

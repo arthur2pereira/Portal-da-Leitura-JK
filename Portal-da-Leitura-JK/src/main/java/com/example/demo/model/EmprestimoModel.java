@@ -5,39 +5,39 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.time.LocalDate;
 
-@Entity // Tabela de empréstimos
-@Data // Lombok cuida dos getters, setters e tal
-@NoArgsConstructor // Construtor vazio
-@AllArgsConstructor // Construtor com tudo
-@Table(name = "emprestimos") // Nome da tabela no banco
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "emprestimos")
 public class EmprestimoModel {
 
-    @Id // id do empréstimo
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto incrementa
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long emprestimoId;
 
-    @ManyToOne(optional = false) // aluno que fez o empréstimo
-    @JoinColumn(name = "aluno_id", referencedColumnName = "matricula") // usa a matrícula como referência
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "matricula_aluno", referencedColumnName = "matricula")
     private AlunoModel aluno;
 
-    @ManyToOne(optional = false) // livro que foi emprestado
-    @JoinColumn(name = "livro_id") // coluna de referência no banco
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "livro_id")
     private LivroModel livro;
 
-    @ManyToOne(optional = false) // bibliotecário que fez o processo
-    @JoinColumn(name = "id_bibliotecario", nullable = false) // FK do bibliotecário
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "bibliotecario_id", nullable = false)
     private BibliotecarioModel bibliotecario;
 
-    @NotNull // data em que pegou o livro
+    @NotNull
     private LocalDate dataEmprestimo;
 
-    @NotNull // data que precisa devolver
+    @NotNull
     private LocalDate dataVencimento;
 
-    // pode ser null se ainda não devolveu
     private LocalDate dataDevolucao;
 
-    //  contar as renovações
     private int renovacoes = 0;
 
+    private String status;
 }
+

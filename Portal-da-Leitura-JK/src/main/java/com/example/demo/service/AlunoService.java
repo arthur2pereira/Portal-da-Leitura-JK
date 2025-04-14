@@ -38,7 +38,6 @@ public class AlunoService {
                 dto.getNome(),
                 dto.getEmail(),
                 dto.getSenha(),
-                dto.getDataNascimento(),
                 dto.getStatus().equalsIgnoreCase("Ativo")
         );
         return alunoRepository.save(aluno);
@@ -50,7 +49,6 @@ public class AlunoService {
                 aluno.getNome(),
                 aluno.getEmail(),
                 aluno.getSenha(),
-                aluno.getDataNascimento(),
                 aluno.getStatus() ? "Ativo" : "Inativo"
         );
     }

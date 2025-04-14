@@ -44,26 +44,20 @@ public class NotificacaoService {
         return notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
     }
 
-    // Buscar por tipo e matrícula
     public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByTipoAndAlunoMatricula(tipo, matricula);
     }
 
-    // Buscar notificações recentes
-    public List<NotificacaoModel> buscarAposDataPorAluno(LocalDate data, String matricula) {
-        validarAlunoExistente(matricula);
-        return notificacaoRepository.findByDataEnvioAfterAndAlunoMatricula(data, matricula);
-    }
 
     // Buscar por ID
-    public Optional<NotificacaoModel> buscarPorId(Long id) {
-        return notificacaoRepository.findById(id);
+    public Optional<NotificacaoModel> buscarPorLivroId(Long livroId) {
+        return notificacaoRepository.findById(livroId);
     }
 
     // Marcar como lida
-    public NotificacaoModel marcarComoLida(Long id) {
-        NotificacaoModel notificacao = notificacaoRepository.findById(id)
+    public NotificacaoModel marcarComoLida(Long livroId) {
+        NotificacaoModel notificacao = notificacaoRepository.findById(livroId)
                 .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
         notificacao.setLida(true);
         return notificacaoRepository.save(notificacao);
@@ -73,10 +67,6 @@ public class NotificacaoService {
     public NotificacaoModel salvar(NotificacaoModel notificacao) {
         validarNotificacao(notificacao);
         validarAlunoExistente(notificacao.getAluno().getMatricula());
-
-        if (notificacao.getDataEnvio() == null) {
-            notificacao.setDataEnvio(LocalDate.now());
-        }
 
         NotificacaoModel salva = notificacaoRepository.save(notificacao);
 
@@ -91,11 +81,11 @@ public class NotificacaoService {
     }
 
     // Deletar notificação
-    public void deletar(Long id) {
-        if (!notificacaoRepository.existsById(id)) {
-            throw new IllegalArgumentException("Notificação com ID " + id + " não existe.");
+    public void deletar(Long notificacaoId) {
+        if (!notificacaoRepository.existsById(notificacaoId)) {
+            throw new IllegalArgumentException("Notificação com ID " + notificacaoId + " não existe.");
         }
-        notificacaoRepository.deleteById(id);
+        notificacaoRepository.deleteById(notificacaoId);
     }
 
     // ========= MÉTODOS PRIVADOS ========= //
@@ -138,16 +128,8 @@ public class NotificacaoService {
     }
 
     private void verificarPenalidade(NotificacaoModel notificacao) {
-        if ("atraso".equalsIgnoreCase(notificacao.getTipo())) {
+        if ("ALERTA".equals(notificacao.getTipo())) {
             System.out.println("Aplicar penalidade para matrícula: " + notificacao.getAluno().getMatricula());
-            // Chamar serviço de penalidade aqui se tiver
-            // penalidadeService.aplicarPenalidade(notificacao.getAluno(), tipo, diasBloqueio);
         }
     }
-
-    public List<NotificacaoModel> buscarPorAlunoMaisRecentes(String matricula) {
-        validarAlunoExistente(matricula);
-        return notificacaoRepository.findByAlunoMatriculaOrderByDataEnvioDesc(matricula);
-    }
-
 }

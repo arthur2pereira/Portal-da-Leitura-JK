@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,7 +15,7 @@ public class AlunoModel {
     @Id
     @NotBlank
     @Pattern(regexp = "\\d{13}", message = "A matrícula deve conter exatamente 13 dígitos numéricos.")
-    @Column(length = 13, unique = true) // garante unicidade e define tamanho fixo no banco
+    @Column(length = 13, unique = true)
     private String matricula;
 
     @NotBlank(message = "O nome é obrigatório.")
@@ -30,11 +29,8 @@ public class AlunoModel {
 
     @NotBlank(message = "A senha é obrigatória.")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
-    @JsonIgnore // ignora a senha no JSON de retorno (segurança)
+    @JsonIgnore
     private String senha;
-
-    @Past(message = "A data de nascimento deve estar no passado.")
-    private LocalDate dataNascimento;
 
     private Boolean status = true; // ativo por padrão
 }

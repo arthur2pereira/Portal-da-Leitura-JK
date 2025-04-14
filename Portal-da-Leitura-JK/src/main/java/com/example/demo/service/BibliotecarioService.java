@@ -21,7 +21,7 @@ public class BibliotecarioService {
         return bibliotecarioRepository.save(bibliotecario);
     }
 
-    public Optional<BibliotecarioModel> buscarPorId(Long id) {
-        return bibliotecarioRepository.findById(id);
+    public Optional<BibliotecarioModel> buscarPorBiliotecarioId(Long bibliotecarioId) {
+        return bibliotecarioRepository.findById(bibliotecarioId);
     }
 }

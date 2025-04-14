@@ -28,7 +28,6 @@ public class AlunoController {
                 a.getNome(),
                 a.getEmail(),
                 a.getSenha(),
-                a.getDataNascimento(),
                 a.getStatus() ? "Ativo" : "Inativo"
         ))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
@@ -43,7 +42,6 @@ public class AlunoController {
                 a.getNome(),
                 a.getEmail(),
                 a.getSenha(),
-                a.getDataNascimento(),
                 a.getStatus() ? "Ativo" : "Inativo"
         )).toList();
 
@@ -76,7 +74,6 @@ public class AlunoController {
                     aluno.getNome(),
                     aluno.getEmail(),
                     aluno.getSenha(),
-                    aluno.getDataNascimento(),
                     aluno.getStatus() ? "Ativo" : "Inativo"
             );
             return ResponseEntity.ok(dto);

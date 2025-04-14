@@ -34,7 +34,7 @@ public class LivroService {
         return livroRepository.save(livro);
     }
 
-    public Optional<LivroModel> buscarPorId(Long id) {
-        return livroRepository.findById(id);
+    public Optional<LivroModel> buscarPorLivroId(Long livroId) {
+        return livroRepository.findByLivroId(livroId);
     }
 }

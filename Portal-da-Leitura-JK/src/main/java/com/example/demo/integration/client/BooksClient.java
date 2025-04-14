@@ -3,6 +3,7 @@ package com.example.demo.integration.client;
 import com.example.demo.integration.dto.BooksDTO;
 import com.example.demo.integration.exception.BooksException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 public class BooksClient {
     private static final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
+    @GetMapping("/buscar")
     public List<BooksDTO> buscarLivros(String query) {
         RestTemplate restTemplate = new RestTemplate();
         String url = GOOGLE_BOOKS_API_URL + query;

@@ -10,8 +10,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificacaoDTO {
-    private Long id;
+    private Long NotificacaoId;
     private String matricula;
     private String mensagem;
+    private String tipo;
     private LocalDate dataEnvio;
+    private Boolean lida;
 }

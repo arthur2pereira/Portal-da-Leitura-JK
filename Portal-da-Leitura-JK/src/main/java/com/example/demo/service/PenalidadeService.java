@@ -18,8 +18,9 @@ public class PenalidadeService {
     }
 
     public List<PenalidadeModel> buscarPorTipo(String tipo) {
-        return penalidadeRepository.findByTipo(tipo);
+        return penalidadeRepository.findByTipoIgnoreCase(tipo);
     }
+
 
     public PenalidadeModel salvar(PenalidadeModel penalidade) {
         return penalidadeRepository.save(penalidade);

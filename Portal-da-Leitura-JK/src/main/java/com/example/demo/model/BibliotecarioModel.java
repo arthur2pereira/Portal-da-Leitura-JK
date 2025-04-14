@@ -1,30 +1,30 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*; // Adicionado para validações
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
-@Data // Gera automaticamente getters, setters, toString, equals e hashCode
-@NoArgsConstructor // Gera construtor sem argumentos
-@AllArgsConstructor // Gera construtor com todos os campos
-@Table(name = "bibliotecarios") // Mapeia para a tabela "bibliotecarios"
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "bibliotecarios")
 public class BibliotecarioModel {
 
-    @Id // Define o campo como chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto incremento
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bibliotecarioId;
 
-    @NotBlank // Não pode ser nulo ou vazio
-    @Size(max = 100) // Nome com no máximo 100 caracteres
+    @NotBlank
+    @Size(max = 100)
     private String nome;
 
     @NotBlank
-    @Email // Validação de e-mail
+    @Email
     @Size(max = 100)
     private String email;
 
     @NotBlank
-    @Size(min = 6) // Pelo menos 6 caracteres na senha
+    @Size(min = 6)
     private String senha;
 }

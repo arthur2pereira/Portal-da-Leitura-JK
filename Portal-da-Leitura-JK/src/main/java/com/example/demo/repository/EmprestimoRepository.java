@@ -9,19 +9,11 @@ import java.util.List;
 
 @Repository
 public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Long> {
-    // Consultar empréstimos por aluno
-    List<EmprestimoModel> findByAlunoMatricula(String matricula);
 
-    // Consultar empréstimos por livro
-    List<EmprestimoModel> findByLivroId(Long livroId);
-
-    // Consultar empréstimos atrasados
+    List<EmprestimoModel> findByAluno_Matricula(String matricula);
+    List<EmprestimoModel> findByLivro_LivroId(Long livroId);
     List<EmprestimoModel> findByDataVencimentoBeforeAndDataDevolucaoIsNull(LocalDate data);
-
-    // Qual Bibliotecario aceitou tal emprestimo
-    List<EmprestimoModel> findByBibliotecarioId(Long bibliotecarioId);
-
-    // Se o aluno já pegou o livro tal livro ou não
-    boolean existsByAlunoMatriculaAndLivroId(String matricula, Long livroId);
+    List<EmprestimoModel> findByBibliotecario_BibliotecarioId(Long bibliotecarioId);
+    boolean existsByAlunoMatriculaAndLivro_LivroId(String matricula, Long livroId);
 
 }

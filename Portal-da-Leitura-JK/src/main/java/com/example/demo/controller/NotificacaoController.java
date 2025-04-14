@@ -16,56 +16,33 @@ public class NotificacaoController {
     @Autowired
     private NotificacaoService notificacaoService;
 
-    // Endpoint para buscar notificações por matrícula
     @GetMapping("/aluno/{matricula}")
     public ResponseEntity<List<NotificacaoModel>> buscarPorAluno(@PathVariable String matricula) {
         try {
             List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAluno(matricula);
-            // Verifica se as notificações estão vazias
             if (notificacoes.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notificacoes);
             }
             return ResponseEntity.ok(notificacoes);
         } catch (IllegalArgumentException e) {
-            // Retorna BAD REQUEST se a matrícula for inválida
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
-            // Para casos não tratados, retorna INTERNAL SERVER ERROR
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // Endpoint para salvar uma nova notificação
     @PostMapping
     public ResponseEntity<NotificacaoModel> salvar(@RequestBody NotificacaoModel notificacao) {
         try {
-            // Salvando a notificação
             NotificacaoModel novaNotificacao = notificacaoService.salvar(notificacao);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaNotificacao);
         } catch (IllegalArgumentException e) {
-            // Caso faltem dados obrigatórios, retorna BAD REQUEST
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
-            // Para falhas não tratadas, retorna INTERNAL SERVER ERROR
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // Endpoint para buscar notificações mais recentes de um aluno
-    @GetMapping("/aluno/{matricula}/recentes")
-    public ResponseEntity<List<NotificacaoModel>> buscarMaisRecentes(@PathVariable String matricula) {
-        try {
-            List<NotificacaoModel> notificacoes = notificacaoService.buscarPorAlunoMaisRecentes(matricula);
-            if (notificacoes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notificacoes);
-            }
-            return ResponseEntity.ok(notificacoes);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @GetMapping("/aluno/{matricula}/nao-lidas")
     public ResponseEntity<List<NotificacaoModel>> buscarNaoLidas(@PathVariable String matricula) {

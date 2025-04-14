@@ -13,15 +13,17 @@ public class ReservaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reservaId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "matricula_aluno", referencedColumnName = "matricula")
     private AlunoModel aluno;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "livro_id")
     private LivroModel livro;
 
-    private String status;
+    private Boolean status = true;
 
     private LocalDate dataReserva;
 

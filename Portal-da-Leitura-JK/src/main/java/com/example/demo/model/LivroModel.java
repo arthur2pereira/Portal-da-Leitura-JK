@@ -13,32 +13,31 @@ public class LivroModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "livro_id")
+    private Long livroId;
 
     @NotBlank
     @Size(max = 150)
-    private String titulo; // nome do livro não pode vir vazio
+    private String titulo;
 
     @NotBlank
     @Size(max = 100)
-    private String autor; // quem escreveu a obra, também obrigatório
+    private String autor;
 
     @NotBlank
     @Size(max = 50)
-    private String genero; // tipo "ficção", "romance", etc.
+    private String genero;
 
-    // Curso da escola relacionado ao livro, tipo "Informática", mas pode ser nulo
     @Size(max = 100)
     private String curso;
 
-    @Min(1500) // só pra garantir que ninguém coloque o ano 1300
-    @Max(2100) // não vai dar pra publicar livro de 3000
+    @Min(1500)
+    @Max(2100)
     private Integer anoPublicacao;
 
-    // Descrição grandona do livro, tipo sinopse, por isso é TEXT
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @Min(0) // quantidade não pode ser negativa
-    private Integer quantidade = 1; // por padrão tem 1 exemplar
+    @Min(0)
+    private Integer quantidade = 1;
 }

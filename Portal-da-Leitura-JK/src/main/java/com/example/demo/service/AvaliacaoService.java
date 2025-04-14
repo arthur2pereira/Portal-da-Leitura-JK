@@ -18,11 +18,11 @@ public class AvaliacaoService {
     private EmprestimoRepository emprestimoRepository;
 
     public List<AvaliacaoModel> buscarPorLivro(Long livroId) {
-        return avaliacaoRepository.findByLivroId(livroId);
+        return avaliacaoRepository.findByLivro_LivroId(livroId);
     }
 
     public List<AvaliacaoModel> buscarPorAluno(String matricula) {
-        return avaliacaoRepository.findByAlunoMatricula(matricula);
+        return avaliacaoRepository.findByAluno_Matricula(matricula);
     }
 
     public AvaliacaoModel salvar(AvaliacaoModel avaliacao) {
@@ -31,8 +31,8 @@ public class AvaliacaoService {
 
     public AvaliacaoModel criarAvaliacao(AvaliacaoModel avaliacao) {
         String matricula = avaliacao.getAluno().getMatricula();
-        Long livroId = avaliacao.getLivro().getId();
-        boolean jaEmprestou = emprestimoRepository.existsByAlunoMatriculaAndLivroId(matricula, livroId);
+        Long livroId = avaliacao.getLivro().getLivroId();
+        boolean jaEmprestou = emprestimoRepository.existsByAlunoMatriculaAndLivro_LivroId(matricula, livroId);
         if (!jaEmprestou) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você só pode avaliar livros que já pegou emprestado.");
         }

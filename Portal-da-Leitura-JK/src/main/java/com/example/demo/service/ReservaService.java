@@ -20,15 +20,15 @@ public class ReservaService {
     }
 
     public List<ReservaModel> buscarPorLivro(Long livroId) {
-        return reservaRepository.findByLivroId(livroId);
+        return reservaRepository.findByLivroLivroId(livroId);
     }
 
-    public List<ReservaModel> buscarReservasNaoRetiradas(String status, LocalDate data) {
-        return reservaRepository.findByStatusAndDataVencimentoBefore(status, data);
+    public List<ReservaModel> buscarReservasNaoRetiradas(boolean status, LocalDate dataVencimento) {
+        return reservaRepository.findByStatusAndDataVencimentoBefore(status, dataVencimento);
     }
 
     public Optional<ReservaModel> buscarPorAlunoELivro(String matricula, Long livroId) {
-        return reservaRepository.findByAlunoMatriculaAndLivroId(matricula, livroId);
+        return reservaRepository.findByAlunoMatriculaAndLivroLivroId(matricula, livroId);
     }
 
     public ReservaModel salvar(ReservaModel reserva) {
