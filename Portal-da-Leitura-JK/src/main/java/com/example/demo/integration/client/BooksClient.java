@@ -41,11 +41,10 @@ public class BooksClient {
             String descricao = (String) volumeInfo.getOrDefault("description", "Sem descrição disponível");
             String dataPublicacao = (String) volumeInfo.get("publishedDate");
             Integer anoPublicacao = (dataPublicacao != null && dataPublicacao.length() >= 4) ? Integer.parseInt(dataPublicacao.substring(0, 4)) : null;
-
-            // Cursos predefinidos
             String curso = definirCurso(genero);
+            String editora = (String) volumeInfo.get("Publishing house");
 
-            BooksDTO livroDTO = new BooksDTO(null, titulo, autor, genero, descricao, anoPublicacao, curso,null);
+            BooksDTO livroDTO = new BooksDTO(null, titulo, autor, genero, descricao, anoPublicacao, curso, editora,null);
             livros.add(livroDTO);
         }
 

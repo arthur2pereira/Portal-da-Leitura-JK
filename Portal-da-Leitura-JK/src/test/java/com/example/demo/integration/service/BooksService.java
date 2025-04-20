@@ -25,7 +25,7 @@ public class BooksService {
     public List<LivroModel> salvarLivros(List<BooksDTO> livrosDTO) {
         List<LivroModel> livros = livrosDTO.stream()
                 .map(dto -> new LivroModel(null, dto.getTitulo(), dto.getAutor(), dto.getGenero(), dto.getDescricao(),
-                        dto.getAnoPublicacao(), dto.getCurso(), dto.getQuantidade()))
+                        dto.getEditora(),dto.getAnoPublicacao(), dto.getCurso(), dto.getQuantidade()))
                 .collect(Collectors.toList());
 
         return livroRepository.saveAll(livros);

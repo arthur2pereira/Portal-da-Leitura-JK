@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface AlunoRepository extends JpaRepository<AlunoModel, String> {
 
     List<AlunoModel> findByNomeContainingIgnoreCase(String nome);
+
     Optional<AlunoModel> findByMatricula(String matricula);
+
     boolean existsByMatricula(String matricula);
 }
 

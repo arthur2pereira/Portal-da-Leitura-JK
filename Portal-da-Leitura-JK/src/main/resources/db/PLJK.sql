@@ -58,7 +58,8 @@
 		status VARCHAR(50),
 		CONSTRAINT fk_aluno_emprestimo FOREIGN KEY (matricula_aluno) REFERENCES alunos(matricula),
 		CONSTRAINT fk_livro_emprestimo FOREIGN KEY (livro_id) REFERENCES livros(livro_id),
-		CONSTRAINT fk_bibliotecario_emprestimo FOREIGN KEY (bibliotecario_id) REFERENCES bibliotecarios(bibliotecario_id)
+		CONSTRAINT fk_bibliotecario_emprestimo FOREIGN KEY (bibliotecario_id) REFERENCES bibliotecarios(bibliotecario_id),
+		CONSTRAINT uq_aluno_emprestimo UNIQUE (matricula_aluno) 
 	);
 
 	-- Tabela para Avaliações

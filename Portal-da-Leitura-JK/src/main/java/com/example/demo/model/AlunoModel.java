@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -10,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "alunos")
+@Getter
+@Setter
 public class AlunoModel {
 
     @Id
@@ -29,8 +32,9 @@ public class AlunoModel {
 
     @NotBlank(message = "A senha é obrigatória.")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
+
 
     private Boolean status = true; // ativo por padrão
 }

@@ -30,9 +30,45 @@ public class LivroController {
                 : ResponseEntity.ok(livros);
     }
 
+    @GetMapping("/curso/{curso}")
+    public ResponseEntity<List<LivroModel>> buscarPorCurso(@PathVariable String curso) {
+        List<LivroModel> livros = livroService.buscarPorCurso(curso);
+        return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                : ResponseEntity.ok(livros);
+    }
+
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<List<LivroModel>> buscarPorGenero(@PathVariable String genero) {
+        List<LivroModel> livros = livroService.buscarPorGenero(genero);
+        return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                : ResponseEntity.ok(livros);
+    }
+
+    @GetMapping("/editora/{editora}")
+    public ResponseEntity<List<LivroModel>> buscarPorEditora(@PathVariable String editora) {
+        List<LivroModel> livros = livroService.buscarPorEditora(editora);
+        return livros.isEmpty()
+                ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                : ResponseEntity.ok(livros);
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<LivroModel>> filtrarLivros(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String autor,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) String editora,
+            @RequestParam(required = false) String curso) {
+
+        List<LivroModel> livros = livroService.filtrarLivros(titulo, autor, genero, editora, curso);
+        return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                : ResponseEntity.ok(livros);
+    }
+
     @PostMapping
     public ResponseEntity<LivroModel> salvar(@RequestBody LivroModel livro) {
         LivroModel novoLivro = livroService.salvar(livro);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoLivro);
     }
+
 }

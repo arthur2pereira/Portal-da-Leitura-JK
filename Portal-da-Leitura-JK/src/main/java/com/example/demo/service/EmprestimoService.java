@@ -18,15 +18,15 @@ public class EmprestimoService {
     private BibliotecarioRepository bibliotecarioRepository;
 
     public List<EmprestimoModel> buscarPorAluno(String matricula) {
-        return emprestimoRepository.findByAluno_Matricula(matricula);
+        return emprestimoRepository.findByAlunoMatricula(matricula);
     }
 
     public List<EmprestimoModel> buscarPorLivro(Long livroId) {
-        return emprestimoRepository.findByLivro_LivroId(livroId);
+        return emprestimoRepository.findByLivroLivroId(livroId);
     }
 
     public List<EmprestimoModel> buscarPorBibliotecario(Long bibliotecarioId) {
-        return emprestimoRepository.findByBibliotecario_BibliotecarioId(bibliotecarioId);
+        return emprestimoRepository.findByBibliotecarioBibliotecarioId(bibliotecarioId);
     }
 
     public List<EmprestimoModel> buscarEmprestimosAtrasados(LocalDate data) {

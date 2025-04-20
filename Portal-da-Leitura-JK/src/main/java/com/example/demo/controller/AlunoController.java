@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AlunoDTO;
-import com.example.demo.dto.LoginDTO;
+import com.example.demo.dto.EmprestimoDTO;
+import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.AlunoModel;
 import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,21 @@ public class AlunoController {
     @GetMapping("/{matricula}")
     public ResponseEntity<AlunoDTO> buscarPorMatricula(@PathVariable String matricula) {
         Optional<AlunoModel> aluno = alunoService.buscarPorMatricula(matricula);
-        return aluno.map(a -> ResponseEntity.ok(new AlunoDTO(
-                a.getMatricula(),
-                a.getNome(),
-                a.getEmail(),
-                a.getSenha(),
-                a.getStatus() ? "Ativo" : "Inativo"
-        ))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return aluno.map(a -> ResponseEntity.ok(alunoService.converterParaDTO(a)))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/{matricula}/emprestimos")
+    public ResponseEntity<List<EmprestimoDTO>> visualizarEmprestimos(@PathVariable String matricula) {
+        List<EmprestimoDTO> emprestimos = alunoService.listarEmprestimos(matricula);
+        if (emprestimos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(emprestimos);
+    }
+
+    @GetMapping("/{matricula}/reservas")
+    public ResponseEntity<ReservaDTO> visualizarReserva(@PathVariable String matricula) {
+        Optional<ReservaDTO> reserva = alunoService.buscarReservaAtiva(matricula);
+        return reserva.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 
     @GetMapping("/nome/{nome}")
@@ -42,12 +51,13 @@ public class AlunoController {
                 a.getNome(),
                 a.getEmail(),
                 a.getSenha(),
-                a.getStatus() ? "Ativo" : "Inativo"
+                a.getStatus()
         )).toList();
 
         return ResponseEntity.ok(dtos);
     }
-    @PostMapping
+
+    @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@Valid @RequestBody AlunoDTO dto) {
         if (alunoService.alunoExiste(dto.getMatricula())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -60,11 +70,14 @@ public class AlunoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    @PostMapping("/autenticar")
+    public ResponseEntity<?> autenticar(@RequestBody AlunoModel alunoLogin) {
+        System.out.println("Matricula recebida: " + alunoLogin.getMatricula());  // Debug
+        System.out.println("Senha recebida: " + alunoLogin.getSenha());  // Debug
+
         Optional<AlunoModel> alunoOpt = alunoService.autenticar(
-                loginDTO.getMatricula(),
-                loginDTO.getSenha()
+                alunoLogin.getMatricula(),
+                alunoLogin.getSenha()
         );
 
         if (alunoOpt.isPresent()) {
@@ -74,12 +87,11 @@ public class AlunoController {
                     aluno.getNome(),
                     aluno.getEmail(),
                     aluno.getSenha(),
-                    aluno.getStatus() ? "Ativo" : "Inativo"
+                    aluno.getStatus()
             );
             return ResponseEntity.ok(dto);
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula ou senha inválida");
     }
-
 }

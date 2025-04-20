@@ -15,6 +15,7 @@ public class LivroDTO {
     private String autor;
     private String genero;
     private String curso;
+    private String editora;
     private int anoPublicacao;
     private String descricao;
     private Integer quantidade;

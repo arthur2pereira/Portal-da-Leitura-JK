@@ -28,6 +28,7 @@ public class BooksService {
                         dto.getAutor(),
                         dto.getGenero(),
                         dto.getDescricao(),
+                        dto.getEditora(),
                         dto.getAnoPublicacao(),
                         dto.getCurso(),
                         dto.getQuantidade()
@@ -46,6 +47,7 @@ public class BooksService {
                         dto.getAutor(),
                         dto.getGenero(),
                         dto.getDescricao(),
+                        dto.getEditora(),
                         dto.getAnoPublicacao(),
                         dto.getCurso(),
                         dto.getQuantidade()
@@ -63,6 +65,7 @@ public class BooksService {
                         dto.getAutor(),
                         dto.getGenero(),
                         dto.getDescricao(),
+                        dto.getEditora(),
                         dto.getAnoPublicacao(),
                         dto.getCurso(),
                         dto.getQuantidade()

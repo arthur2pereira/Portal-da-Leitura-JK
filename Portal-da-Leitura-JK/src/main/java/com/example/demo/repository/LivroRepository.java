@@ -12,6 +12,8 @@ public interface LivroRepository extends JpaRepository<LivroModel, Long> {
     List<LivroModel> findByAutorContainingIgnoreCase(String autor);
     List<LivroModel> findByGeneroContainingIgnoreCase(String genero);
     List<LivroModel> findByCursoContainingIgnoreCase(String curso);
+    List<LivroModel> findByEditoraContainingIgnoreCase(String editora);
+    List<LivroModel> findByTituloContainingIgnoreCaseAndAutorContainingIgnoreCaseAndGeneroContainingIgnoreCaseAndEditoraContainingIgnoreCaseAndCursoContainingIgnoreCase(
+            String titulo, String autor, String genero, String editora, String curso);
     boolean existsByTituloAndAutor(String titulo, String autor);
-    Optional<LivroModel> findByLivroId(Long livroId);
 }

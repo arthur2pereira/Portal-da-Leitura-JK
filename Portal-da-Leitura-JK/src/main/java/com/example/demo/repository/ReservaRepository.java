@@ -14,4 +14,5 @@ public interface ReservaRepository extends JpaRepository<ReservaModel, Long> {
     List<ReservaModel> findByLivroLivroId(Long livroId);
     List<ReservaModel> findByStatusAndDataVencimentoBefore(boolean status, LocalDate dataVencimeto);
     Optional<ReservaModel> findByAlunoMatriculaAndLivroLivroId(String matricula, Long livroId);
+    Optional<ReservaModel> findReservaAtivaByAlunoMatricula(String matricula);
 }

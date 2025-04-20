@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   
       try {
-        const response = await fetch('http://localhost:8081/alunos/login', {
+        const response = await fetch('http://localhost:8081/alunos/autenticar', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ matricula, senha })
