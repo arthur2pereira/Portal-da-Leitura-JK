@@ -18,7 +18,7 @@ public class AvaliacaoService {
     private EmprestimoRepository emprestimoRepository;
 
     public List<AvaliacaoModel> buscarPorLivro(Long livroId) {
-        return avaliacaoRepository.findByLivro_LivroId(livroId);
+        return avaliacaoRepository.findByLivroLivroId(livroId);
     }
 
     public List<AvaliacaoModel> buscarPorAluno(String matricula) {

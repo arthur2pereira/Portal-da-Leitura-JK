@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LivroDTO;
+import com.example.demo.model.AvaliacaoModel;
 import com.example.demo.model.LivroModel;
 import com.example.demo.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,13 @@ public class LivroController {
     @Autowired
     private LivroService livroService;
 
+
+    @GetMapping("/tudo")
+    public List<LivroModel> listarLivros() {
+        return livroService.listarLivros();
+    }
+
+
     @GetMapping("/titulo/{titulo}")
     public ResponseEntity<List<LivroModel>> buscarPorTitulo(@PathVariable String titulo) {
         List<LivroModel> livros = livroService.buscarPorTitulo(titulo);
@@ -30,16 +39,16 @@ public class LivroController {
                 : ResponseEntity.ok(livros);
     }
 
-    @GetMapping("/curso/{curso}")
-    public ResponseEntity<List<LivroModel>> buscarPorCurso(@PathVariable String curso) {
-        List<LivroModel> livros = livroService.buscarPorCurso(curso);
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<List<LivroModel>> buscarPorGenero(@PathVariable String genero) {
+        List<LivroModel> livros = livroService.buscarPorGenero(genero);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(livros);
     }
 
-    @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<LivroModel>> buscarPorGenero(@PathVariable String genero) {
-        List<LivroModel> livros = livroService.buscarPorGenero(genero);
+    @GetMapping("/curso/{curso}")
+    public ResponseEntity<List<LivroModel>> buscarPorCurso(@PathVariable String curso) {
+        List<LivroModel> livros = livroService.buscarPorCurso(curso);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
                 : ResponseEntity.ok(livros);
     }
@@ -52,8 +61,26 @@ public class LivroController {
                 : ResponseEntity.ok(livros);
     }
 
-    @GetMapping("/filtrar")
-    public ResponseEntity<List<LivroModel>> filtrarLivros(
+
+    @PostMapping("/livros")
+    public ResponseEntity<LivroModel> salvarLivro(@RequestBody LivroDTO livroDTO) {
+        LivroModel livroModel = new LivroModel();
+        livroModel.setTitulo(livroDTO.getTitulo());
+        livroModel.setAutor(livroDTO.getAutor());
+        livroModel.setGenero(livroDTO.getGenero());
+        livroModel.setCurso(livroDTO.getCurso());
+        livroModel.setEditora(livroDTO.getEditora());
+        livroModel.setAnoPublicacao(livroDTO.getAnoPublicacao());
+        livroModel.setDescricao(livroDTO.getDescricao());
+        livroModel.setQuantidade(livroDTO.getQuantidade());
+
+        LivroModel livroSalvo = livroService.salvar(livroModel);
+
+        return new ResponseEntity<>(livroSalvo, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<LivroDTO>> buscarLivros(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) String autor,
             @RequestParam(required = false) String genero,
@@ -61,14 +88,79 @@ public class LivroController {
             @RequestParam(required = false) String curso) {
 
         List<LivroModel> livros = livroService.filtrarLivros(titulo, autor, genero, editora, curso);
-        return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+        List<LivroDTO> livrosDTO = livros.stream().map(livro -> new LivroDTO(
+                livro.getLivroId(),
+                livro.getTitulo(),
+                livro.getAutor(),
+                livro.getGenero(),
+                livro.getCurso(),
+                livro.getEditora(),
+                livro.getAnoPublicacao(),
+                livro.getDescricao(),
+                livro.getQuantidade()
+        )).toList();
+
+        return ResponseEntity.ok(livrosDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<LivroModel> salvar(@RequestBody LivroModel livro) {
-        LivroModel novoLivro = livroService.salvar(livro);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoLivro);
+    @GetMapping("/disponivel/{livroId}")
+    public ResponseEntity<Boolean> verificarDisponibilidade(@PathVariable Long livroId) {
+        boolean disponivel = livroService.estaDisponivel(livroId);
+        return ResponseEntity.ok(disponivel);
     }
 
+    @PatchMapping("/estoque/reduzir/{livroId}")
+    public ResponseEntity<LivroDTO> reduzirEstoque(@PathVariable Long livroId) {
+        LivroModel livroAtualizado = livroService.reduzirEstoque(livroId);
+        if (livroAtualizado != null) {
+            LivroDTO livroDTO = new LivroDTO(
+                    livroAtualizado.getLivroId(),
+                    livroAtualizado.getTitulo(),
+                    livroAtualizado.getAutor(),
+                    livroAtualizado.getGenero(),
+                    livroAtualizado.getCurso(),
+                    livroAtualizado.getEditora(),
+                    livroAtualizado.getAnoPublicacao(),
+                    livroAtualizado.getDescricao(),
+                    livroAtualizado.getQuantidade()
+            );
+            return ResponseEntity.ok(livroDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/estoque/aumentar/{livroId}/{quantidade}")
+    public ResponseEntity<LivroDTO> aumentarEstoque(@PathVariable Long livroId, @PathVariable Integer quantidade) {
+        LivroModel livroAtualizado = livroService.aumentarEstoque(livroId, quantidade);
+        if (livroAtualizado != null) {
+            LivroDTO livroDTO = new LivroDTO(
+                    livroAtualizado.getLivroId(),
+                    livroAtualizado.getTitulo(),
+                    livroAtualizado.getAutor(),
+                    livroAtualizado.getGenero(),
+                    livroAtualizado.getCurso(),
+                    livroAtualizado.getEditora(),
+                    livroAtualizado.getAnoPublicacao(),
+                    livroAtualizado.getDescricao(),
+                    livroAtualizado.getQuantidade()
+            );
+            return ResponseEntity.ok(livroDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // Endpoint para obter média das avaliações de um livro
+    @GetMapping("/avaliacao/media/{livroId}")
+    public ResponseEntity<Double> obterMediaAvaliacao(@PathVariable Long livroId) {
+        double media = livroService.getMediaAvaliacao(livroId);
+        return ResponseEntity.ok(media);
+    }
+
+
+    // Endpoint para listar as avaliações de um livro
+    @GetMapping("/avaliacoes/{livroId}")
+    public ResponseEntity<List<AvaliacaoModel>> listarAvaliacoes(@PathVariable Long livroId) {
+        List<AvaliacaoModel> avaliacoes = livroService.listarAvaliacoes(livroId);
+        return ResponseEntity.ok(avaliacoes);
+    }
 }
