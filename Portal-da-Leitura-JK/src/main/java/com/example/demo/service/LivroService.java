@@ -43,10 +43,6 @@ public class LivroService {
         return livroRepository.findByEditoraContainingIgnoreCase(editora);
     }
 
-    public LivroModel salvar(LivroModel livro) {
-        return livroRepository.save(livro);
-    }
-
     public List<LivroModel> filtrarLivros(String titulo, String autor, String genero, String editora, String curso) {
         titulo = (titulo == null) ? "" : titulo;
         autor = (autor == null) ? "" : autor;

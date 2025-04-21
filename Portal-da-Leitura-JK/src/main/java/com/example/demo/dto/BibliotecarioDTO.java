@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BibliotecarioDTO {
-    private Long bibliotecario_id;
+    private Long bibliotecarioId;
     private String nome;
     private String email;
     private String senha;

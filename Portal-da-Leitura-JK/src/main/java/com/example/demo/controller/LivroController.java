@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.AvaliacaoModel;
 import com.example.demo.model.LivroModel;
+import com.example.demo.service.BibliotecarioService;
 import com.example.demo.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ public class LivroController {
     @Autowired
     private LivroService livroService;
 
+    @Autowired
+    private BibliotecarioService bibliotecarioService;
 
     @GetMapping("/tudo")
     public List<LivroModel> listarLivros() {
@@ -74,7 +77,7 @@ public class LivroController {
         livroModel.setDescricao(livroDTO.getDescricao());
         livroModel.setQuantidade(livroDTO.getQuantidade());
 
-        LivroModel livroSalvo = livroService.salvar(livroModel);
+        LivroModel livroSalvo = bibliotecarioService.salvar(livroModel);
 
         return new ResponseEntity<>(livroSalvo, HttpStatus.CREATED);
     }
