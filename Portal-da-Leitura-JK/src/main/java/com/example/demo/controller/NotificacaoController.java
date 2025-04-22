@@ -31,19 +31,6 @@ public class NotificacaoController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<NotificacaoModel> salvar(@RequestBody NotificacaoModel notificacao) {
-        try {
-            NotificacaoModel novaNotificacao = notificacaoService.salvar(notificacao);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaNotificacao);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-
     @GetMapping("/aluno/{matricula}/nao-lidas")
     public ResponseEntity<List<NotificacaoModel>> buscarNaoLidas(@PathVariable String matricula) {
         try {
@@ -56,5 +43,27 @@ public class NotificacaoController {
         }
     }
 
+    @PutMapping("/{notificacaoId}/marcar-como-lida")
+    public ResponseEntity<NotificacaoModel> marcarComoLida(@PathVariable Long notificacaoId) {
+        try {
+            NotificacaoModel notificada = notificacaoService.marcarComoLida(notificacaoId);
+            return ResponseEntity.ok(notificada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
+    @GetMapping("/{notificacaoId}/esta-lida")
+    public ResponseEntity<Boolean> estaLida(@PathVariable Long notificacaoId) {
+        try {
+            boolean lida = notificacaoService.estaLida(notificacaoId);
+            return ResponseEntity.ok(lida);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

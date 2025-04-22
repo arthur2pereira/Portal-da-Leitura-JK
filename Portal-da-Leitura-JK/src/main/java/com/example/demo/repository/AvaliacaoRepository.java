@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long> {
     List<AvaliacaoModel> findByLivroLivroId(Long livroId);
-    List<AvaliacaoModel> findByAluno_Matricula(String matricula);
+    List<AvaliacaoModel> findByAlunoMatricula(String matricula);
     Optional<AvaliacaoModel> findByAvaliacaoId(Long avalicacaoId);
 }

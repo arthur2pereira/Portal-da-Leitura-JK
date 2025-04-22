@@ -22,11 +22,11 @@ public class PenalidadeModel {
 
     private String motivo;
 
-    private Integer diasBloqueio;
+    @Column(name = "tipo_penalidade", nullable = false)
+    private String tipo;
 
     @PastOrPresent(message = "A data de aplicação não pode ser no futuro.")
     private LocalDate dataAplicacao;
 
-    @Column(name = "tipo_penalidade", nullable = false)
-    private String tipo;
+    private Integer diasBloqueio;
 }

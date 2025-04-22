@@ -10,9 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AvaliacaoDTO {
-    private Long avaliacao_id;
+    private Long avaliacaoId;
     private String matricula;
-    private Long livro_id;
+    private Long livroId;
     private int nota;
     private String comentario;
 }

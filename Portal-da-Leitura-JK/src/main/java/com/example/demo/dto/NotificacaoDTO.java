@@ -14,6 +14,5 @@ public class NotificacaoDTO {
     private String matricula;
     private String mensagem;
     private String tipo;
-    private LocalDate dataEnvio;
-    private Boolean lida;
+    private boolean lida;
 }

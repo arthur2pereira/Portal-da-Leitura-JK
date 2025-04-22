@@ -26,5 +26,5 @@ public class NotificacaoModel {
 
     private String tipo;
 
-    private Boolean lida = false;
+    private boolean lida = false;
 }

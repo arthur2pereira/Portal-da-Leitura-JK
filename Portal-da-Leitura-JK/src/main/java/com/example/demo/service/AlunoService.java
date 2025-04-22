@@ -1,14 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.AlunoDTO;
-import com.example.demo.dto.EmprestimoDTO;
-import com.example.demo.dto.ReservaDTO;
-import com.example.demo.model.AlunoModel;
-import com.example.demo.model.EmprestimoModel;
-import com.example.demo.model.ReservaModel;
-import com.example.demo.repository.EmprestimoRepository;
-import com.example.demo.repository.ReservaRepository;
-import com.example.demo.repository.AlunoRepository;
+import com.example.demo.dto.*;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +21,49 @@ public class AlunoService {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Autowired
+    private PenalidadeRepository penalidadeRepository;
+
+    @Autowired
+    private NotificacaoRepository notificacaoRepository;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+
     public List<EmprestimoDTO> listarEmprestimos(String matricula) {
         List<EmprestimoModel> emprestimos = emprestimoRepository.findByAlunoMatricula(matricula);
         return emprestimos.stream().map(this::converterParaDTO).toList();
     }
 
-    // Busca uma reserva ativa de um aluno
+    public List<NotificacaoDTO> listarNotificacoes(String matricula) {
+        return notificacaoRepository.findByAlunoMatricula(matricula)
+                .stream()
+                .map(n -> new NotificacaoDTO(
+                        n.getNotificacaoId(),
+                        n.getAluno().getMatricula(),
+                        n.getMensagem(),
+                        n.getTipo(),
+                        n.isLida()
+                )).toList();
+    }
+
+    public List<AvaliacaoDTO> listarAvaliacoes(String matricula) {
+        return avaliacaoRepository.findByAlunoMatricula(matricula)
+                .stream()
+                .map(a -> new AvaliacaoDTO(
+                        a.getAvaliacaoId(),
+                        a.getAluno().getMatricula(),
+                        a.getLivro().getLivroId(),
+                        a.getNota(),
+                        a.getComentario()
+                )).toList();
+    }
+
+    public List<PenalidadeDTO> listarPenalidades(String matricula) {
+        List<PenalidadeModel> penalidades = penalidadeRepository.findByAlunoMatricula(matricula);
+        return penalidades.stream().map(this::converterParaDTO).toList();
+    }
+
     public Optional<ReservaDTO> buscarReservaAtiva(String matricula) {
         Optional<ReservaModel> reserva = reservaRepository.findReservaAtivaByAlunoMatricula(matricula);
         return reserva.map(this::converterParaDTO);
@@ -92,11 +123,14 @@ public class AlunoService {
     private EmprestimoDTO converterParaDTO(EmprestimoModel model) {
         return new EmprestimoDTO(
                 model.getEmprestimoId(),
+                model.getAluno().getMatricula(),
+                model.getLivro().getLivroId(),
+                model.getBibliotecario().getEmail(),
                 model.getDataEmprestimo(),
                 model.getDataVencimento(),
                 model.getDataDevolucao(),
-                model.getLivro().getTitulo(),
-                model.getAluno().getMatricula()
+                model.getRenovacoes(),
+                model.getStatus()
         );
     }
 
@@ -107,6 +141,17 @@ public class AlunoService {
                 model.getDataVencimento(),
                 model.getLivro().getTitulo(),
                 model.getAluno().getMatricula()
+        );
+    }
+
+    private PenalidadeDTO converterParaDTO(PenalidadeModel model) {
+        return new PenalidadeDTO(
+                model.getPenalidadeId(),
+                model.getAluno().getMatricula(),
+                model.getMotivo(),
+                model.getTipo(),
+                model.getDataAplicacao(),
+                model.getDiasBloqueio()
         );
     }
 }

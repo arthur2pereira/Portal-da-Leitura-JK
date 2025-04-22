@@ -1,82 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cadastro de Aluno - PLJK</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/cadastrar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
+    <style>
+         /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-  <!-- HEADER PADRÃO -->
-  <header class="bg-white shadow-sm py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-      <a href="#">
-        <img src="./imagens/logo.png" alt="Logo PLJK" width="150" height="50">
-      </a> 
-      <nav>
-        <ul class="nav">
-          <li class="nav-item"><a class="nav-link text-dark" href="menuprincipal.html">Início</a></li>
-          <li class="nav-item"><a class="nav-link text-dark" href="lugarlivros.html">Livros</a></li>
-          <li class="nav-item"><a class="nav-link text-dark" href="nossabiblioteca.html">Sobre</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(135deg, #1a936f, #114b5f);
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding-bottom: 60px;
+            color: #114b5f;
+        }
 
-  <!-- FORMULÁRIO -->
-  <div class="container form-container">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h1>Faça seu cadastro</h1>
-        <form id="formCadastro">
-          <div class="mb-3">
-            <label for="nomeEntrada" class="form-label">Nome Completo</label>
-            <input type="text" class="form-control" id="nomeEntrada" placeholder="Digite seu nome" required>
-          </div>
-          <div class="mb-3">
-            <label for="matriculaEntrada" class="form-label">Matrícula</label>
-            <input type="text" class="form-control" id="matriculaEntrada" placeholder="Digite sua matrícula" maxlength="13" pattern="\d{13}" required>
-          </div>
-          <div class="mb-3">
-            <label for="emailEntrada" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="emailEntrada" placeholder="seuemail@exemplo.com">
-          </div>
-          <div class="mb-3">
-            <label for="entradaSenha" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="entradaSenha" placeholder="6 a 8 caracteres" maxlength="8" pattern=".{6,8}" required>
-          </div>
-          <div class="mb-3">
-            <label for="nascimentoEntrada" class="form-label">Data de Nascimento</label>
-            <input type="date" class="form-control" id="nascimentoEntrada">
-          </div>
-          <button type="submit" class="btn btn-cadastrar w-100">Cadastrar</button>
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Estilização do formulário */
+        form {
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .linha {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .coluna-md-6, .coluna-12 {
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .campo-formulario-senha {
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px; 
+        }
+
+        .campo-formulario {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .botao {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #114b5f;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao:hover {
+            background-color: #1a936f;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            color: black;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+    <main>
+
+        <nav class="logo tela principal">
+            <a class="logo" href="">
+                <img src="../../../../../FRONT-END/imagens/logo.png" width="150" height="50" alt="Logo">
+            </a>
+        </nav>
+
+        <h1>Faça seu cadastro pra fazer parte dessa familia de leitores</h1> 
+
+        <form class="linha espaco-3">
+            <div class="coluna-md-6">
+                <label for="nomeEntrada" class="rotulo-formulario">Nome Completo</label>
+                <input type="text" class="campo-formulario" id="nomeEntrada" placeholder="Digite seu nome" required>
+            </div>
+            <div class="coluna-md-6">
+                <label for="matriculaEntrada" class="rotulo-formulario">Matrícula</label>
+                <input type="text" class="campo-formulario" id="matriculaEntrada" placeholder="Digite sua matrícula" pattern="\d{8}" maxlength="8" required>
+            </div>
+            <div class="coluna-md-6">
+              <label for="emailEntrada" class="rotulo-formulario">E-mail</label>
+              <input type="email" class="campo-formulario" id="emailEntrada" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="margem-3 linha">
+                <label for="entradaSenha" class="coluna-pequena-2 rotulo-formulario">Senha</label>
+                <input type="password" class="campo-formulario-senha" id="entradaSenha" pattern=".{4,8}" placeholder="4 a 8 caracteres" required>
+            </div>  
+            <div class="coluna-md-6">
+                <label for="nascimentoEntrada" class="rotulo-formulario">Data de Nascimento</label>
+                <input type="date" class="campo-formulario" id="nascimentoEntrada">
+              </div>
+            <div class="coluna-12">
+              <button type="submit" class="botao botao-primario">Entrar</button>
+            </div>
         </form>
-      </div>
-      <div class="col-md-6 text-center logo-col">
-        <img src="./imagens/logo.png" alt="Logo" class="img-fluid" style="max-height: 250px;">
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER PADRÃO -->
-  <footer class="footer mt-5 pt-4 pb-3 text-black">
-    <div class="container text-center">
-      <p class="mb-1">&copy; 2025 Portal da Leitura JK | ETEJK</p>
-      <p class="mb-2">Todos os direitos reservados.</p>
-      <div>
-        <a href="#" class="me-3">Termos de Uso</a>
-        <a href="#">Política de Privacidade</a>
-      </div>
-      <div class="mt-3">
-        <small>Desenvolvido com por alunos do ETEJK</small>
-      </div>
-    </div>
-  </footer>
-
-  <script src="../js/cadastrar.js"></script>
-
+        
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 ETEJK. Todos os direitos reservados.</p>
+                <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+            </div>
+        </footer> 
+    </main>
 </body>
 </html>

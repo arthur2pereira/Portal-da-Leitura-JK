@@ -1,9 +1,6 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +16,11 @@ public class EmprestimoDTO {
     private Long emprestimoId;
     private String matricula;
     private Long livroId;
-    private Long bibliotecarioId;
+    private String email;
     private LocalDate dataEmprestimo;
     private LocalDate dataVencimento;
     private LocalDate dataDevolucao;
+    private int renovacoes;
+    private String status;
 
-    public EmprestimoDTO(Long emprestimoId, @NotNull LocalDate dataEmprestimo, @NotNull LocalDate dataVencimento, LocalDate dataDevolucao, @NotBlank @Size(max = 150) String titulo, @NotBlank @Pattern(regexp = "\\d{13}", message = "A matrícula deve conter exatamente 13 dígitos numéricos.") String matricula) {
-
-    }
 }

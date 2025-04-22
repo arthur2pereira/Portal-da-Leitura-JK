@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class PenalidadeDTO {
     private Long penalidadeId;
     private String matricula;
+    private String motivo;
     private String tipo;
     private LocalDate dataAplicacao;
     private int diasBloqueio;

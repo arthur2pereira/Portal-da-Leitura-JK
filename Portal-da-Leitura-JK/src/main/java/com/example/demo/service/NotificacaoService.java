@@ -32,30 +32,16 @@ public class NotificacaoService {
     @Value("${sendgrid.from.email}")
     private String fromEmail;
 
-    // Buscar notificações por matrícula
     public List<NotificacaoModel> buscarPorAluno(String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByAlunoMatricula(matricula);
     }
 
-    // Buscar notificações não lidas
     public List<NotificacaoModel> buscarNaoLidasPorAluno(String matricula) {
         validarAlunoExistente(matricula);
         return notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
     }
 
-    public List<NotificacaoModel> buscarPorTipoEMatricula(String tipo, String matricula) {
-        validarAlunoExistente(matricula);
-        return notificacaoRepository.findByTipoAndAlunoMatricula(tipo, matricula);
-    }
-
-
-    // Buscar por ID
-    public Optional<NotificacaoModel> buscarPorLivroId(Long livroId) {
-        return notificacaoRepository.findById(livroId);
-    }
-
-    // Marcar como lida
     public NotificacaoModel marcarComoLida(Long livroId) {
         NotificacaoModel notificacao = notificacaoRepository.findById(livroId)
                 .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
@@ -63,7 +49,6 @@ public class NotificacaoService {
         return notificacaoRepository.save(notificacao);
     }
 
-    // Salvar e enviar
     public NotificacaoModel salvar(NotificacaoModel notificacao) {
         validarNotificacao(notificacao);
         validarAlunoExistente(notificacao.getAluno().getMatricula());
@@ -79,16 +64,6 @@ public class NotificacaoService {
         verificarPenalidade(salva);
         return salva;
     }
-
-    // Deletar notificação
-    public void deletar(Long notificacaoId) {
-        if (!notificacaoRepository.existsById(notificacaoId)) {
-            throw new IllegalArgumentException("Notificação com ID " + notificacaoId + " não existe.");
-        }
-        notificacaoRepository.deleteById(notificacaoId);
-    }
-
-    // ========= MÉTODOS PRIVADOS ========= //
 
     private void validarNotificacao(NotificacaoModel notificacao) {
         if (notificacao == null ||
@@ -131,5 +106,11 @@ public class NotificacaoService {
         if ("ALERTA".equals(notificacao.getTipo())) {
             System.out.println("Aplicar penalidade para matrícula: " + notificacao.getAluno().getMatricula());
         }
+    }
+
+    public boolean estaLida(Long notificacaoId) {
+        NotificacaoModel notificacao = notificacaoRepository.findByNotificacaoId(notificacaoId)
+                .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
+        return notificacao.isLida();
     }
 }

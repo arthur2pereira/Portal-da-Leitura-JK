@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AlunoDTO;
-import com.example.demo.dto.EmprestimoDTO;
-import com.example.demo.dto.ReservaDTO;
+import com.example.demo.dto.*;
 import com.example.demo.model.AlunoModel;
 import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,27 @@ public class AlunoController {
     public ResponseEntity<ReservaDTO> visualizarReserva(@PathVariable String matricula) {
         Optional<ReservaDTO> reserva = alunoService.buscarReservaAtiva(matricula);
         return reserva.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
+    }
+
+    @GetMapping("/{matricula}/penalidades")
+    public ResponseEntity<List<PenalidadeDTO>> visualizarPenalidades(@PathVariable String matricula) {
+        List<PenalidadeDTO> penalidades = alunoService.listarPenalidades(matricula);
+        if (penalidades.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(penalidades);
+    }
+
+    @GetMapping("/{matricula}/notificacoes")
+    public ResponseEntity<List<NotificacaoDTO>> visualizarNotificacoes(@PathVariable String matricula) {
+        List<NotificacaoDTO> notificacoes = alunoService.listarNotificacoes(matricula);
+        if (notificacoes.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(notificacoes);
+    }
+
+    @GetMapping("/{matricula}/avaliacoes")
+    public ResponseEntity<List<AvaliacaoDTO>> visualizarAvaliacoes(@PathVariable String matricula) {
+        List<AvaliacaoDTO> avaliacoes = alunoService.listarAvaliacoes(matricula);
+        if (avaliacoes.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(avaliacoes);
     }
 
     @GetMapping("/nome/{nome}")
