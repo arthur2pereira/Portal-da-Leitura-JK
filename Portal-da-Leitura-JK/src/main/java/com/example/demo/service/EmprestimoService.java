@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmprestimoService {
@@ -34,24 +35,17 @@ public class EmprestimoService {
     }
 
     public boolean estaVencido(Long emprestimoId) {
-        EmprestimoModel e = emprestimoRepository.findById(emprestimoId)
-                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado."));
-
-        return e.getDataDevolucao() == null && e.getDataVencimento().isBefore(LocalDate.now());
+        EmprestimoModel emprestimo = emprestimoRepository.findByEmprestimoId(emprestimoId).orElse(null);
+        return emprestimo != null && emprestimo.getDataDevolucao() == null && emprestimo.getDataVencimento()
+                                                .isBefore(LocalDate.now());
     }
 
-    public EmprestimoModel registrarEmprestimo(String matricula, Long livroId, String emailBibliotecario) {
-        AlunoModel aluno = alunoRepository.findByMatricula(matricula)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado."));
+    public EmprestimoModel registrarEmprestimo(EmprestimoDTO dto) {
+        AlunoModel aluno = alunoRepository.findByMatricula(dto.getMatricula()).orElseThrow();
+        LivroModel livro = livroRepository.findByLivroId(dto.getLivroId()).orElseThrow();
+        BibliotecarioModel bibliotecario = bibliotecarioRepository.findByBibliotecarioId(dto.getBibliotecarioId()).orElseThrow();
 
-        LivroModel livro = livroRepository.findById(livroId)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado."));
-
-        if (livro.getQuantidade() <= 0)
-            throw new RuntimeException("Livro indisponível.");
-
-        BibliotecarioModel bibliotecario = bibliotecarioRepository.findByEmail(emailBibliotecario)
-                .orElseThrow(() -> new RuntimeException("Bibliotecário não encontrado."));
+        if (livro.getQuantidade() <= 0) throw new RuntimeException("Livro indisponível.");
 
         EmprestimoModel emprestimo = new EmprestimoModel();
         emprestimo.setAluno(aluno);
@@ -64,14 +58,14 @@ public class EmprestimoService {
     }
 
     public void registrarDevolucao(Long emprestimoId) {
-        EmprestimoModel emprestimo = emprestimoRepository.findById(emprestimoId)
+        EmprestimoModel emprestimo = emprestimoRepository.findByEmprestimoId(emprestimoId)
                 .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado."));
         emprestimo.setDataDevolucao(LocalDate.now());
         emprestimoRepository.save(emprestimo);
     }
 
     public boolean renovarEmprestimoPorAluno(Long emprestimoId, String matriculaAluno) {
-        EmprestimoModel emprestimo = emprestimoRepository.findById(emprestimoId)
+        EmprestimoModel emprestimo = emprestimoRepository.findByEmprestimoId(emprestimoId)
                 .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
 
         if (!emprestimo.getAluno().getMatricula().equals(matriculaAluno)) {
@@ -90,15 +84,15 @@ public class EmprestimoService {
         return true;
     }
 
-    public void renovarEmprestimoPorBibliotecario(Long emprestimoId, int dias, String emailBibliotecario) {
-        EmprestimoModel emprestimo = emprestimoRepository.findById(emprestimoId)
+    public void renovarEmprestimoPorBibliotecario(Long emprestimoId, int dias, String bibliotecarioId) {
+        EmprestimoModel emprestimo = emprestimoRepository.findByEmprestimoId(emprestimoId)
                 .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
 
         if (emprestimo.getDataDevolucao() != null) {
             throw new RuntimeException("Esse empréstimo já foi finalizado");
         }
 
-        boolean autorizado = bibliotecarioRepository.existsByEmail(emailBibliotecario);
+        boolean autorizado = bibliotecarioRepository.existsByEmail(bibliotecarioId);
         if (!autorizado) {
             throw new RuntimeException("Bibliotecário não autorizado");
         }
@@ -108,27 +102,29 @@ public class EmprestimoService {
     }
 
     public int diasDeAtraso(Long emprestimoId) {
-        EmprestimoModel e = emprestimoRepository.findById(emprestimoId)
-                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado."));
-
-        if (e.getDataDevolucao() == null) return 0;
-
-        long dias = ChronoUnit.DAYS.between(e.getDataVencimento(), e.getDataDevolucao());
-        return dias > 0 ? (int) dias : 0;
+        EmprestimoModel emprestimo = emprestimoRepository.findByEmprestimoId(emprestimoId).orElseThrow();
+        if (emprestimo.getDataDevolucao() == null) return 0;
+        return (int) ChronoUnit.DAYS.between(emprestimo.getDataVencimento(), emprestimo.getDataDevolucao());
     }
 
-    public EmprestimoDTO converterParaDTO(EmprestimoModel model) {
+    public EmprestimoDTO converterParaDTO(EmprestimoModel emprestimo) {
         return new EmprestimoDTO(
-                model.getEmprestimoId(),
-                model.getAluno().getMatricula(),
-                model.getLivro().getLivroId(),
-                model.getBibliotecario().getEmail(),
-                model.getDataEmprestimo(),
-                model.getDataVencimento(),
-                model.getDataDevolucao(),
-                model.getRenovacoes(),
-                model.getStatus()
+                emprestimo.getEmprestimoId(),
+                emprestimo.getAluno().getMatricula(),
+                emprestimo.getLivro().getLivroId(),
+                emprestimo.getBibliotecario().getBibliotecarioId(),
+                emprestimo.getDataEmprestimo(),
+                emprestimo.getDataVencimento(),
+                emprestimo.getDataDevolucao(),
+                emprestimo.getRenovacoes(),
+                emprestimo.getStatus()
         );
+    }
+
+    public List<EmprestimoDTO> converterParaDTO(List<EmprestimoModel> emprestimos) {
+        return emprestimos.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
 }
 

@@ -41,7 +41,7 @@ public class ReservaService {
         Optional<AlunoModel> alunoOpt = alunoRepository.findByMatricula(matricula);
         if (alunoOpt.isEmpty()) throw new RuntimeException("Aluno não encontrado.");
 
-        Optional<LivroModel> livroOpt = livroRepository.findById(livroId);
+        Optional<LivroModel> livroOpt = livroRepository.findByLivroId(livroId);
         if (livroOpt.isEmpty()) throw new RuntimeException("Livro não encontrado.");
 
         LivroModel livro = livroOpt.get();
@@ -58,18 +58,31 @@ public class ReservaService {
 
 
     public void cancelarReserva(Long reservaId) {
-        ReservaModel reserva = reservaRepository.findById(reservaId)
+        ReservaModel reserva = reservaRepository.findByReservaId(reservaId)
                 .orElseThrow(() -> new RuntimeException("Reserva não encontrada."));
         reservaRepository.delete(reserva);
+    }
+
+    public String verificarValidade(Long reservaId) {
+        ReservaModel reserva = reservaRepository.findByReservaId(reservaId)
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada."));
+        LocalDate hoje = LocalDate.now();
+        if (hoje.isAfter(reserva.getDataVencimento())) {
+            return "Reserva vencida.";
+        } else {
+            long diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(hoje, reserva.getDataVencimento());
+            return "Reserva válida por mais " + diasRestantes + " dias.";
+        }
     }
 
     public ReservaDTO converterParaDTO(ReservaModel model) {
         return new ReservaDTO(
                 model.getReservaId(),
+                model.getAluno().getMatricula(),
+                model.getLivro().getLivroId(),
+                model.getStatus(),
                 model.getDataReserva(),
-                model.getDataVencimento(),
-                model.getLivro().getTitulo(),
-                model.getAluno().getMatricula()
+                model.getDataVencimento()
         );
     }
 }

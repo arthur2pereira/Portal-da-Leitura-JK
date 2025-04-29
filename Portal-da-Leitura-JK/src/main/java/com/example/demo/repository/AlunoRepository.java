@@ -14,6 +14,13 @@ public interface AlunoRepository extends JpaRepository<AlunoModel, String> {
 
     Optional<AlunoModel> findByMatricula(String matricula);
 
+    Optional<AlunoModel> findByEmail(String email);
+
     boolean existsByMatricula(String matricula);
+
+    void deleteByEmail(String email);
+
+    void deleteByMatricula(String matricula);
+
 }
 

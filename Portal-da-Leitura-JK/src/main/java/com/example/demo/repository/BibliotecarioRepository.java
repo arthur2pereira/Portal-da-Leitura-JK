@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface BibliotecarioRepository extends JpaRepository<BibliotecarioModel, Long> {
     Optional<BibliotecarioModel> findByEmail(String email);
+    Optional<BibliotecarioModel> findByBibliotecarioId (Long bibliotecarioId);
     boolean existsByEmail(String email);
 }
 

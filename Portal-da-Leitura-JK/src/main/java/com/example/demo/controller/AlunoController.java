@@ -6,6 +6,7 @@ import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -76,6 +77,13 @@ public class AlunoController {
         return ResponseEntity.ok(dtos);
     }
 
+    @DeleteMapping("/deletar")
+    public ResponseEntity<String> deletarMinhaConta(Authentication authentication) {
+        String matricula = authentication.getName();
+        alunoService.deletarAlunoPorMatricula(matricula);
+        return ResponseEntity.ok("Sua conta foi deletada com sucesso!");
+    }
+
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@Valid @RequestBody AlunoDTO dto) {
         if (alunoService.alunoExiste(dto.getMatricula())) {
@@ -83,19 +91,24 @@ public class AlunoController {
                     .body("Já existe um aluno com essa matrícula.");
         }
 
-        AlunoModel novoAluno = alunoService.salvarDTO(dto);
-        AlunoDTO resposta = alunoService.converterParaDTO(novoAluno);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+        try {
+            AlunoModel novoAluno = alunoService.salvarDTO(dto);
+            AlunoDTO resposta = alunoService.converterParaDTO(novoAluno);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao salvar aluno: " + e.getMessage());
+        }
     }
 
     @PostMapping("/autenticar")
     public ResponseEntity<?> autenticar(@RequestBody AlunoModel alunoLogin) {
-        System.out.println("Matricula recebida: " + alunoLogin.getMatricula());  // Debug
+        System.out.println("Matrícula/Email recebidos: " + alunoLogin.getMatricula() + " / " + alunoLogin.getEmail());  // Debug
         System.out.println("Senha recebida: " + alunoLogin.getSenha());  // Debug
 
         Optional<AlunoModel> alunoOpt = alunoService.autenticar(
                 alunoLogin.getMatricula(),
+                alunoLogin.getEmail(),
                 alunoLogin.getSenha()
         );
 
@@ -111,6 +124,6 @@ public class AlunoController {
             return ResponseEntity.ok(dto);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula ou senha inválida");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula, email ou senha inválida");
     }
 }

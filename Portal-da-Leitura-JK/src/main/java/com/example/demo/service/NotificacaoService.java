@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.model.AlunoModel;
-import com.example.demo.model.NotificacaoModel;
-import com.example.demo.repository.NotificacaoRepository;
-import com.example.demo.repository.AlunoRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.dto.*;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,26 +30,37 @@ public class NotificacaoService {
     @Value("${sendgrid.from.email}")
     private String fromEmail;
 
-    public List<NotificacaoModel> buscarPorAluno(String matricula) {
+    public List<NotificacaoDTO> buscarPorAluno(String matricula) {
         validarAlunoExistente(matricula);
-        return notificacaoRepository.findByAlunoMatricula(matricula);
+        List<NotificacaoModel> notificacoes = notificacaoRepository.findByAlunoMatricula(matricula);
+        return notificacaoModelDTO(notificacoes);
     }
 
-    public List<NotificacaoModel> buscarNaoLidasPorAluno(String matricula) {
+    public List<NotificacaoDTO> buscarNaoLidasPorAluno(String matricula) {
         validarAlunoExistente(matricula);
-        return notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
+        List<NotificacaoModel> notificacoes = notificacaoRepository.findByAlunoMatriculaAndLidaFalse(matricula);
+        return notificacaoModelDTO(notificacoes);
     }
 
-    public NotificacaoModel marcarComoLida(Long livroId) {
-        NotificacaoModel notificacao = notificacaoRepository.findById(livroId)
+    public NotificacaoDTO marcarComoLida(Long notificacaoId) {
+        NotificacaoModel notificacao = notificacaoRepository.findByNotificacaoId(notificacaoId)
                 .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
         notificacao.setLida(true);
-        return notificacaoRepository.save(notificacao);
+        notificacaoRepository.save(notificacao);
+        return converterParaDTO(notificacao);
     }
 
-    public NotificacaoModel salvar(NotificacaoModel notificacao) {
-        validarNotificacao(notificacao);
-        validarAlunoExistente(notificacao.getAluno().getMatricula());
+    public NotificacaoDTO salvar(NotificacaoDTO notificacaoRequest) {
+        validarNotificacao(notificacaoRequest);
+        validarAlunoExistente(notificacaoRequest.getMatricula());
+
+        AlunoModel aluno = alunoRepository.findByMatricula(notificacaoRequest.getMatricula())
+                .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
+
+        NotificacaoModel notificacao = new NotificacaoModel();
+        notificacao.setAluno(aluno);
+        notificacao.setTipo(notificacaoRequest.getTipo());
+        notificacao.setMensagem(notificacaoRequest.getMensagem());
 
         NotificacaoModel salva = notificacaoRepository.save(notificacao);
 
@@ -62,19 +71,19 @@ public class NotificacaoService {
         }
 
         verificarPenalidade(salva);
-        return salva;
+        return converterParaDTO(salva);
     }
 
-    private void validarNotificacao(NotificacaoModel notificacao) {
-        if (notificacao == null ||
-                notificacao.getAluno() == null ||
-                notificacao.getAluno().getMatricula() == null ||
-                notificacao.getTipo() == null ||
-                notificacao.getMensagem() == null ||
-                notificacao.getMensagem().isBlank()) {
+    private void validarNotificacao(NotificacaoDTO notificacaoRequest) {
+        if (notificacaoRequest == null ||
+                notificacaoRequest.getMatricula() == null ||
+                notificacaoRequest.getTipo() == null ||
+                notificacaoRequest.getMensagem() == null ||
+                notificacaoRequest.getMensagem().isBlank()) {
             throw new IllegalArgumentException("Campos obrigatórios da notificação não preenchidos.");
         }
     }
+
 
     private void validarAlunoExistente(String matricula) {
         boolean existe = alunoRepository.existsByMatricula(matricula);
@@ -112,5 +121,21 @@ public class NotificacaoService {
         NotificacaoModel notificacao = notificacaoRepository.findByNotificacaoId(notificacaoId)
                 .orElseThrow(() -> new IllegalArgumentException("Notificação não encontrada."));
         return notificacao.isLida();
+    }
+
+    private NotificacaoDTO converterParaDTO(NotificacaoModel notificacao) {
+        return new NotificacaoDTO(
+                notificacao.getNotificacaoId(),
+                notificacao.getAluno().getMatricula(),
+                notificacao.getMensagem(),
+                notificacao.getTipo(),
+                notificacao.isLida()
+        );
+    }
+
+    private List<NotificacaoDTO> notificacaoModelDTO(List<NotificacaoModel> notificacoes) {
+        return notificacoes.stream()
+                .map(this::converterParaDTO)
+                .toList();
     }
 }

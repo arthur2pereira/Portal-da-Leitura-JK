@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/reservas")
@@ -25,10 +26,15 @@ public class ReservaController {
     private ReservaRepository reservaRepository;
 
     @GetMapping("/aluno/{matricula}")
-    public ResponseEntity<List<ReservaModel>> buscarPorAluno(@PathVariable String matricula) {
+    public ResponseEntity<List<ReservaDTO>> buscarPorAluno(@PathVariable String matricula) {
         List<ReservaModel> reservas = reservaService.buscarPorAluno(matricula);
-        return reservas.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(reservas);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        List<ReservaDTO> reservasDTO = reservas.stream()
+                .map(reservaService::converterParaDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(reservasDTO);
     }
 
     @GetMapping("/{reservaId}/ativa")
@@ -44,7 +50,8 @@ public class ReservaController {
     public ResponseEntity<?> criarReserva(@RequestBody ReservaDTO dto) {
         try {
             ReservaModel reserva = reservaService.criarReserva(dto.getMatricula(), dto.getLivroId());
-            return ResponseEntity.status(HttpStatus.CREATED).body(reservaService.converterParaDTO(reserva));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(reservaService.converterParaDTO(reserva));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

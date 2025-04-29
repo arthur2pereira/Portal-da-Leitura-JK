@@ -22,64 +22,57 @@ public class LivroController {
     @Autowired
     private BibliotecarioService bibliotecarioService;
 
-    @GetMapping("/tudo")
-    public List<LivroModel> listarLivros() {
-        return livroService.listarLivros();
+    @GetMapping("/listar")
+    public ResponseEntity<List<LivroDTO>> listarLivros() {
+        List<LivroModel> livros = livroService.listarLivros();
+        if (livros.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        List<LivroDTO> livrosDTO = livros.stream().map(LivroDTO::new).toList();
+        return ResponseEntity.ok(livrosDTO);
     }
 
-
     @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<List<LivroModel>> buscarPorTitulo(@PathVariable String titulo) {
+    public ResponseEntity<List<LivroDTO>> buscarPorTitulo(@PathVariable String titulo) {
         List<LivroModel> livros = livroService.buscarPorTitulo(titulo);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+                : ResponseEntity.ok(livros.stream().map(LivroDTO::new).toList());
     }
 
     @GetMapping("/autor/{autor}")
-    public ResponseEntity<List<LivroModel>> buscarPorAutor(@PathVariable String autor) {
+    public ResponseEntity<List<LivroDTO>> buscarPorAutor(@PathVariable String autor) {
         List<LivroModel> livros = livroService.buscarPorAutor(autor);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+                : ResponseEntity.ok(livros.stream().map(LivroDTO::new).toList());
     }
 
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<LivroModel>> buscarPorGenero(@PathVariable String genero) {
+    public ResponseEntity<List<LivroDTO>> buscarPorGenero(@PathVariable String genero) {
         List<LivroModel> livros = livroService.buscarPorGenero(genero);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+                : ResponseEntity.ok(livros.stream().map(LivroDTO::new).toList());
     }
 
     @GetMapping("/curso/{curso}")
-    public ResponseEntity<List<LivroModel>> buscarPorCurso(@PathVariable String curso) {
+    public ResponseEntity<List<LivroDTO>> buscarPorCurso(@PathVariable String curso) {
         List<LivroModel> livros = livroService.buscarPorCurso(curso);
         return livros.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+                : ResponseEntity.ok(livros.stream().map(LivroDTO::new).toList());
     }
 
     @GetMapping("/editora/{editora}")
-    public ResponseEntity<List<LivroModel>> buscarPorEditora(@PathVariable String editora) {
+    public ResponseEntity<List<LivroDTO>> buscarPorEditora(@PathVariable String editora) {
         List<LivroModel> livros = livroService.buscarPorEditora(editora);
         return livros.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-                : ResponseEntity.ok(livros);
+                : ResponseEntity.ok(livros.stream().map(LivroDTO::new).toList());
     }
 
 
     @PostMapping("/livros")
-    public ResponseEntity<LivroModel> salvarLivro(@RequestBody LivroDTO livroDTO) {
-        LivroModel livroModel = new LivroModel();
-        livroModel.setTitulo(livroDTO.getTitulo());
-        livroModel.setAutor(livroDTO.getAutor());
-        livroModel.setGenero(livroDTO.getGenero());
-        livroModel.setCurso(livroDTO.getCurso());
-        livroModel.setEditora(livroDTO.getEditora());
-        livroModel.setAnoPublicacao(livroDTO.getAnoPublicacao());
-        livroModel.setDescricao(livroDTO.getDescricao());
-        livroModel.setQuantidade(livroDTO.getQuantidade());
-
-        LivroModel livroSalvo = bibliotecarioService.salvar(livroModel);
-
-        return new ResponseEntity<>(livroSalvo, HttpStatus.CREATED);
+    public ResponseEntity<LivroDTO> salvarLivro(@RequestBody LivroDTO livroDTO) {
+        LivroModel livroModel = livroService.salvarLivro(livroDTO);
+        return new ResponseEntity<>(new LivroDTO(livroModel), HttpStatus.CREATED);
     }
 
     @GetMapping("/buscar")
@@ -152,15 +145,12 @@ public class LivroController {
         return ResponseEntity.notFound().build();
     }
 
-    // Endpoint para obter média das avaliações de um livro
     @GetMapping("/avaliacao/media/{livroId}")
     public ResponseEntity<Double> obterMediaAvaliacao(@PathVariable Long livroId) {
         double media = livroService.getMediaAvaliacao(livroId);
         return ResponseEntity.ok(media);
     }
 
-
-    // Endpoint para listar as avaliações de um livro
     @GetMapping("/avaliacoes/{livroId}")
     public ResponseEntity<List<AvaliacaoModel>> listarAvaliacoes(@PathVariable Long livroId) {
         List<AvaliacaoModel> avaliacoes = livroService.listarAvaliacoes(livroId);

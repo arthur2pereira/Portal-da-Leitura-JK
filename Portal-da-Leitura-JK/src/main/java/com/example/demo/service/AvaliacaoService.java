@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AvaliacaoDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,31 @@ public class AvaliacaoService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
-    public AvaliacaoModel criarAvaliacao(String matricula, Long livroId, Integer nota, String comentario) {
+    public AvaliacaoDTO criarAvaliacao(String matricula, Long livroId, Integer nota, String comentario) {
         if (nota == null) {
-            throw new RuntimeException("Nota é obrigatória.");
+            System.out.println("Erro: Nota é obrigatória.");
+            return null;
         }
 
         Optional<AlunoModel> alunoOpt = alunoRepository.findByMatricula(matricula);
-        Optional<LivroModel> livroOpt = livroRepository.findById(livroId);
+        if (alunoOpt.isEmpty()) {
+            System.out.println("Erro: Aluno não encontrado.");
+            return null;
+        }
+        AlunoModel aluno = alunoOpt.get();
 
-        if (alunoOpt.isEmpty()) throw new RuntimeException("Aluno não encontrado.");
-        if (livroOpt.isEmpty()) throw new RuntimeException("Livro não encontrado.");
+        Optional<LivroModel> livroOpt = livroRepository.findByLivroId(livroId);
+        if (livroOpt.isEmpty()) {
+            System.out.println("Erro: Livro não encontrado.");
+            return null;
+        }
+        LivroModel livro = livroOpt.get();
+
+        boolean emprestou = emprestimoRepository.existsByAlunoAndLivro(aluno, livro);
+        if (!emprestou) {
+            System.out.println("Erro: Você só pode avaliar livros que já pegou emprestado.");
+            return null;
+        }
 
         AvaliacaoModel avaliacao = new AvaliacaoModel();
         avaliacao.setAluno(alunoOpt.get());
@@ -40,35 +56,50 @@ public class AvaliacaoService {
         avaliacao.setNota(nota);
         avaliacao.setComentario(comentario);
 
-        return avaliacaoRepository.save(avaliacao);
+        AvaliacaoModel salvo = avaliacaoRepository.save(avaliacao);
+        return converterParaDTO(salvo);
     }
 
-    public void editarComentario(Long avaliacaoId, String novoComentario) {
-        AvaliacaoModel avaliacao = avaliacaoRepository.findById(avaliacaoId)
+    public String editarComentario(Long avaliacaoId, String novoComentario) {
+        AvaliacaoModel avaliacao = avaliacaoRepository.findByAvaliacaoId(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada."));
+
         avaliacao.setComentario(novoComentario);
         avaliacaoRepository.save(avaliacao);
+        return "Comentário atualizado.";
     }
 
-    public void alterarNota(Long avaliacaoId, Integer novaNota) {
-        if (novaNota == null) throw new RuntimeException("Nota não pode ser nula.");
-        AvaliacaoModel avaliacao = avaliacaoRepository.findById(avaliacaoId)
+    public String alterarNota(Long avaliacaoId, Integer novaNota) {
+        if (novaNota == null) {
+            throw new IllegalArgumentException("Nota não pode ser nula.");
+        }
+
+        AvaliacaoModel avaliacao = avaliacaoRepository.findByAvaliacaoId(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada."));
+
         avaliacao.setNota(novaNota);
         avaliacaoRepository.save(avaliacao);
+        return "Nota atualizada.";
     }
 
-    public void excluirAvaliacao(Long avaliacaoId) {
-        AvaliacaoModel avaliacao = avaliacaoRepository.findById(avaliacaoId)
+    public boolean excluirAvaliacao(Long avaliacaoId) {
+        AvaliacaoModel avaliacao = avaliacaoRepository.findByAvaliacaoId(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada."));
         avaliacaoRepository.delete(avaliacao);
+        return true;
     }
 
     public List<AvaliacaoModel> buscarPorLivro(Long livroId) {
         return avaliacaoRepository.findByLivroLivroId(livroId);
     }
 
-    public List<AvaliacaoModel> buscarPorAluno(String matricula) {
-        return avaliacaoRepository.findByAlunoMatricula(matricula);
+    private AvaliacaoDTO converterParaDTO(AvaliacaoModel model) {
+        return new AvaliacaoDTO(
+                model.getAvaliacaoId(),
+                model.getAluno().getMatricula(),
+                model.getLivro().getLivroId(),
+                model.getNota(),
+                model.getComentario()
+        );
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AvaliacaoDTO;
 import com.example.demo.model.*;
 import com.example.demo.service.*;
 import com.example.demo.repository.*;
@@ -38,64 +39,41 @@ public class AvaliacaoController {
     }
 
     @PostMapping("/criar")
-    public AvaliacaoModel criarAvaliacao(String matricula, Long livroId, Integer nota, String comentario) {
-        if (nota == null) {
-            throw new RuntimeException("Nota é obrigatória.");
+    public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@RequestBody AvaliacaoDTO dto) {
+        AvaliacaoDTO nova = avaliacaoService.criarAvaliacao(
+                dto.getMatricula(),
+                dto.getLivroId(),
+                dto.getNota(),
+                dto.getComentario()
+        );
+
+        if (nova == null) {
+            return ResponseEntity.badRequest().body(null);
         }
 
-        Optional<AlunoModel> alunoOpt = alunoRepository.findByMatricula(matricula);
-        Optional<LivroModel> livroOpt = livroRepository.findById(livroId);
-
-        if (alunoOpt.isEmpty()) throw new RuntimeException("Aluno não encontrado.");
-        if (livroOpt.isEmpty()) throw new RuntimeException("Livro não encontrado.");
-
-        AlunoModel aluno = alunoOpt.get();
-        LivroModel livro = livroOpt.get();
-
-        boolean emprestou = emprestimoRepository.existsByAlunoAndLivro(aluno, livro);
-        if (!emprestou) {
-            throw new RuntimeException("Você só pode avaliar livros que já pegou emprestado.");
-        }
-
-        AvaliacaoModel avaliacao = new AvaliacaoModel();
-        avaliacao.setAluno(aluno);
-        avaliacao.setLivro(livro);
-        avaliacao.setNota(nota);
-        avaliacao.setComentario(comentario);
-
-        return avaliacaoRepository.save(avaliacao);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nova);
     }
-
 
     @PutMapping("/{avaliacaoId}/editar-comentario")
     public ResponseEntity<?> editarComentario(@PathVariable Long avaliacaoId,
                                               @RequestParam String novoComentario) {
-        try {
-            avaliacaoService.editarComentario(avaliacaoId, novoComentario);
-            return ResponseEntity.ok("Comentário atualizado.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        String response = avaliacaoService.editarComentario(avaliacaoId, novoComentario);
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                                .body("Erro ao atualizar comentário.");
     }
 
     @PutMapping("/{avaliacaoId}/alterar-nota")
     public ResponseEntity<?> alterarNota(@PathVariable Long avaliacaoId,
                                          @RequestParam Integer novaNota) {
-        try {
-            avaliacaoService.alterarNota(avaliacaoId, novaNota);
-            return ResponseEntity.ok("Nota atualizada.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        String response = avaliacaoService.alterarNota(avaliacaoId, novaNota);
+        return response != null ? ResponseEntity.ok(response) : ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                                .body("Erro ao atualizar nota.");
     }
 
     @DeleteMapping("/{avaliacaoId}/excluir")
     public ResponseEntity<?> excluir(@PathVariable Long avaliacaoId) {
-        try {
-            avaliacaoService.excluirAvaliacao(avaliacaoId);
-            return ResponseEntity.ok("Avaliação excluída.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        boolean isDeleted = avaliacaoService.excluirAvaliacao(avaliacaoId);
+        return isDeleted ? ResponseEntity.ok("Avaliação excluída.") : ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                            .body("Erro ao excluir avaliação.");
     }
 }

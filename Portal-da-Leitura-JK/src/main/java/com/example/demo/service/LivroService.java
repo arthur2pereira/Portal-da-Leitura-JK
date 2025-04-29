@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.AvaliacaoModel;
 import com.example.demo.model.LivroModel;
 import com.example.demo.repository.AvaliacaoRepository;
@@ -43,6 +44,43 @@ public class LivroService {
         return livroRepository.findByEditoraContainingIgnoreCase(editora);
     }
 
+    public LivroModel salvarLivro(LivroDTO livroDTO) {
+        LivroModel livro = new LivroModel();
+        livro.setTitulo(livroDTO.getTitulo());
+        livro.setAutor(livroDTO.getAutor());
+        livro.setGenero(livroDTO.getGenero());
+        livro.setCurso(livroDTO.getCurso());
+        livro.setEditora(livroDTO.getEditora());
+        livro.setAnoPublicacao(livroDTO.getAnoPublicacao());
+        livro.setDescricao(livroDTO.getDescricao());
+        livro.setQuantidade(livroDTO.getQuantidade());
+        return livroRepository.save(livro);
+    }
+
+    public LivroModel atualizarLivro(Long livroId, LivroDTO livroDTO) {
+        if (!livroRepository.existsById(livroId)) {
+            return null;
+        }
+        LivroModel livro = livroRepository.findByLivroId(livroId).orElseThrow();
+        livro.setTitulo(livroDTO.getTitulo());
+        livro.setAutor(livroDTO.getAutor());
+        livro.setGenero(livroDTO.getGenero());
+        livro.setCurso(livroDTO.getCurso());
+        livro.setEditora(livroDTO.getEditora());
+        livro.setAnoPublicacao(livroDTO.getAnoPublicacao());
+        livro.setDescricao(livroDTO.getDescricao());
+        livro.setQuantidade(livroDTO.getQuantidade());
+        return livroRepository.save(livro);
+    }
+
+    public boolean deletarLivro(Long livroId) {
+        if (!livroRepository.existsById(livroId)) {
+            return false;
+        }
+        livroRepository.deleteById(livroId);
+        return true;
+    }
+
     public List<LivroModel> filtrarLivros(String titulo, String autor, String genero, String editora, String curso) {
         titulo = (titulo == null) ? "" : titulo;
         autor = (autor == null) ? "" : autor;
@@ -55,18 +93,20 @@ public class LivroService {
     }
 
     public boolean estaDisponivel(Long livroId) {
-        Optional<LivroModel> livro = livroRepository.findById(livroId);
+        Optional<LivroModel> livro = livroRepository.findByLivroId(livroId);
         return livro.isPresent() && livro.get().getQuantidade() > 0;
     }
 
     public LivroModel reduzirEstoque(Long livroId) {
-        Optional<LivroModel> livro = livroRepository.findById(livroId);
+        Optional<LivroModel> livro = livroRepository.findByLivroId(livroId);
         if (livro.isPresent() && livro.get().getQuantidade() > 0) {
             LivroModel livroAtualizado = livro.get();
-            livroAtualizado.setQuantidade(livroAtualizado.getQuantidade() - 1);
-            return livroRepository.save(livroAtualizado);
+            if (livroAtualizado.getQuantidade() > 0) {
+                livroAtualizado.setQuantidade(livroAtualizado.getQuantidade() - 1);
+                return livroRepository.save(livroAtualizado);
+            }
         }
-        return null;
+        throw new IllegalStateException("Estoque insuficiente");
     }
 
     public LivroModel aumentarEstoque(Long livroId, Integer quantidade) {

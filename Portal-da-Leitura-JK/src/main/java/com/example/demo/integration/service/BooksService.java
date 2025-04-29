@@ -56,22 +56,4 @@ public class BooksService {
 
         return livroRepository.saveAll(novosLivros);
     }
-
-    public List<LivroModel> salvarLivros(List<BooksDTO> livrosDTO) {
-        List<LivroModel> livros = livrosDTO.stream()
-                .map(dto -> new LivroModel(
-                        null,
-                        dto.getTitulo(),
-                        dto.getAutor(),
-                        dto.getGenero(),
-                        dto.getDescricao(),
-                        dto.getEditora(),
-                        dto.getAnoPublicacao(),
-                        dto.getCurso(),
-                        dto.getQuantidade()
-                ))
-                .collect(Collectors.toList());
-
-        return livroRepository.saveAll(livros);
-    }
 }

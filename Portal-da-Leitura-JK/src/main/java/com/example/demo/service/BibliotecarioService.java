@@ -1,15 +1,20 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.*;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BibliotecarioService {
+public class BibliotecarioService  implements UserDetailsService {
 
     @Autowired
     private LivroRepository livroRepository;
@@ -29,67 +34,94 @@ public class BibliotecarioService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
-    public LivroModel salvar(LivroModel livro) {
-        return livroRepository.save(livro);
+    public LivroDTO salvarLivro(LivroDTO livroDTO) {
+        LivroModel livro = new LivroModel();
+        return new LivroDTO(livroRepository.save(livro));
     }
 
-    public Optional<LivroModel> buscarPorlivroId(Long livroId) {
-        return livroRepository.findByLivroId(livroId);
+    public LivroDTO editarLivro (Long livroId, LivroDTO livroDTO) {
+        LivroModel livro = livroRepository.findById(livroId)
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+
+        livro.setTitulo(livroDTO.getTitulo());
+        livro.setAutor(livroDTO.getAutor());
+        livro.setGenero(livroDTO.getGenero());
+        livro.setCurso(livroDTO.getCurso());
+        livro.setEditora(livroDTO.getEditora());
+        livro.setAnoPublicacao(livroDTO.getAnoPublicacao());
+        livro.setDescricao(livroDTO.getDescricao());
+        livro.setQuantidade(livroDTO.getQuantidade());
+
+        return new LivroDTO(livroRepository.save(livro));
     }
 
-    public boolean remover(Long livroId) {
-        Optional<LivroModel> livroOpt = livroRepository.findById(livroId);
-        if (livroOpt.isPresent()) {
-            livroRepository.delete(livroOpt.get());
-            return true;
-        }
-        return false;
+    public Optional<LivroDTO> buscarLivroPorId(Long livroId) {
+        return livroRepository.findByLivroId(livroId)
+                .map(LivroDTO::new);
     }
 
-    public List<ReservaModel> buscarTodasReservas() {
-        return reservaRepository.findAll();
+    public boolean removerLivro(Long livroId) {
+        return livroRepository.findById(livroId)
+                .map(livro -> {
+                    livroRepository.delete(livro);
+                    return true;
+                }).orElse(false);
     }
 
-    public List<PenalidadeModel> buscarPenalidadesPorMatricula(String matricula) {
-        return penalidadeRepository.findByAlunoMatricula(matricula);
+    public List<ReservaDTO> listarTodasReservas() {
+        return reservaRepository.findAll().stream()
+                .map(ReservaDTO::new)
+                .toList();
     }
 
-    public List<EmprestimoModel> buscarEmprestimosPorMatricula(String matricula) {
-        return emprestimoRepository.findByAlunoMatricula(matricula);
+    public List<PenalidadeDTO> listarPenalidadesDoAluno(String matricula) {
+        return penalidadeRepository.findByAlunoMatricula(matricula).stream()
+                .map(PenalidadeDTO::new)
+                .toList();
     }
 
-    public boolean moderarComentario(Long avalicacaoId) {
-        Optional<AvaliacaoModel> avaliacaoOpt = avaliacaoRepository.findByAvaliacaoId(avalicacaoId);
-
-        if (avaliacaoOpt.isPresent()) {
-            AvaliacaoModel avaliacao = avaliacaoOpt.get();
-            avaliacaoRepository.delete(avaliacao);
-            return true;
-        }
-        return false;
+    public List<EmprestimoDTO> listarEmprestimosDoAluno(String matricula) {
+        return emprestimoRepository.findByAlunoMatricula(matricula).stream()
+                .map(EmprestimoDTO::new)
+                .toList();
     }
 
-    public Optional<BibliotecarioModel> autenticar(String email, String senha) {
-
-        List<String> emailsPermitidos = List.of("bibliotecarioetejk@gmail.com", "bibliotecarioetejk2@gmail.com");
-        if (!emailsPermitidos.contains(email)) {
-            return Optional.empty();
-        }
-
-        Optional<BibliotecarioModel> bibliotecarioOpt = bibliotecarioRepository.findByEmail(email);
-        System.out.println("Email buscado: " + email);
-
-        if (bibliotecarioOpt.isPresent()) {
-            BibliotecarioModel bibliotecario = bibliotecarioOpt.get();
-            System.out.println("Senha armazenada: " + bibliotecario.getSenha());
-            if (bibliotecario.getSenha().equals(senha)) {
-                return Optional.of(bibliotecario);
-            }
-        }
-        return Optional.empty();
+    public boolean removerComentario(Long avaliacaoId) {
+        return avaliacaoRepository.findByAvaliacaoId(avaliacaoId)
+                .map(avaliacao -> {
+                    avaliacaoRepository.delete(avaliacao);
+                    return true;
+                }).orElse(false);
     }
 
-    public Optional<BibliotecarioModel> buscarPorEmail(String email) {
-        return bibliotecarioRepository.findByEmail(email);
+    public Optional<BibliotecarioDTO> autenticar(String email, String senha) {
+        List<String> emailsPermitidos = List.of(
+                "bibliotecarioetejk@gmail.com",
+                "bibliotecarioetejk2@gmail.com"
+        );
+
+        if (!emailsPermitidos.contains(email)) return Optional.empty();
+
+        return bibliotecarioRepository.findByEmail(email)
+                .filter(b -> b.getSenha().equals(senha))
+                .map(BibliotecarioDTO::new);
+    }
+
+    public Optional<BibliotecarioDTO> buscarPorEmail(String email) {
+        return bibliotecarioRepository.findByEmail(email)
+                .map(BibliotecarioDTO::new);
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        BibliotecarioModel bibliotecario = bibliotecarioRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Bibliotecário não encontrado"));
+
+        return User.builder()
+                .username(bibliotecario.getEmail())
+                .password(bibliotecario.getSenha())
+                .roles("ADMIN")
+                .build();
     }
 }

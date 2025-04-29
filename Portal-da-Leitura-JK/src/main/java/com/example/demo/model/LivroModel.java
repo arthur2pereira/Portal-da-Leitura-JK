@@ -31,16 +31,20 @@ public class LivroModel {
     @Size(max = 100)
     private String curso;
 
+    @NotBlank
     @Column(nullable = false)
     private String editora;
 
     @Min(1500)
     @Max(2100)
+    @NotBlank
     private Integer anoPublicacao;
 
+    @NotBlank
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
     @Min(0)
+    @NotBlank
     private Integer quantidade = 1;
 }

@@ -1,8 +1,7 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import com.example.demo.model.ReservaModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,13 @@ public class ReservaDTO {
     private LocalDate dataReserva;
     private LocalDate dataVencimento;
 
-    public ReservaDTO(Long reservaId, LocalDate dataReserva, LocalDate dataVencimento, @NotBlank @Size(max = 150) String titulo, @NotBlank @Pattern(regexp = "\\d{13}", message = "A matrícula deve conter exatamente 13 dígitos numéricos.") String matricula) {
+    public ReservaDTO(ReservaModel model) {
+        this.reservaId = model.getReservaId();
+        this.matricula = model.getAluno().getMatricula();
+        this.livroId = model.getLivro().getLivroId();
+        this.status = model.getStatus();
+        this.dataReserva = model.getDataReserva();
+        this.dataVencimento = model.getDataVencimento();
     }
 }
 
