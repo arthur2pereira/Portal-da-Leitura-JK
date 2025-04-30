@@ -1,17 +1,9 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.EmprestimoModel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class EmprestimoDTO {
     private Long emprestimoId;
     private String matricula;
@@ -33,5 +25,92 @@ public class EmprestimoDTO {
         this.dataDevolucao = model.getDataDevolucao();
         this.renovacoes = model.getRenovacoes();
         this.status = model.getStatus();
+    }
+
+    public EmprestimoDTO(Long emprestimoId, String matricula, Long livroId, Long bibliotecarioId, LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao, int renovacoes, String status) {
+        this.emprestimoId = emprestimoId;
+        this.matricula = matricula;
+        this.livroId = livroId;
+        this.bibliotecarioId = bibliotecarioId;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataVencimento = dataVencimento;
+        this.dataDevolucao = dataDevolucao;
+        this.renovacoes = renovacoes;
+        this.status = status;
+    }
+
+    public EmprestimoDTO() {
+    }
+
+    public Long getEmprestimoId() {
+        return emprestimoId;
+    }
+
+    public void setEmprestimoId(Long emprestimoId) {
+        this.emprestimoId = emprestimoId;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public Long getLivroId() {
+        return livroId;
+    }
+
+    public void setLivroId(Long livroId) {
+        this.livroId = livroId;
+    }
+
+    public Long getBibliotecarioId() {
+        return bibliotecarioId;
+    }
+
+    public void setBibliotecarioId(Long bibliotecarioId) {
+        this.bibliotecarioId = bibliotecarioId;
+    }
+
+    public LocalDate getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
+    }
+
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public int getRenovacoes() {
+        return renovacoes;
+    }
+
+    public void setRenovacoes(int renovacoes) {
+        this.renovacoes = renovacoes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -1,15 +1,7 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
 import com.example.demo.model.AlunoModel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
 public class AlunoDTO {
     private String matricula;
     private String nome;
@@ -22,5 +14,56 @@ public class AlunoDTO {
         this.nome = model.getNome();
         this.email = model.getEmail();
         this.senha = model.getSenha();
+    }
+
+    public AlunoDTO(String matricula, String nome, String email, String senha, Boolean status) {
+        this.matricula = matricula;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.status = status;
+    }
+
+    public AlunoDTO() {
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

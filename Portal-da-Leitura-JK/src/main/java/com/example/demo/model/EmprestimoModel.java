@@ -7,8 +7,6 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "emprestimos")
 public class EmprestimoModel {
 
@@ -39,5 +37,92 @@ public class EmprestimoModel {
     private int renovacoes = 0;
 
     private String status;
+
+    public EmprestimoModel(Long emprestimoId, AlunoModel aluno, LivroModel livro, BibliotecarioModel bibliotecario, LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao, int renovacoes, String status) {
+        this.emprestimoId = emprestimoId;
+        this.aluno = aluno;
+        this.livro = livro;
+        this.bibliotecario = bibliotecario;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataVencimento = dataVencimento;
+        this.dataDevolucao = dataDevolucao;
+        this.renovacoes = renovacoes;
+        this.status = status;
+    }
+
+    public EmprestimoModel() {
+    }
+
+    public Long getEmprestimoId() {
+        return emprestimoId;
+    }
+
+    public void setEmprestimoId(Long emprestimoId) {
+        this.emprestimoId = emprestimoId;
+    }
+
+    public AlunoModel getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(AlunoModel aluno) {
+        this.aluno = aluno;
+    }
+
+    public LivroModel getLivro() {
+        return livro;
+    }
+
+    public void setLivro(LivroModel livro) {
+        this.livro = livro;
+    }
+
+    public BibliotecarioModel getBibliotecario() {
+        return bibliotecario;
+    }
+
+    public void setBibliotecario(BibliotecarioModel bibliotecario) {
+        this.bibliotecario = bibliotecario;
+    }
+
+    public LocalDate getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
+    }
+
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public int getRenovacoes() {
+        return renovacoes;
+    }
+
+    public void setRenovacoes(int renovacoes) {
+        this.renovacoes = renovacoes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
 

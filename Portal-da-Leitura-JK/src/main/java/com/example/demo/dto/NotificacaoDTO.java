@@ -1,13 +1,9 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.NotificacaoModel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class NotificacaoDTO {
     private Long notificacaoId;
     private String matricula;
@@ -21,5 +17,56 @@ public class NotificacaoDTO {
         this.mensagem = model.getMensagem();
         this.tipo = model.getTipo();
         this.lida = model.isLida();
+    }
+
+    public NotificacaoDTO(Long notificacaoId, String matricula, String mensagem, String tipo, boolean lida) {
+        this.notificacaoId = notificacaoId;
+        this.matricula = matricula;
+        this.mensagem = mensagem;
+        this.tipo = tipo;
+        this.lida = lida;
+    }
+
+    public NotificacaoDTO() {
+    }
+
+    public Long getNotificacaoId() {
+        return notificacaoId;
+    }
+
+    public void setNotificacaoId(Long notificacaoId) {
+        this.notificacaoId = notificacaoId;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public boolean isLida() {
+        return lida;
+    }
+
+    public void setLida(boolean lida) {
+        this.lida = lida;
     }
 }
