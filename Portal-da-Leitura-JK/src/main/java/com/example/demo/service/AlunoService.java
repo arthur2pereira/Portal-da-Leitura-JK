@@ -6,7 +6,6 @@ import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AlunoService implements UserDetailsService {
+public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
@@ -201,16 +200,5 @@ public class AlunoService implements UserDetailsService {
                 model.getDataAplicacao(),
                 model.getDiasBloqueio()
         );
-    }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AlunoModel aluno = alunoRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Aluno não encontrado"));
-
-        return User.builder()
-                .username(aluno.getEmail())
-                .password(aluno.getSenha())
-                .roles("USER")
-                .build();
     }
 }

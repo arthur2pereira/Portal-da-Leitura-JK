@@ -1,0 +1,62 @@
+/* cadastro.css */
+
+.cadastro-container {
+    display: flex;
+    height: calc(100vh - 120px);
+  }
+  
+  .formulario {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .formulario h2 {
+    margin-bottom: 30px;
+  }
+  
+  .formulario form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formulario label {
+    margin-top: 10px;
+  }
+  
+  .formulario input {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .formulario button {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #2e8b57;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .formulario button:hover {
+    background-color: #246b44;
+  }
+  
+  .lado-direito {
+    flex: 1;
+    background-color: #2e8b57;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo {
+    max-width: 60%;
+  }
+  

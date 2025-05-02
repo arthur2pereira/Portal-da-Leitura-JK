@@ -6,7 +6,6 @@ import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BibliotecarioService  implements UserDetailsService {
+public class BibliotecarioService {
 
     @Autowired
     private LivroRepository livroRepository;
@@ -110,18 +109,5 @@ public class BibliotecarioService  implements UserDetailsService {
     public Optional<BibliotecarioDTO> buscarPorEmail(String email) {
         return bibliotecarioRepository.findByEmail(email)
                 .map(BibliotecarioDTO::new);
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        BibliotecarioModel bibliotecario = bibliotecarioRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Bibliotecário não encontrado"));
-
-        return User.builder()
-                .username(bibliotecario.getEmail())
-                .password(bibliotecario.getSenha())
-                .roles("ADMIN")
-                .build();
     }
 }

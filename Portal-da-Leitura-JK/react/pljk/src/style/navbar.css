@@ -1,0 +1,81 @@
+/* Estilos da barra de navegação */
+header {
+  display: flex;
+  justify-content: space-between;  /* Espaço entre logo e menu */
+  align-items: center;  /* Alinha os itens na vertical */
+  padding: 5px 20px;  /* Diminui a altura da navbar */
+  background-color: #f8f9fa;  /* Cor de fundo da navbar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para dar destaque */
+  width: 100%;  /* Garante que ocupe toda a largura */
+  position: fixed; /* Fixa a navbar no topo da página */
+  top: 0; /* Fixa no topo */
+  left: 0; /* Garante que esteja alinhado à esquerda */
+  z-index: 1000; /* Garante que a navbar fique acima de outros elementos */
+}
+
+/* Logo */
+header nav .logo img {
+  max-width: 100%;
+  height: auto;
+  width: 120px;  /* Reduz o tamanho da logo */
+}
+
+/* Estilo do menu */
+header .menu-colapsado ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;  /* Diminui o espaço entre os itens */
+  padding: 5px 0;
+  margin: 0;  /* Remove margens extras */
+}
+
+header .menu-colapsado ul li {
+  display: inline;
+}
+
+header .menu-colapsado ul li a {
+  color: black;
+  text-decoration: none;
+  font-size: 1.1em;  /* Reduz o tamanho da fonte */
+  padding: 6px 12px;  /* Ajusta o padding para os links */
+  transition: background-color 0.3s ease;
+}
+
+header .menu-colapsado ul li a:hover {
+  background-color: #e9ecef;  /* Cor de fundo ao passar o mouse */
+  border-radius: 4px;
+}
+
+/* Alinha a notificação com o menu */
+header .cabecalho {
+  display: flex;
+  align-items: center;  /* Alinha a notificação com o menu na mesma linha */
+}
+
+/* Estilo para o ícone de notificação */
+.notification-container {
+  position: relative;
+  margin-left: 15px;  /* Diminui o espaçamento entre o menu e o ícone */
+}
+
+.notification-icon {
+  font-size: 1.6em;  /* Reduz o tamanho do ícone */
+  color: black;  /* Cor do sino */
+  cursor: pointer;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;  /* Cor do badge */
+  color: white;
+  border-radius: 50%;
+  width: 18px;  /* Diminui o tamanho do badge */
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em; /* Tamanho do número no badge */
+}
