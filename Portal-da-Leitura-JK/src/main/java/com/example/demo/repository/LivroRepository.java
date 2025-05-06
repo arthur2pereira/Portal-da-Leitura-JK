@@ -18,5 +18,13 @@ public interface LivroRepository extends JpaRepository<LivroModel, Long> {
     List<LivroModel> findByTituloContainingIgnoreCaseAndAutorContainingIgnoreCaseAndGeneroContainingIgnoreCaseAndEditoraContainingIgnoreCaseAndCursoContainingIgnoreCase(
             String titulo, String autor, String genero, String editora, String curso);
     boolean existsByTituloAndAutor(String titulo, String autor);
+    @Query("SELECT DISTINCT l.curso FROM LivroModel l")
+    List<String> findAllCursosUnicos();
+    @Query("SELECT DISTINCT l.autor FROM LivroModel l")
+    List<String> findAllAutoresUnicos();
+    @Query("SELECT DISTINCT l.editora FROM LivroModel l")
+    List<String> findAllEditorasUnicos();
+    @Query("SELECT DISTINCT l.genero FROM LivroModel l")
+    List<String> findAllGenerosUnicos();
 
 }

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/catalogo.css';
 
 function Catalogo() {
+  const navigate = useNavigate();
   const [filtros, setFiltros] = useState({
     curso: '',
     genero: '',
@@ -43,10 +45,11 @@ function Catalogo() {
     const fetchLivros = async () => {
       try {
         const queryString = montarQueryString();
-        const response = await fetch(`/api/livros?${queryString}`);
+        const response = await fetch(`http://localhost:8081/livros/buscar?${queryString}`);
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
         const data = await response.json();
-        setLivros(data.livros || []);
-        setTotalPaginas(data.totalPaginas || 1);
+        setLivros(data || []);
+        setTotalPaginas(1);        
       } catch (error) {
         console.error("Erro ao buscar livros:", error);
       }
@@ -57,12 +60,16 @@ function Catalogo() {
   useEffect(() => {
     const fetchFiltros = async () => {
       try {
-        const [resCursos, resGeneros, resAutores, resEditoras] = await Promise.all([
-          fetch('/api/cursos'),
-          fetch('/api/generos'),
-          fetch('/api/autores'),
-          fetch('/api/editoras')
+        const responses = await Promise.all([
+          fetch('http://localhost:8081/livros/cursos'),
+          fetch('http://localhost:8081/livros/generos'),
+          fetch('http://localhost:8081/livros/autores'),
+          fetch('http://localhost:8081/livros/editoras')
         ]);
+        const [resCursos, resGeneros, resAutores, resEditoras] = responses;
+        if (!resCursos.ok || !resGeneros.ok || !resAutores.ok || !resEditoras.ok) {
+          throw new Error("Falha ao carregar um ou mais filtros.");
+        }
         setCursos(await resCursos.json());
         setGeneros(await resGeneros.json());
         setAutores(await resAutores.json());
@@ -71,7 +78,7 @@ function Catalogo() {
         console.error("Erro ao carregar filtros:", error);
       }
     };
-    fetchFiltros();
+    fetchFiltros(); 
   }, []);
 
   return (
@@ -90,28 +97,28 @@ function Catalogo() {
         <select name="curso" value={filtros.curso} onChange={handleFiltroChange}>
           <option value="">Todos os cursos</option>
           {cursos.map((curso, i) => (
-            <option key={i} value={curso}>{curso}</option>
+            <option key={curso} value={curso}>{curso}</option>
           ))}
         </select>
 
         <select name="autor" value={filtros.autor} onChange={handleFiltroChange}>
           <option value="">Todos os autores</option>
           {autores.map((autor, i) => (
-            <option key={i} value={autor}>{autor}</option>
+            <option key={autor} value={autor}>{autor}</option>
           ))}
         </select>
 
         <select name="editora" value={filtros.editora} onChange={handleFiltroChange}>
           <option value="">Todas as editoras</option>
           {editoras.map((editora, i) => (
-            <option key={i} value={editora}>{editora}</option>
+            <option key={editora} value={editora}>{editora}</option>
           ))}
         </select>
 
         <select name="genero" value={filtros.genero} onChange={handleFiltroChange}>
           <option value="">Todos os gêneros</option>
           {generos.map((genero, i) => (
-            <option key={i} value={genero}>{genero}</option>
+            <option key={genero} value={genero}>{genero}</option>
           ))}
         </select>
       </aside>
@@ -120,7 +127,12 @@ function Catalogo() {
         <div className="lista-livros">
           {livros.length > 0 ? (
             livros.map((livro) => (
-              <div key={livro.id} className="card-livro">
+              <div
+                key={livro.livroId}
+                className="card-livro"
+                onClick={() => navigate(`/livro/${livro.livroId}`)}
+                style={{ cursor: 'pointer' }} // Opcional: mostra que o card é clicável
+              >
                 <h4>{livro.titulo}</h4>
                 <p><strong>Autor:</strong> {livro.autor}</p>
                 <p>{livro.descricao}</p>

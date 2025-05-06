@@ -37,7 +37,7 @@ function AppRoutes() {
       <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/livro" element={<Livro />} />
+          <Route path="/livro/:livroId" element={<Livro />} />
           <Route path="/Catalogo" element={<Catalogo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />

@@ -1,0 +1,35 @@
+.livro-detalhes {
+    padding: 30px;
+    background-color: #fdfdfd;
+    font-family: Arial, sans-serif;
+    color: #333;
+    border-radius: 8px;
+    margin-top: 50px;
+  }
+  
+  .titulo {
+    font-size: 2rem;
+    color: #0d6efd;
+    margin-bottom: 20px;
+  }
+  
+  .livro-detalhes p {
+    font-size: 1rem;
+    margin: 8px 0;
+  }
+  
+  .avaliacoes {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .avaliacoes h4 {
+    color: #6c757d;
+  }
+  
+  .sem-avaliacoes {
+    font-style: italic;
+    color: #999;
+  }
+  

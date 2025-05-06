@@ -24,6 +24,27 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
+    public LivroModel buscarPorLivroId(Long livroId) {
+        return livroRepository.findByLivroId(livroId)
+                .orElse(null);
+    }
+
+    public List<String> listarCursos() {
+        return livroRepository.findAllCursosUnicos();
+    }
+
+    public List<String> listarAutores() {
+        return livroRepository.findAllAutoresUnicos();
+    }
+
+    public List<String> listarEditoras() {
+        return livroRepository.findAllEditorasUnicos();
+    }
+
+    public List<String> listarGeneros() {
+        return livroRepository.findAllGenerosUnicos();
+    }
+
     public List<LivroModel> buscarPorTitulo(String titulo) {
         return livroRepository.findByTituloContainingIgnoreCase(titulo);
     }
@@ -55,30 +76,6 @@ public class LivroService {
         livro.setDescricao(livroDTO.getDescricao());
         livro.setQuantidade(livroDTO.getQuantidade());
         return livroRepository.save(livro);
-    }
-
-    public LivroModel atualizarLivro(Long livroId, LivroDTO livroDTO) {
-        if (!livroRepository.existsById(livroId)) {
-            return null;
-        }
-        LivroModel livro = livroRepository.findByLivroId(livroId).orElseThrow();
-        livro.setTitulo(livroDTO.getTitulo());
-        livro.setAutor(livroDTO.getAutor());
-        livro.setGenero(livroDTO.getGenero());
-        livro.setCurso(livroDTO.getCurso());
-        livro.setEditora(livroDTO.getEditora());
-        livro.setAnoPublicacao(livroDTO.getAnoPublicacao());
-        livro.setDescricao(livroDTO.getDescricao());
-        livro.setQuantidade(livroDTO.getQuantidade());
-        return livroRepository.save(livro);
-    }
-
-    public boolean deletarLivro(Long livroId) {
-        if (!livroRepository.existsById(livroId)) {
-            return false;
-        }
-        livroRepository.deleteById(livroId);
-        return true;
     }
 
     public List<LivroModel> filtrarLivros(String titulo, String autor, String genero, String editora, String curso) {

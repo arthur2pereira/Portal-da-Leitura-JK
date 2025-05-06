@@ -22,6 +22,39 @@ public class LivroController {
     @Autowired
     private BibliotecarioService bibliotecarioService;
 
+    @GetMapping("/{livroId}")
+    public ResponseEntity<LivroDTO> buscarPorId(@PathVariable Long livroId) {
+        LivroModel livro = livroService.buscarPorLivroId(livroId);
+        if (livro == null) {
+            return ResponseEntity.notFound().build();
+            }
+        return ResponseEntity.ok(new LivroDTO(livro));
+    }
+
+    @GetMapping("/autores")
+    public ResponseEntity<List<String>> listarAutores() {
+        List<String> autores = livroService.listarAutores();
+        return autores.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autores);
+    }
+
+    @GetMapping("/generos")
+    public ResponseEntity<List<String>> listarGeneros() {
+        List<String> generos = livroService.listarGeneros();
+        return generos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(generos);
+    }
+
+    @GetMapping("/cursos")
+    public ResponseEntity<List<String>> listarCursos() {
+        List<String> cursos = livroService.listarCursos();
+        return cursos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(cursos);
+    }
+
+    @GetMapping("/editoras")
+    public ResponseEntity<List<String>> listarEditoras() {
+        List<String> editoras = livroService.listarEditoras();
+        return editoras.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(editoras);
+    }
+
     @GetMapping("/listar")
     public ResponseEntity<List<LivroDTO>> listarLivros() {
         List<LivroModel> livros = livroService.listarLivros();

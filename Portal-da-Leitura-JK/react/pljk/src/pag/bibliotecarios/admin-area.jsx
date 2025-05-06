@@ -1,36 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../authContext.jsx";
 import "../../assets/css/perfilAdmin.css";
 
 function AdminArea() {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { auth, logout } = useAuth();
   const [adminInfo, setAdminInfo] = useState({
     nome: "",
     email: ""
   });
 
   useEffect(() => {
-    const authData = localStorage.getItem("auth");
-    if (authData) {
-      const user = JSON.parse(authData);
-      if (user.tipo === "bibliotecario") {
-        setIsAuthenticated(true);
-        setAdminInfo({
-          nome: user.nome || "",
-          email: user.email || ""
-        });
-      } else {
-        navigate("/");
-      }
+    if (auth && auth.tipo === "bibliotecario") {
+      setAdminInfo({
+        nome: auth.nome || "",
+        email: auth.email || ""
+      });
     } else {
       navigate("/");
     }
-  }, [navigate]);
+  }, [auth, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("auth");
-    setIsAuthenticated(false);
+    logout();
     navigate("/");
   };
 
@@ -49,7 +42,7 @@ function AdminArea() {
             <button onClick={() => irPara("/admin/notificacoes")}>Notificações</button>
         </section>
 
-        {isAuthenticated && (
+        {auth && (
           <button className="btn-logout" onClick={handleLogout}>
             Sair da conta
           </button>

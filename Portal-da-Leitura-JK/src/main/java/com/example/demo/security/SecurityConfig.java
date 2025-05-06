@@ -41,15 +41,45 @@ public class SecurityConfig {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authz -> authz
+                .authorizeHttpRequests(auth -> auth
+                        // Permissões públicas
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/alunos/autenticar", "/alunos/salvar").permitAll()
                         .requestMatchers("/bibliotecarios/autenticar").permitAll()
-                        .requestMatchers("/livros/listar").permitAll() // <-- adicione essa linha
-                        .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
-                        .requestMatchers("/livros/**").hasRole("ADMIN")
+
+                        // Acesso aluno (protegido)
                         .requestMatchers("/alunos/**").hasRole("USER")
+                        .requestMatchers("/livros/avaliacoes/**").hasRole("USER")
+
+                        // Acesso bibliotecário (protegido)
+                        .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
                         .requestMatchers("/bibliotecarios/**").hasAnyRole("ADMIN", "USER")
+
+                        // Rotas públicas de livros (GET apenas)
+                        .requestMatchers(HttpMethod.GET,
+                                "/livros/listar",
+                                "/livros/buscar",
+                                "/livros/titulo/**",
+                                "/livros/autor/**",
+                                "/livros/genero/**",
+                                "/livros/curso/**",
+                                "/livros/editora/**",
+                                "/livros/disponivel/**",
+                                "/livros/avaliacao/media/**",
+                                "/livros/titulos",
+                                "/livros/cursos",
+                                "/livros/generos",
+                                "/livros/editoras",
+                                "/livros/autores",
+                                "/livros/**"
+                        ).permitAll()
+
+                        // As outras operações (POST, PUT, DELETE) em /livros/** são para ADMIN
+                        .requestMatchers(HttpMethod.POST, "/livros/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/livros/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/livros/**").hasRole("ADMIN")
+
+                        // O restante exige autenticação
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
