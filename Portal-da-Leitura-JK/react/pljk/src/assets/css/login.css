@@ -1,0 +1,62 @@
+.login-container {
+    display: flex;
+    height: 680px;
+    padding-top: 50px;
+  }
+  
+  .lado-esquerdo {
+    flex: 1;
+    background-color: #2e8b57;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .lado-esquerdo .logo {
+    max-width: 60%;
+  }
+  
+  .formulario {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .formulario h2 {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .formulario form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formulario label {
+    margin-top: 10px;
+  }
+  
+  .formulario input {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn-login {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #2e8b57;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-login:hover {
+    background-color: #246b44;
+  }
+  

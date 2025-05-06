@@ -1,16 +1,18 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AvaliacaoDTO;
+import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AvaliacaoService {
+public class    AvaliacaoService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
@@ -93,6 +95,16 @@ public class AvaliacaoService {
         return avaliacaoRepository.findByLivroLivroId(livroId);
     }
 
+    public List<LivroModel> buscarLivrosMaisAvaliados() {
+        List<Object[]> resultados = avaliacaoRepository.buscarLivrosMaisAvaliados();
+        List<LivroModel> livrosMaisAvaliados = new ArrayList<>();
+        for (Object[] resultado : resultados) {
+            LivroModel livro = (LivroModel) resultado[0];
+            livrosMaisAvaliados.add(livro);
+        }
+        return livrosMaisAvaliados;
+    }
+
     private AvaliacaoDTO converterParaDTO(AvaliacaoModel model) {
         return new AvaliacaoDTO(
                 model.getAvaliacaoId(),
@@ -100,6 +112,20 @@ public class AvaliacaoService {
                 model.getLivro().getLivroId(),
                 model.getNota(),
                 model.getComentario()
+        );
+    }
+
+    public static LivroDTO converterParaDTO(LivroModel livro) {
+        return new LivroDTO(
+                livro.getLivroId(),
+                livro.getTitulo(),
+                livro.getAutor(),
+                livro.getGenero(),
+                livro.getCurso(),
+                livro.getEditora(),
+                livro.getAnoPublicacao(),
+                livro.getDescricao(),
+                livro.getQuantidade()
         );
     }
 }

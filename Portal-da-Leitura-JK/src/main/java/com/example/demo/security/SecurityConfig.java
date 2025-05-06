@@ -1,14 +1,17 @@
 package com.example.demo.security;
 
+import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -16,11 +19,12 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -35,15 +39,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // Desabilitar CSRF
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/alunos/autenticar","/alunos/salvar").permitAll() // Permitir autenticação de alunos
-                        .requestMatchers("/bibliotecarios/autenticar").permitAll() // Permitir autenticação de bibliotecários
-                        .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN") // Apenas administradores podem gerenciar livros
-                        .requestMatchers("/alunos/**", "/bibliotecarios/**").hasRole("USER") // Apenas usuários autenticados podem acessar dados
-                        .anyRequest().authenticated() // Qualquer outra requisição precisa estar autenticada
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/alunos/autenticar", "/alunos/salvar").permitAll()
+                        .requestMatchers("/bibliotecarios/autenticar").permitAll()
+                        .requestMatchers("/livros/listar").permitAll() // <-- adicione essa linha
+                        .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
+                        .requestMatchers("/livros/**").hasRole("ADMIN")
+                        .requestMatchers("/alunos/**").hasRole("USER")
+                        .requestMatchers("/bibliotecarios/**").hasAnyRole("ADMIN", "USER")
+                        .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.permitAll()) // Permitir logout
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout.permitAll())
                 .build();
     }
 }

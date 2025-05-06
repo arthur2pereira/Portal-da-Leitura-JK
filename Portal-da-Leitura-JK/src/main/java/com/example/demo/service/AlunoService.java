@@ -3,10 +3,10 @@ package com.example.demo.service;
 import com.example.demo.dto.*;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
+import com.example.demo.security.CustomUserDetailsService;
+import com.example.demo.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +34,12 @@ public class AlunoService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -89,10 +95,23 @@ public class AlunoService {
         return penalidades.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
-    public Optional<ReservaDTO> buscarReservaAtiva(String matricula) {
-        Optional<ReservaModel> reserva = reservaRepository.findReservaAtivaByAlunoMatricula(matricula);
-        return reserva.map(this::converterParaDTO);
+    public List<ReservaDTO> listarReservas(String matricula) {
+        List<ReservaModel> reservas = reservaRepository.findReservasByAlunoMatricula(matricula);
+        return reservas.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
+
+    public Optional<ReservaDTO> buscarReservaAtiva(String matricula) {
+        Optional<ReservaModel> reservaAtiva = reservaRepository.findReservaAtivaByAlunoMatricula(matricula);
+
+        if (reservaAtiva.isPresent()) {
+            return Optional.of(converterParaDTO(reservaAtiva.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
+
 
     public Optional<AlunoModel> buscarPorMatricula(String matricula) {
         return alunoRepository.findByMatricula(matricula);
@@ -132,7 +151,7 @@ public class AlunoService {
         alunoRepository.deleteByMatricula(matricula);
     }
 
-    public Optional<AlunoModel> autenticar(String matricula, String email, String senha) {
+    public Optional<TokenDTO> autenticar(String matricula, String email, String senha) {
         Optional<AlunoModel> alunoOpt;
 
         if (matricula != null && !matricula.isEmpty()) {
@@ -151,9 +170,49 @@ public class AlunoService {
             if (!passwordEncoder.matches(senha, aluno.getSenha())) {
                 return Optional.empty();
             }
-            return Optional.of(aluno);
+
+            String token = jwtUtil.generateToken(aluno.getEmail(), "USER");
+
+            AlunoDTO alunoDTO = new AlunoDTO();
+            alunoDTO.setEmail(aluno.getEmail());
+            alunoDTO.setNome(aluno.getNome());
+            alunoDTO.setMatricula(aluno.getMatricula());
+
+            return Optional.of(new TokenDTO(token, "USER", alunoDTO));
         }
         return Optional.empty();
+    }
+
+    public AlunoDTO atualizarAluno(AlunoDTO dto) {
+        Optional<AlunoModel> alunoOpt = alunoRepository.findByMatricula(dto.getMatricula());
+
+        if (alunoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Aluno não encontrado.");
+        }
+
+        AlunoModel aluno = alunoOpt.get();
+
+        if (dto.getNome() != null && !dto.getNome().isBlank()) {
+            aluno.setNome(dto.getNome());
+        }
+
+        if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
+            Optional<AlunoModel> alunoComMesmoEmail = alunoRepository.findByEmail(dto.getEmail());
+            if (alunoComMesmoEmail.isPresent() && !alunoComMesmoEmail.get().getMatricula().equals(dto.getMatricula())) {
+                throw new IllegalArgumentException("Esse email já está em uso por outro aluno.");
+            }
+            aluno.setEmail(dto.getEmail());
+        }
+
+        if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
+            if (dto.getSenha().length() < 6) {
+                throw new IllegalArgumentException("A nova senha deve ter pelo menos 6 caracteres.");
+            }
+            aluno.setSenha(passwordEncoder.encode(dto.getSenha()));
+        }
+
+        alunoRepository.save(aluno);
+        return converterParaDTO(aluno);
     }
 
     public AlunoDTO converterParaDTO(AlunoModel aluno) {

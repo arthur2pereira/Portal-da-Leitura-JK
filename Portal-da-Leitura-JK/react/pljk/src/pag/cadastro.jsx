@@ -47,7 +47,7 @@ function CadastroAluno() {
 
       if (response.status === 201) {
         alert("Cadastro realizado com sucesso!");
-        window.location.href = "/entrar"; // ou useNavigate do React Router
+        window.location.href = "/login"; // ou useNavigate do React Router
       } else if (response.status === 409) {
         const mensagem = await response.text();
         alert("Erro: " + mensagem);

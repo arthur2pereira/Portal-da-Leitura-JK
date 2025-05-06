@@ -25,6 +25,10 @@ public class BibliotecarioDTO {
     public BibliotecarioDTO() {
     }
 
+    public BibliotecarioDTO(String token, String admin, String nome, String email) {
+
+    }
+
     public Long getBibliotecarioId() {
         return bibliotecarioId;
     }

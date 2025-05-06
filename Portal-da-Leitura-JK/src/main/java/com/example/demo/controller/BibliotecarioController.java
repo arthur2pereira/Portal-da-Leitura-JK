@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
+import com.example.demo.model.LivroModel;
 import com.example.demo.service.AlunoService;
 import com.example.demo.service.BibliotecarioService;
 import com.example.demo.service.LivroService;
@@ -28,15 +29,16 @@ public class BibliotecarioController {
     @PostMapping("/autenticar")
     public ResponseEntity<?> autenticar(@RequestBody BibliotecarioDTO bibliotecarioLogin) {
 
-        Optional<BibliotecarioDTO> bibliotecarioOpt = bibliotecarioService.autenticar(
+        Optional<TokenDTO> tokenOpt = bibliotecarioService.autenticar(
                 bibliotecarioLogin.getEmail(),
                 bibliotecarioLogin.getSenha()
         );
+
         System.out.println("Login recebido: " + bibliotecarioLogin.getEmail());  // Debug
         System.out.println("Senha recebida: " + bibliotecarioLogin.getSenha());  // Debug
 
-        if (bibliotecarioOpt.isPresent()) {
-            return ResponseEntity.ok(bibliotecarioOpt.get());
+        if (tokenOpt.isPresent()) {
+            return ResponseEntity.ok(tokenOpt.get());
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha inválida");
@@ -52,6 +54,12 @@ public class BibliotecarioController {
     public ResponseEntity<LivroDTO> salvarLivro(@RequestBody LivroDTO livroDTO) {
         LivroDTO livroSalvo = bibliotecarioService.salvarLivro(livroDTO);
         return new ResponseEntity<>(livroSalvo, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/livros/lote")
+    public ResponseEntity<List<LivroModel>> salvarLivrosEmLote(@RequestBody List<LivroModel> livros) {
+        List<LivroModel> livrosSalvos = bibliotecarioService.salvarLivrosEmLote(livros);
+        return new ResponseEntity<>(livrosSalvos, HttpStatus.CREATED);
     }
 
     @PutMapping("/livros/{livroId}")

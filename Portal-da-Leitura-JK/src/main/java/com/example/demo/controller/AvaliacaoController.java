@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AvaliacaoDTO;
+import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.*;
 import com.example.demo.service.*;
 import com.example.demo.repository.*;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/avaliacoes")
@@ -69,6 +70,27 @@ public class AvaliacaoController {
         return response != null ? ResponseEntity.ok(response) : ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                                 .body("Erro ao atualizar nota.");
     }
+
+    @GetMapping("/mais-avaliados")
+    public ResponseEntity<List<LivroDTO>> buscarLivrosMaisAvaliados() {
+        List<LivroModel> livros = avaliacaoService.buscarLivrosMaisAvaliados();
+        if (livros.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        List<LivroDTO> livrosDTO = livros.stream()
+                .map(livro -> new LivroDTO(livro.getLivroId(),
+                        livro.getTitulo(),
+                        livro.getAutor(),
+                        livro.getGenero(),
+                        livro.getCurso(),
+                        livro.getEditora(),
+                        livro.getAnoPublicacao(),
+                        livro.getDescricao(),
+                        livro.getQuantidade()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(livrosDTO);
+    }
+
 
     @DeleteMapping("/{avaliacaoId}/excluir")
     public ResponseEntity<?> excluir(@PathVariable Long avaliacaoId) {

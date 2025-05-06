@@ -32,8 +32,10 @@ public class EmprestimoModel {
     @NotNull
     private LocalDate dataVencimento;
 
+    @NotNull
     private LocalDate dataDevolucao;
 
+    @NotNull
     private int renovacoes = 0;
 
     private String status;

@@ -35,7 +35,7 @@ public class LivroModel {
 
     @Min(1500)
     @Max(2100)
-    @NotBlank
+    @NotNull
     private Integer anoPublicacao;
 
     @NotBlank
@@ -43,7 +43,7 @@ public class LivroModel {
     private String descricao;
 
     @Min(0)
-    @NotBlank
+    @NotNull
     private Integer quantidade = 1;
 
     public LivroModel(Long livroId, String titulo, String autor, String genero, String curso, String editora, Integer anoPublicacao, String descricao, Integer quantidade) {

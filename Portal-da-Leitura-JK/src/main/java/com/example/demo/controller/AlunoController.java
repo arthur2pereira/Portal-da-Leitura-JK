@@ -18,33 +18,13 @@ import java.util.Optional;
 public class AlunoController {
 
     @Autowired
-    private AlunoService alunoService;
+    private AlunoService  alunoService;
 
     @GetMapping("/{matricula}")
     public ResponseEntity<AlunoDTO> buscarPorMatricula(@PathVariable String matricula) {
         Optional<AlunoModel> aluno = alunoService.buscarPorMatricula(matricula);
         return aluno.map(a -> ResponseEntity.ok(alunoService.converterParaDTO(a)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @GetMapping("/{matricula}/emprestimos")
-    public ResponseEntity<List<EmprestimoDTO>> visualizarEmprestimos(@PathVariable String matricula) {
-        List<EmprestimoDTO> emprestimos = alunoService.listarEmprestimos(matricula);
-        if (emprestimos.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(emprestimos);
-    }
-
-    @GetMapping("/{matricula}/reservas")
-    public ResponseEntity<ReservaDTO> visualizarReserva(@PathVariable String matricula) {
-        Optional<ReservaDTO> reserva = alunoService.buscarReservaAtiva(matricula);
-        return reserva.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
-    }
-
-    @GetMapping("/{matricula}/penalidades")
-    public ResponseEntity<List<PenalidadeDTO>> visualizarPenalidades(@PathVariable String matricula) {
-        List<PenalidadeDTO> penalidades = alunoService.listarPenalidades(matricula);
-        if (penalidades.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(penalidades);
     }
 
     @GetMapping("/{matricula}/notificacoes")
@@ -54,12 +34,54 @@ public class AlunoController {
         return ResponseEntity.ok(notificacoes);
     }
 
+    @GetMapping("/{matricula}/emprestimos")
+    public ResponseEntity<List<EmprestimoDTO>> visualizarEmprestimos(@PathVariable String matricula) {
+        List<EmprestimoDTO> emprestimos = alunoService.listarEmprestimos(matricula);
+        int limite = 3;
+        if (emprestimos.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<EmprestimoDTO> emprestimosLimitados = emprestimos.size() > limite ? emprestimos.subList(0, limite) : emprestimos;
+        boolean temMais = emprestimos.size() > limite;
+
+        return ResponseEntity.ok().header("X-Tem-Mais", String.valueOf(temMais)).body(emprestimosLimitados);
+    }
+
+    @GetMapping("/{matricula}/reservas")
+    public ResponseEntity<List<ReservaDTO>> visualizarReservas(@PathVariable String matricula) {
+        List<ReservaDTO> reservas = alunoService.listarReservas(matricula);
+        int limite = 3;
+        if (reservas.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<ReservaDTO> reservasLimitadas = reservas.size() > limite ? reservas.subList(0, limite) : reservas;
+        boolean temMais = reservas.size() > limite;
+
+        return ResponseEntity.ok().header("X-Tem-Mais", String.valueOf(temMais)).body(reservasLimitadas);
+    }
+
+    @GetMapping("/{matricula}/penalidades")
+    public ResponseEntity<List<PenalidadeDTO>> visualizarPenalidades(@PathVariable String matricula) {
+        List<PenalidadeDTO> penalidades = alunoService.listarPenalidades(matricula);
+        int limite = 3;
+        if (penalidades.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<PenalidadeDTO> penalidadesLimitadas = penalidades.size() > limite ? penalidades.subList(0, limite) : penalidades;
+        boolean temMais = penalidades.size() > limite;
+
+        return ResponseEntity.ok().header("X-Tem-Mais", String.valueOf(temMais)).body(penalidadesLimitadas);
+    }
+
     @GetMapping("/{matricula}/avaliacoes")
     public ResponseEntity<List<AvaliacaoDTO>> visualizarAvaliacoes(@PathVariable String matricula) {
         List<AvaliacaoDTO> avaliacoes = alunoService.listarAvaliacoes(matricula);
+        int limite = 3;
         if (avaliacoes.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(avaliacoes);
+
+        List<AvaliacaoDTO> avaliacoesLimitadas = avaliacoes.size() > limite ? avaliacoes.subList(0, limite) : avaliacoes;
+        boolean temMais = avaliacoes.size() > limite;
+
+        return ResponseEntity.ok().header("X-Tem-Mais", String.valueOf(temMais)).body(avaliacoesLimitadas);
     }
+
 
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<AlunoDTO>> buscarPorNome(@PathVariable String nome) {
@@ -106,24 +128,35 @@ public class AlunoController {
         System.out.println("Matrícula/Email recebidos: " + alunoLogin.getMatricula() + " / " + alunoLogin.getEmail());  // Debug
         System.out.println("Senha recebida: " + alunoLogin.getSenha());  // Debug
 
-        Optional<AlunoModel> alunoOpt = alunoService.autenticar(
+        Optional<TokenDTO> tokenOpt = alunoService.autenticar(
                 alunoLogin.getMatricula(),
                 alunoLogin.getEmail(),
                 alunoLogin.getSenha()
         );
 
-        if (alunoOpt.isPresent()) {
-            AlunoModel aluno = alunoOpt.get();
-            AlunoDTO dto = new AlunoDTO(
-                    aluno.getMatricula(),
-                    aluno.getNome(),
-                    aluno.getEmail(),
-                    aluno.getSenha(),
-                    aluno.getStatus()
-            );
-            return ResponseEntity.ok(dto);
+        if (tokenOpt.isPresent()) {
+            return ResponseEntity.ok(tokenOpt.get());
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula, email ou senha inválida");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Matrícula/email ou senha inválidos");
     }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<?> atualizarAluno(@RequestBody AlunoDTO dto, Authentication authentication) {
+        String matriculaLogada = authentication.getName();
+
+        if (!dto.getMatricula().equals(matriculaLogada)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você só pode atualizar seus próprios dados.");
+        }
+
+        try {
+            AlunoDTO atualizado = alunoService.atualizarAluno(dto);
+            return ResponseEntity.ok(atualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar aluno: " + e.getMessage());
+        }
+    }
+
 }

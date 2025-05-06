@@ -1,8 +1,7 @@
-/* cadastro.css */
-
 .cadastro-container {
     display: flex;
-    height: calc(100vh - 120px);
+    height: 680px;
+    padding-top: 50px;
   }
   
   .formulario {
@@ -16,6 +15,7 @@
   
   .formulario h2 {
     margin-bottom: 30px;
+    text-align: center;
   }
   
   .formulario form {
