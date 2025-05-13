@@ -33,7 +33,7 @@ function Catalogo() {
     const params = new URLSearchParams();
     params.append("pagina", paginaAtual);
     params.append("tamanho", livrosPorPagina);
-    if (filtros.pesquisa) params.append("pesquisa", filtros.pesquisa);
+    if (filtros.pesquisa) params.append("titulo", filtros.pesquisa);
     if (filtros.curso) params.append("curso", filtros.curso);
     if (filtros.genero) params.append("genero", filtros.genero);
     if (filtros.autor) params.append("autor", filtros.autor);
@@ -45,7 +45,13 @@ function Catalogo() {
     const fetchLivros = async () => {
       try {
         const queryString = montarQueryString();
-        const response = await fetch(`http://localhost:8081/livros/buscar?${queryString}`);
+        const token = localStorage.getItem('token');  // Supondo que o token esteja armazenado no localStorage
+        const response = await fetch(`http://localhost:8081/livros/buscar?${queryString}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Passando o token no cabeçalho
+          },
+        });
         if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
         const data = await response.json();
         setLivros(data || []);
@@ -53,7 +59,7 @@ function Catalogo() {
       } catch (error) {
         console.error("Erro ao buscar livros:", error);
       }
-    };
+    };    
     fetchLivros();
   }, [filtros, paginaAtual]);
 

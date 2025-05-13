@@ -90,10 +90,6 @@
                     .toList();
         }
 
-        public List<LivroModel> salvarLivrosEmLote(List<LivroModel> livros) {
-            return livroRepository.saveAll(livros);
-        }
-
         public List<PenalidadeDTO> listarPenalidadesDoAluno(String matricula) {
             return penalidadeRepository.findByAlunoMatricula(matricula).stream()
                     .map(PenalidadeDTO::new)

@@ -1,15 +1,50 @@
-import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../authContext"
 import "../style/navbar.css"
 
 function Navbar() {
   const location = useLocation()
+  const navigate = useNavigate()
   const { auth } = useAuth()
   const isAuthenticated = !!auth
   const tipo = auth?.tipo
+  const matricula = auth?.matricula
+
+  const [temNotificacao, setTemNotificacao] = useState(false)
 
   const isActive = (path) => location.pathname === path ? "ativo" : ""
+
+  const handleNotificacaoClick = () => {
+    if (tipo === "aluno") navigate("/aluno/notificacoes")
+    else if (tipo === "bibliotecario") navigate("/admin/notificacoes")
+  }
+
+  useEffect(() => {
+    const buscarNotificacoesNaoLidas = async () => {
+      const token = localStorage.getItem("token")
+      try {
+        let url = null
+  
+        if (tipo === "aluno" && matricula) {
+          url = `http://localhost:8081/notificacoes/aluno/${matricula}/nao-lidas`
+        } else if (tipo === "bibliotecario" && auth?.email) {
+          url = `http://localhost:8081/notificacoes/bibliotecario/${auth.email}/nao-lidas`
+        }
+  
+        if (url) {
+          const response = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          setTemNotificacao(response.ok)
+        }
+      } catch (error) {
+        console.error("Erro ao verificar notificações:", error)
+      }
+    }
+  
+    buscarNotificacoesNaoLidas()
+  }, [tipo, matricula, auth])  
 
   return (
     <header>
@@ -40,11 +75,9 @@ function Navbar() {
             )}
 
             {tipo === "bibliotecario" && (
-              <>
-                <li className={`Admin ${isActive("/admin/area")}`}>
-                  <Link className="link-admin" to="/admin/area">Área admin</Link>
-                </li>
-              </>
+              <li className={`Admin ${isActive("/admin/area")}`}>
+                <Link className="link-admin" to="/admin/area">Área admin</Link>
+              </li>
             )}
 
             {!isAuthenticated && (
@@ -61,9 +94,9 @@ function Navbar() {
         </div>
 
         {isAuthenticated && (
-          <div className="notification-container">
+          <div className="notification-container" onClick={handleNotificacaoClick} style={{ cursor: "pointer" }}>
             <i className="fas fa-bell notification-icon"></i>
-            <span className="notification-badge"></span>
+            {temNotificacao && <span className="notification-badge"></span>}
           </div>
         )}
       </nav>

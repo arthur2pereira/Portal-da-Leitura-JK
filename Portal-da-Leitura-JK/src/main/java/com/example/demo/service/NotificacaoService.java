@@ -30,6 +30,14 @@ public class NotificacaoService {
     @Value("${sendgrid.from.email}")
     private String fromEmail;
 
+    public List<NotificacaoDTO> buscarNaoLidasPorBibliotecario(Long bibliotecarioId) {
+        return notificacaoRepository.findByBibliotecarioBibliotecarioIdAndLidaFalse(bibliotecarioId)
+                .stream()
+                .map(NotificacaoDTO::new)
+                .toList();
+    }
+
+
     public List<NotificacaoDTO> buscarPorAluno(String matricula) {
         validarAlunoExistente(matricula);
         List<NotificacaoModel> notificacoes = notificacaoRepository.findByAlunoMatricula(matricula);
@@ -127,6 +135,7 @@ public class NotificacaoService {
         return new NotificacaoDTO(
                 notificacao.getNotificacaoId(),
                 notificacao.getAluno().getMatricula(),
+                notificacao.getBibliotecario().getBibliotecarioId(),
                 notificacao.getMensagem(),
                 notificacao.getTipo(),
                 notificacao.isLida()

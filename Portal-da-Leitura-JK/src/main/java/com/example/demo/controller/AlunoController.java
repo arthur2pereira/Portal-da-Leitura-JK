@@ -158,5 +158,4 @@ public class AlunoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar aluno: " + e.getMessage());
         }
     }
-
 }

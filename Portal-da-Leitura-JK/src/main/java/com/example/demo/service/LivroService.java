@@ -78,17 +78,6 @@ public class LivroService {
         return livroRepository.save(livro);
     }
 
-    public List<LivroModel> filtrarLivros(String titulo, String autor, String genero, String editora, String curso) {
-        titulo = (titulo == null) ? "" : titulo;
-        autor = (autor == null) ? "" : autor;
-        genero = (genero == null) ? "" : genero;
-        editora = (editora == null) ? "" : editora;
-        curso = (curso == null) ? "" : curso;
-
-        return livroRepository.findByTituloContainingIgnoreCaseAndAutorContainingIgnoreCaseAndGeneroContainingIgnoreCaseAndEditoraContainingIgnoreCaseAndCursoContainingIgnoreCase(
-                titulo, autor, genero, editora, curso);
-    }
-
     public boolean estaDisponivel(Long livroId) {
         Optional<LivroModel> livro = livroRepository.findByLivroId(livroId);
         return livro.isPresent() && livro.get().getQuantidade() > 0;

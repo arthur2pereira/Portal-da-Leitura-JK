@@ -14,4 +14,6 @@ public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, L
     List<NotificacaoModel> findByAlunoMatricula(String matricula);
     Optional<NotificacaoModel> findByNotificacaoId(Long Notificacaoid);
     List<NotificacaoModel> findByAlunoMatriculaAndLidaFalse(String matricula);
+    List<NotificacaoModel> findByBibliotecarioBibliotecarioIdAndLidaFalse(Long bibliotecarioId);
+
 }

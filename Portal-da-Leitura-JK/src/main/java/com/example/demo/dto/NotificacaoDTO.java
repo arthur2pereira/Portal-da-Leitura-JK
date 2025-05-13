@@ -7,6 +7,7 @@ import lombok.Data;
 public class NotificacaoDTO {
     private Long notificacaoId;
     private String matricula;
+    private Long bibliotecarioId;
     private String mensagem;
     private String tipo;
     private boolean lida;
@@ -14,14 +15,16 @@ public class NotificacaoDTO {
     public NotificacaoDTO(NotificacaoModel model) {
         this.notificacaoId = model.getNotificacaoId();
         this.matricula = model.getAluno().getMatricula();
+        this.bibliotecarioId = model.getBibliotecario().getBibliotecarioId();
         this.mensagem = model.getMensagem();
         this.tipo = model.getTipo();
         this.lida = model.isLida();
     }
 
-    public NotificacaoDTO(Long notificacaoId, String matricula, String mensagem, String tipo, boolean lida) {
+    public NotificacaoDTO(Long notificacaoId, String matricula, Long bibliotecarioId, String mensagem, String tipo, boolean lida) {
         this.notificacaoId = notificacaoId;
         this.matricula = matricula;
+        this.bibliotecarioId = bibliotecarioId;
         this.mensagem = mensagem;
         this.tipo = tipo;
         this.lida = lida;
@@ -44,6 +47,14 @@ public class NotificacaoDTO {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public Long getBibliotecarioId() {
+        return bibliotecarioId;
+    }
+
+    public void setBibliotecarioId(Long bibliotecarioId) {
+        this.bibliotecarioId = bibliotecarioId;
     }
 
     public String getMensagem() {

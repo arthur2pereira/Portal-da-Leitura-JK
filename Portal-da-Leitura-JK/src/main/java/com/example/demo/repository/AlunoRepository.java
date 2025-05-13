@@ -18,8 +18,6 @@ public interface AlunoRepository extends JpaRepository<AlunoModel, String> {
 
     boolean existsByMatricula(String matricula);
 
-    void deleteByEmail(String email);
-
     void deleteByMatricula(String matricula);
 
 }

@@ -43,6 +43,18 @@ public class NotificacaoController {
         }
     }
 
+    @GetMapping("/bibliotecario/{matricula}/nao-lidas")
+    public ResponseEntity<List<NotificacaoDTO>> buscarNaoLidasPorBibliotecario(@PathVariable Long bibliotecarioId) {
+        try {
+            List<NotificacaoDTO> notificacoes = notificacaoService.buscarNaoLidasPorBibliotecario(bibliotecarioId);
+            return notificacoes.isEmpty()
+                    ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                    : ResponseEntity.ok(notificacoes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("/{notificacaoId}/marcar-como-lida")
     public ResponseEntity<NotificacaoDTO> marcarComoLida(@PathVariable Long notificacaoId) {
         try {

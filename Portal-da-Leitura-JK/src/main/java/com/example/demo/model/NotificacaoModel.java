@@ -17,6 +17,11 @@ public class NotificacaoModel {
     @JoinColumn(name = "matricula_aluno", referencedColumnName = "matricula")
     private AlunoModel aluno;
 
+    @ManyToOne
+    @JoinColumn(name = "bibliotecario_id")
+    private BibliotecarioModel bibliotecario;
+
+
     @NotBlank
     @Size(max = 300)
     private String mensagem;
@@ -25,9 +30,10 @@ public class NotificacaoModel {
 
     private boolean lida = false;
 
-    public NotificacaoModel(Long notificacaoId, AlunoModel aluno, String mensagem, String tipo, boolean lida) {
+    public NotificacaoModel(Long notificacaoId, AlunoModel aluno, BibliotecarioModel bibliotecario, String mensagem, String tipo, boolean lida) {
         this.notificacaoId = notificacaoId;
         this.aluno = aluno;
+        this.bibliotecario = bibliotecario;
         this.mensagem = mensagem;
         this.tipo = tipo;
         this.lida = lida;
@@ -50,6 +56,14 @@ public class NotificacaoModel {
 
     public void setAluno(AlunoModel aluno) {
         this.aluno = aluno;
+    }
+
+    public BibliotecarioModel getBibliotecario() {
+        return bibliotecario;
+    }
+
+    public void setBibliotecario(BibliotecarioModel bibliotecario) {
+        this.bibliotecario = bibliotecario;
     }
 
     public String getMensagem() {

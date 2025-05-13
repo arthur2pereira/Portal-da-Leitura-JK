@@ -5,6 +5,7 @@ import com.example.demo.model.LivroModel;
 import com.example.demo.service.AlunoService;
 import com.example.demo.service.BibliotecarioService;
 import com.example.demo.service.LivroService;
+import com.example.demo.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class BibliotecarioController {
     @Autowired
     private AlunoService alunoService;
 
+    @Autowired
+    private ReservaService reservaService;
+
     @PostMapping("/autenticar")
     public ResponseEntity<?> autenticar(@RequestBody BibliotecarioDTO bibliotecarioLogin) {
 
@@ -44,22 +48,44 @@ public class BibliotecarioController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha inválida");
     }
 
+    @GetMapping("/listaDeAlunos")
+    public ResponseEntity<List<AlunoDTO>> listarAlunos() {
+        List<AlunoDTO> alunos = alunoService.listarTodos();
+        return ResponseEntity.ok(alunos);
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<?> atualizarAlunoComoAdmin(@RequestBody AlunoDTO dto) {
+        try {
+            AlunoDTO atualizado = alunoService.atualizarAluno(dto);
+            return ResponseEntity.ok(atualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar aluno: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/alunos/{matricula}")
     public ResponseEntity<String> deletarAluno(@PathVariable String matricula) {
         alunoService.deletarAlunoPorMatricula(matricula);
         return ResponseEntity.ok("Aluno deletado com sucesso.");
     }
 
+    @DeleteMapping("/reservas/cancelar/{reservaId}")
+    public ResponseEntity<?> cancelarReserva(@PathVariable Long reservaId) {
+        try {
+            reservaService.cancelarReserva(reservaId);
+            return ResponseEntity.ok("Reserva cancelada com sucesso.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/livros")
     public ResponseEntity<LivroDTO> salvarLivro(@RequestBody LivroDTO livroDTO) {
         LivroDTO livroSalvo = bibliotecarioService.salvarLivro(livroDTO);
         return new ResponseEntity<>(livroSalvo, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/livros/lote")
-    public ResponseEntity<List<LivroModel>> salvarLivrosEmLote(@RequestBody List<LivroModel> livros) {
-        List<LivroModel> livrosSalvos = bibliotecarioService.salvarLivrosEmLote(livros);
-        return new ResponseEntity<>(livrosSalvos, HttpStatus.CREATED);
     }
 
     @PutMapping("/livros/{livroId}")

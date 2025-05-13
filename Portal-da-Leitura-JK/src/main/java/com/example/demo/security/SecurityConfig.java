@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -53,7 +52,7 @@ public class SecurityConfig {
 
                         // Acesso bibliotecário (protegido)
                         .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
-                        .requestMatchers("/bibliotecarios/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/bibliotecarios/**").hasRole("ADMIN")
 
                         // Rotas públicas de livros (GET apenas)
                         .requestMatchers(HttpMethod.GET,
@@ -79,7 +78,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/livros/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/livros/**").hasRole("ADMIN")
 
-                        // O restante exige autenticação
+                        // O restante exige autenticaçãov
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -5,6 +5,7 @@ import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -64,11 +65,23 @@ public class AlunoService {
                 .map(n -> new NotificacaoDTO(
                         n.getNotificacaoId(),
                         n.getAluno().getMatricula(),
+                        n.getBibliotecario().getBibliotecarioId(),
                         n.getMensagem(),
                         n.getTipo(),
                         n.isLida()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public List<AlunoDTO> listarTodos() {
+        List<AlunoModel> alunos = alunoRepository.findAll();
+        return alunos.stream().map(aluno -> {
+            AlunoDTO dto = new AlunoDTO();
+            dto.setNome(aluno.getNome());
+            dto.setMatricula(aluno.getMatricula());
+            dto.setEmail(aluno.getEmail());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public List<AvaliacaoDTO> listarAvaliacoes(String matricula) {
@@ -147,6 +160,7 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
+    @Transactional
     public void deletarAlunoPorMatricula(String matricula) {
         alunoRepository.deleteByMatricula(matricula);
     }
