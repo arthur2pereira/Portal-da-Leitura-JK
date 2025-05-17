@@ -2,9 +2,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../authContext";
 import "../assets/css/livro.css";
+import { jwtDecode } from "jwt-decode";
 
 const Livro = () => {
   const { livroId } = useParams();
+  const { auth } = useAuth();
+  const token = auth?.token;
+
   const [livro, setLivro] = useState(null);
   const [erro, setErro] = useState("");
   const [reservaMensagem, setReservaMensagem] = useState("");
@@ -12,97 +16,130 @@ const Livro = () => {
   const [nota, setNota] = useState(5);
   const [comentario, setComentario] = useState("");
   const [avaliacaoMensagem, setAvaliacaoMensagem] = useState("");
-  const { token } = useAuth();
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [notaMedia, setNotaMedia] = useState(null);
 
   useEffect(() => {
-    // Carregar os dados do livro
+    setErro("");
+    setReservaMensagem("");
+    setAvaliacaoMensagem("");
+
     fetch(`http://localhost:8081/livros/${livroId}`, {
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then((res) => res.json())
-      .then((data) => setLivro(data))
-      .catch((err) => {
-        console.error(err);
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao carregar livro");
+        return res.json();
+      })
+      .then((data) => {
+        setLivro(data);
+      })
+      .catch(() => {
         setErro("Não foi possível carregar o livro.");
       });
 
-    // Carregar a média das avaliações
-    fetch(`http://localhost:8081/avaliacoes/media/${livroId}`, {
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-      "Content-Type": "application/json"
-    }
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`Erro: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error("Erro ao carregar média:", error);
-  });
+    fetch(`http://localhost:8081/livros/avaliacoes/media/${livroId}`, {
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao carregar média");
+        return res.json();
+      })
+      .then((data) => {
+        setNotaMedia(data.media ?? null);
+      })
+      .catch(() => {
+        setNotaMedia(null);
+      });
+
+    fetch(`http://localhost:8081/livros/avaliacoes/${livroId}`, {
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao buscar avaliações");
+        return res.json();
+      })
+      .then((data) => {
+        setAvaliacoes(data);
+      })
+      .catch(() => {
+        setAvaliacoes([]);
+      });
   }, [livroId, token]);
 
   const fazerReserva = () => {
+    if (!token) return;
+
+    const decoded = jwtDecode(token); 
+    const matricula = decoded.sub;
+    console.log("Matricula do token:", matricula);
+
     fetch("http://localhost:8081/reservas/criar", {
       method: "POST",
       headers: {
-        ...(token && { Authorization: `Bearer ${token}` }),
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ livroId }),
+      body: JSON.stringify({ matricula, livroId }),
     })
-      .then((res) => {
-        if (res.ok) {
-          setReservaMensagem("Reserva realizada com sucesso!");
-        } else {
-          throw new Error("Erro ao fazer reserva.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setReservaMensagem("Erro ao fazer reserva.");
-      });
+    .then((res) => {
+      if (res.ok) {
+        setReservaMensagem("Reserva realizada com sucesso!");
+      } else {
+        throw new Error("Erro ao fazer reserva.");
+      }
+    })
+    .catch((err) => {
+      setReservaMensagem("Erro ao fazer reserva.");
+    });
   };
 
   const enviarAvaliacao = () => {
+    if (!token) return;
+
+    const decoded = jwtDecode(token);
+    const matricula = decoded.sub;
+    console.log("Matricula do token:", matricula);
+
     fetch("http://localhost:8081/avaliacoes/criar", {
       method: "POST",
       headers: {
-        ...(token && { Authorization: `Bearer ${token}` }),
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        matricula,
         livroId,
         nota,
         comentario,
       }),
     })
-      .then((res) => {
-        if (res.ok) {
-          setAvaliacaoMensagem("Avaliação enviada com sucesso!");
-          setComentario("");
-          setNota(5);
-          setMostrarAvaliacao(false);
-        } else {
-          throw new Error("Erro ao enviar avaliação.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setAvaliacaoMensagem("Erro ao enviar avaliação.");
-      });
+    .then((res) => {
+      if (res.ok) {
+        setAvaliacaoMensagem("Avaliação enviada com sucesso!");
+        setComentario("");
+        setNota(5);
+        setMostrarAvaliacao(false);
+      } else {
+        throw new Error("Erro ao enviar avaliação.");
+      }
+    })
+    .catch((err) => {
+      setAvaliacaoMensagem("Erro ao enviar avaliação.");
+    });
   };
 
-  if (erro)
-    return <div className="alert alert-danger text-center mt-4">{erro}</div>;
+
+  if (erro) return <div className="alert alert-danger text-center mt-4">{erro}</div>;
   if (!livro) return <div className="text-center mt-4">Carregando livro...</div>;
 
   return (
@@ -114,15 +151,13 @@ const Livro = () => {
       <p><strong>Curso:</strong> {livro.curso}</p>
       <p><strong>Gênero:</strong> {livro.genero}</p>
       <p><strong>Quantidade disponível:</strong> {livro.quantidade}</p>
-      <p><strong>Nota média:</strong> {livro.notaMedia ?? "Sem avaliações"}</p>
+      <p><strong>Nota média:</strong> {notaMedia !== null ? notaMedia.toFixed(2) : "Sem avaliações"}</p>
       <p><strong>Descrição:</strong> {livro.descricao}</p>
 
       <button className="botao-reservar" onClick={fazerReserva}>
         Reservar livro
       </button>
-      {reservaMensagem && (
-        <div className="alert alert-info mt-2">{reservaMensagem}</div>
-      )}
+      {reservaMensagem && <div className="alert alert-info mt-2">{reservaMensagem}</div>}
 
       <div className="avaliacoes mt-4">
         <h4>Avaliações</h4>
@@ -142,7 +177,7 @@ const Livro = () => {
                 min="1"
                 max="5"
                 value={nota}
-                onChange={(e) => setNota(parseInt(e.target.value))}
+                onChange={(e) => setNota(parseInt(e.target.value) || 1)}
                 className="form-control"
               />
             </label>
@@ -157,13 +192,22 @@ const Livro = () => {
             <button className="btn btn-success mt-2" onClick={enviarAvaliacao}>
               Enviar Avaliação
             </button>
-            {avaliacaoMensagem && (
-              <div className="alert alert-info mt-2">{avaliacaoMensagem}</div>
-            )}
+            {avaliacaoMensagem && <div className="alert alert-info mt-2">{avaliacaoMensagem}</div>}
           </div>
         )}
 
-        <p className="sem-avaliacoes">Ainda não há avaliações para este livro.</p>
+        {avaliacoes.length === 0 ? (
+          <p className="sem-avaliacoes">Ainda não há avaliações para este livro.</p>
+        ) : (
+          <ul className="lista-avaliacoes">
+            {avaliacoes.map((av, index) => (
+              <li key={index}>
+                <strong>Nota:</strong> {av.nota} <br />
+                <strong>Comentário:</strong> {av.comentario}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (alunoOpt.isPresent()) {
             AlunoModel aluno = alunoOpt.get();
             return User.builder()
-                    .username(aluno.getEmail())
+                    .username(aluno.getMatricula())
                     .password(aluno.getSenha())
                     .roles("USER")
                     .build();

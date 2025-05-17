@@ -23,8 +23,10 @@ public class ReservaModel {
 
     private Boolean status = true;
 
+    @Column(name = "data_reserva")
     private LocalDate dataReserva;
 
+    @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 
     public ReservaModel(Long reservaId, AlunoModel aluno, LivroModel livro, Boolean status, LocalDate dataReserva, LocalDate dataVencimento) {

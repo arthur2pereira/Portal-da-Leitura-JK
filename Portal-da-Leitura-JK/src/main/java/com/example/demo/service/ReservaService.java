@@ -80,6 +80,7 @@ public class ReservaService {
                 model.getReservaId(),
                 model.getAluno().getMatricula(),
                 model.getLivro().getLivroId(),
+                model.getLivro().getTitulo(),
                 model.getStatus(),
                 model.getDataReserva(),
                 model.getDataVencimento()

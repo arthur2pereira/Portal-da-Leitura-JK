@@ -37,7 +37,6 @@ function Login() {
           tipo: "aluno",
           nome: data.nome,
           email: data.email,
-          matricula: data.matricula
         });
         return navigate("/")
       }  

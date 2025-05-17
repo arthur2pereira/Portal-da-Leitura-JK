@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/css/perfil.css";
 import { useAuth } from "../../authContext.jsx";
 
-
 function Perfil() {
   const navigate = useNavigate();
+  const { auth, logout } = useAuth();
+
   const [reservas, setReservas] = useState([]);
   const [emprestimos, setEmprestimos] = useState([]);
   const [comentarios, setComentarios] = useState([]);
   const [erro, setErro] = useState("");
-  const { auth, logout } = useAuth();
 
+  // Inicializa o formulário com os dados do auth (nome e email)
   const [userInfo, setUserInfo] = useState({
     nome: "",
     email: "",
@@ -19,20 +20,53 @@ function Perfil() {
   });
 
   useEffect(() => {
-    if (auth && auth.nome && auth.email) {
-      setUserInfo((prevState) => {
-        if (prevState.nome !== auth.nome || prevState.email !== auth.email) {
-          return {
-            nome: auth.nome,
-            email: auth.email,
-            senha: "",
-          };
-        }
-        return prevState;
-      });
+    if (!auth || !auth.matricula) return;
+
+    // Inicializa userInfo com dados do auth quando carregar
+    setUserInfo((prev) => ({
+      ...prev,
+      nome: auth.nome || "",
+      email: auth.email || "",
+    }));
+
+    const headers = {
+      Authorization: `Bearer ${auth.token}`,
+    };
+
+    async function safeJson(res) {
+      if (!res.ok) return [];
+      const text = await res.text();
+      return text ? JSON.parse(text) : [];
     }
-  }, [[auth]]);  
-  
+
+    const fetchDados = async () => {
+      try {
+        const [resEmprestimos, resReservas, resAvaliacoes] = await Promise.all([
+          fetch(`http://localhost:8081/alunos/${auth.matricula}/emprestimos`, { headers }),
+          fetch(`http://localhost:8081/alunos/${auth.matricula}/reservas`, { headers }),
+          fetch(`http://localhost:8081/alunos/${auth.matricula}/avaliacoes`, { headers }),
+        ]);
+
+        const [emprestimosData, reservasData, avaliacoesData] = await Promise.all([
+          safeJson(resEmprestimos),
+          safeJson(resReservas),
+          safeJson(resAvaliacoes),
+        ]);
+
+        setEmprestimos(emprestimosData);
+        setReservas(reservasData);
+        setComentarios(avaliacoesData);
+
+        console.log("Reservas recebidas no front:", reservasData);
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+        setErro("Erro ao carregar suas informações.");
+      }
+    };
+
+    fetchDados();
+  }, [auth]);
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -41,38 +75,38 @@ function Perfil() {
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     setErro("");
-  
+
     if (!userInfo.nome || !userInfo.email || !userInfo.senha) {
       setErro("Todos os campos são obrigatórios.");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:8081/atualizar", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`, // se sua API exigir autorização para atualizar
         },
         body: JSON.stringify({
-          matricula: aluno.matricula,
+          matricula: auth.matricula,  // corrigido aqui: use auth.matricula
           nome: userInfo.nome,
           email: userInfo.email,
           senha: userInfo.senha,
         }),
       });
-  
+
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || "Erro ao atualizar os dados.");
       }
-  
+
       alert("Informações atualizadas com sucesso!");
       setUserInfo({ ...userInfo, senha: "" });
     } catch (err) {
       setErro(err.message);
     }
   };
-  
 
   return (
     <>
@@ -93,8 +127,9 @@ function Perfil() {
           ) : (
             reservas.map((reserva, index) => (
               <div key={index}>
-                <p><strong>Livro:</strong> {reserva.livro}</p>
-                <p><strong>Data da Reserva:</strong> {reserva.dataReserva}</p>
+                <p><strong>Livro:</strong> {reserva.titulo || "Sem título"}</p>
+                <p><strong>Data da Reserva:</strong> {reserva.dataReserva ? new Date(reserva.dataReserva).toLocaleDateString('pt-BR') : 'Data não disponível'}</p>
+                <p><strong>Data de Vencimento da Reserva:</strong> {reserva.dataVencimento ? new Date(reserva.dataVencimento).toLocaleDateString('pt-BR') : 'Data não disponível'}</p>
               </div>
             ))
           )}
@@ -121,7 +156,7 @@ function Perfil() {
           ) : (
             comentarios.map((comentario, index) => (
               <div key={index}>
-                <p><strong>Livro:</strong> {comentario.livro}</p>
+                <p><strong>Livro:</strong> {comentario.livro?.titulo || comentario.livro || "Sem título"}</p>
                 <p><strong>Nota:</strong> {comentario.nota}</p>
                 <p><strong>Comentário:</strong> {comentario.comentario}</p>
               </div>

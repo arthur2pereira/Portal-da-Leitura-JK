@@ -49,6 +49,8 @@ public class SecurityConfig {
                         // Acesso aluno (protegido)
                         .requestMatchers("/alunos/**").hasRole("USER")
                         .requestMatchers("/livros/avaliacoes/**").hasRole("USER")
+                        .requestMatchers("/avaliacoes/**").hasRole("USER")
+                        .requestMatchers("/reservas/**").hasRole("USER")
 
                         // Acesso bibliotecário (protegido)
                         .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
@@ -70,7 +72,8 @@ public class SecurityConfig {
                                 "/livros/generos",
                                 "/livros/editoras",
                                 "/livros/autores",
-                                "/livros/**"
+                                "/livros/**",
+                                "/livros/avaliacoes/**"
                         ).permitAll()
 
                         // As outras operações (POST, PUT, DELETE) em /livros/** são para ADMIN

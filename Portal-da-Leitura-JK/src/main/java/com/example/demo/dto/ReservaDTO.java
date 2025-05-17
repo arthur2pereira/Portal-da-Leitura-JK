@@ -2,17 +2,13 @@ package com.example.demo.dto;
 
 import com.example.demo.model.ReservaModel;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDate;
 
 public class ReservaDTO {
     private Long reservaId;
     private String matricula;
     private Long livroId;
+    private String titulo;
     private boolean status;
     private LocalDate dataReserva;
     private LocalDate dataVencimento;
@@ -21,15 +17,17 @@ public class ReservaDTO {
         this.reservaId = model.getReservaId();
         this.matricula = model.getAluno().getMatricula();
         this.livroId = model.getLivro().getLivroId();
+        this.titulo = model.getLivro().getTitulo();
         this.status = model.getStatus();
         this.dataReserva = model.getDataReserva();
         this.dataVencimento = model.getDataVencimento();
     }
 
-    public ReservaDTO(Long reservaId, String matricula, Long livroId, boolean status, LocalDate dataReserva, LocalDate dataVencimento) {
+    public ReservaDTO(Long reservaId, String matricula, Long livroId, String titulo, boolean status, LocalDate dataReserva, LocalDate dataVencimento) {
         this.reservaId = reservaId;
         this.matricula = matricula;
         this.livroId = livroId;
+        this.titulo = titulo;
         this.status = status;
         this.dataReserva = dataReserva;
         this.dataVencimento = dataVencimento;
@@ -60,6 +58,14 @@ public class ReservaDTO {
 
     public void setLivroId(Long livroId) {
         this.livroId = livroId;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public boolean isStatus() {

@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../authContext.jsx';
 import '../../assets/css/adminReserva.css';
 
+function formatDateNoTimezone(dateString) {
+  if (!dateString) return 'Data não disponível';
+  const [year, month, day] = dateString.split('-');
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString('pt-BR');
+}
+
 export default function ReservasAdmin() {
   const { auth } = useAuth();
   const [reservasList, setReservasList] = useState([]);
@@ -10,27 +17,28 @@ export default function ReservasAdmin() {
   const [feedbackMsg, setFeedbackMsg] = useState(null);
 
   const carregarReservas = async () => {
+    if (!auth || !auth.token) return;
+
     try {
       const response = await fetch('http://localhost:8081/bibliotecarios/reservas', {
         method: 'GET',
         headers: {
-          ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
-          "Content-Type": "application/json"
-        }        
+          Authorization: `Bearer ${auth.token}`,
+          'Content-Type': 'application/json',
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Erro ao carregar as reservas');
-      }
+      if (!response.ok) throw new Error();
 
       const data = await response.json();
       setReservasList(data);
       setIsLoading(false);
-    } catch (error) {
+    } catch {
       setErrorMsg('Erro ao carregar as reservas.');
       setIsLoading(false);
     }
   };
+
 
   const cancelarReserva = async (reservaId) => {
     try {
@@ -38,27 +46,25 @@ export default function ReservasAdmin() {
         method: 'DELETE',
         headers: {
           ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
       });
-  
-      if (!response.ok) {
-        throw new Error('Erro ao cancelar a reserva');
-      }
-  
+
+      if (!response.ok) throw new Error();
+
       await carregarReservas();
       setFeedbackMsg({ tipo: 'sucesso', texto: 'Reserva cancelada com sucesso' });
-    } catch (error) {
+    } catch {
       setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao cancelar a reserva' });
     }
   };
-  
+
   useEffect(() => {
-    console.log("Auth atual:", auth);
-    if (auth?.token) {
+    if (auth && auth.token) {
       carregarReservas();
-    }
-  }, [auth]);  
+    } 
+  }, [auth]);
+
 
   if (isLoading) return <p className="loading-text">Carregando reservas...</p>;
   if (errorMsg) return <p className="error-text">{errorMsg}</p>;
@@ -79,26 +85,41 @@ export default function ReservasAdmin() {
             <th className="table-header">Aluno</th>
             <th className="table-header">Livro</th>
             <th className="table-header">Data da Reserva</th>
+            <th className="table-header">Data de Vencimento</th>
             <th className="table-header">Ações</th>
           </tr>
         </thead>
-        <tbody>
-          {reservasList.map((reserva) => (
-            <tr key={reserva.id} className="table-row">
-              <td className="table-cell">{reserva.aluno.nome}</td>
-              <td className="table-cell">{reserva.livro.titulo}</td>
-              <td className="table-cell">{new Date(reserva.dataReserva).toLocaleString()}</td>
-              <td className="table-cell">
-                <button
-                  className="cancel-button"
-                  onClick={() => cancelarReserva(reserva.id)}
-                >
-                  Cancelar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+          <tbody>
+            {reservasList.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="table-cell" style={{ textAlign: 'center' }}>
+                  Nenhuma reserva encontrada.
+                </td>
+              </tr>
+            ) : (
+              reservasList.map((reserva) => (
+                <tr key={reserva.reservaId} className="table-row">
+                  <td className="table-cell">{reserva.matricula ?? 'Aluno não disponível'}</td>
+                  <td className="table-cell">{reserva.titulo ?? 'Livro não disponível'}</td>
+                  <td className="table-cell">
+                    {reserva.dataReserva
+                      ? formatDateNoTimezone(reserva.dataReserva)
+                      : 'Data não disponível'}
+                  </td>
+                  <td className="table-cell">
+                    {reserva.dataVencimento
+                      ? formatDateNoTimezone(reserva.dataVencimento)
+                      : 'Data não disponível'}
+                  </td>
+                  <td className="table-cell">
+                    <button className="cancel-button" onClick={() => cancelarReserva(reserva.reservaId)}>
+                      Cancelar
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
       </table>
     </div>
   );

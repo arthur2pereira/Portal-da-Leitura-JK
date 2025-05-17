@@ -1,33 +1,87 @@
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(null)
+  const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    const authLocal = localStorage.getItem("auth")
-    if (authLocal) {
-      setAuth(JSON.parse(authLocal))
+    const storedAuth = localStorage.getItem("auth");
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
     }
-  }, [])
+  }, []);
 
-  const login = (dados) => {
-    console.log("Token recebido e salvo:", dados.token); 
-    localStorage.setItem("auth", JSON.stringify(dados))
-    setAuth(dados)
-  }
+  const login = async (dados) => {
+    try {
+      if (dados.tipo === "aluno") {
+        const payloadBase64 = dados.token.split('.')[1];
+        const payload = JSON.parse(atob(payloadBase64));
+        const matricula = payload.sub;
+
+        const res = await fetch(`http://localhost:8081/alunos/${matricula}`, {
+          headers: {
+            Authorization: `Bearer ${dados.token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Falha ao buscar dados do aluno");
+
+        const alunoData = await res.json();
+
+        const authData = {
+          ...dados,
+          matricula,
+          nome: alunoData.nome,
+          email: alunoData.email,
+        };
+
+        localStorage.setItem("auth", JSON.stringify(authData));
+        setAuth(authData);
+
+      } else if (dados.tipo === "bibliotecario") {
+        let email = dados.email;
+
+        if (!email) {
+          const payloadBase64 = dados.token.split('.')[1];
+          const payload = JSON.parse(atob(payloadBase64));
+          email = payload.sub || payload.email;
+        }
+
+        if (!email) throw new Error("Email do bibliotecário não encontrado");
+
+        const res = await fetch(`http://localhost:8081/bibliotecarios/${email}`, {
+          headers: { Authorization: `Bearer ${dados.token}` }
+        });
+
+        if (!res.ok) throw new Error("Falha ao buscar dados do bibliotecário");
+
+        const bibData = await res.json();
+
+        const authData = {
+          ...dados,
+          nome: bibData.nome,
+          email: bibData.email,
+        };
+
+        localStorage.setItem("auth", JSON.stringify(authData));
+        setAuth(authData);
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+    }
+  };
 
   const logout = () => {
-    localStorage.removeItem("auth")
-    setAuth(null)
-  }
+    localStorage.removeItem("auth");
+    setAuth(null);
+  };
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

@@ -185,7 +185,7 @@ public class AlunoService {
                 return Optional.empty();
             }
 
-            String token = jwtUtil.generateToken(aluno.getEmail(), "USER");
+            String token = jwtUtil.generateToken(aluno.getMatricula(), "USER");
 
             AlunoDTO alunoDTO = new AlunoDTO();
             alunoDTO.setEmail(aluno.getEmail());
@@ -258,6 +258,7 @@ public class AlunoService {
                 model.getReservaId(),
                 model.getAluno().getMatricula(),
                 model.getLivro().getLivroId(),
+                model.getLivro().getTitulo(),
                 model.getStatus(),
                 model.getDataReserva(),
                 model.getDataVencimento()
