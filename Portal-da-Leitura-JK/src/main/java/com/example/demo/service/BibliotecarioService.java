@@ -121,9 +121,14 @@
             return bibliotecarioRepository.findByEmail(email)
                     .filter(b -> b.getSenha().equals(senha))
                     .map(b -> {
-                        String token = jwtUtil.generateToken(email, "ADMIN");
-                        BibliotecarioDTO bibliotecarioDTO = new BibliotecarioDTO(token, "ADMIN", b.getNome(), b.getEmail());
+                        String token = jwtUtil.generateToken(String.valueOf(b.getBibliotecarioId()), "ADMIN");
+                        BibliotecarioDTO bibliotecarioDTO = new BibliotecarioDTO(
+                                b.getBibliotecarioId(),
+                                b.getNome(),
+                                b.getEmail()
+                        );
                         return new TokenDTO(token, "ADMIN", bibliotecarioDTO);
+
                     });
         }
 

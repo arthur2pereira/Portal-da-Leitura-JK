@@ -23,6 +23,7 @@ import AdminLivros from './pag/bibliotecarios/admin-livros' // tela de gerenciam
 import AdminNotificacoes from './pag/bibliotecarios/admin-notificacoes'// tela de gerenciamento de notificações do adm
 import AdminReservas from './pag/bibliotecarios/admin-reservas' // tela de gerenciamento de reservas do adm
 import AdminArea from './pag/bibliotecarios/admin-area'
+import AdminEmprestimos from './pag/bibliotecarios/admin-emprestimo.jsx'
 
 import RotaProtegida from "./componentes/RotaProtegida"
 
@@ -69,6 +70,11 @@ function AppRoutes() {
           <Route path="/admin/reservas" element={
             <RotaProtegida tipoPermitido="bibliotecario">
               <AdminReservas />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/emprestimos" element={
+            <RotaProtegida tipoPermitido="bibliotecario">
+              <AdminEmprestimos />
             </RotaProtegida>
           } />
           <Route path="/admin/notificacoes" element={

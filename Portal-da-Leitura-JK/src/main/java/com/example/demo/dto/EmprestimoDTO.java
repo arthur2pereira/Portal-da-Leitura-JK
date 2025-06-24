@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class EmprestimoDTO {
     private Long emprestimoId;
     private String matricula;
+    private String titulo;
     private Long livroId;
     private Long bibliotecarioId;
     private LocalDate dataEmprestimo;
@@ -18,6 +19,7 @@ public class EmprestimoDTO {
     public EmprestimoDTO(EmprestimoModel model) {
         this.emprestimoId = model.getEmprestimoId();
         this.matricula = model.getAluno().getMatricula();
+        this.titulo = model.getLivro().getTitulo();
         this.livroId = model.getLivro().getLivroId();
         this.bibliotecarioId = model.getBibliotecario().getBibliotecarioId();
         this.dataEmprestimo = model.getDataEmprestimo();
@@ -27,9 +29,10 @@ public class EmprestimoDTO {
         this.status = model.getStatus();
     }
 
-    public EmprestimoDTO(Long emprestimoId, String matricula, Long livroId, Long bibliotecarioId, LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao, int renovacoes, String status) {
+    public EmprestimoDTO(Long emprestimoId, String matricula, String titulo, Long livroId, Long bibliotecarioId, LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao, int renovacoes, String status) {
         this.emprestimoId = emprestimoId;
         this.matricula = matricula;
+        this.titulo = titulo;
         this.livroId = livroId;
         this.bibliotecarioId = bibliotecarioId;
         this.dataEmprestimo = dataEmprestimo;
@@ -56,6 +59,14 @@ public class EmprestimoDTO {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public Long getLivroId() {

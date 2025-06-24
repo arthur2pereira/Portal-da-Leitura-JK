@@ -54,6 +54,17 @@ public class BibliotecarioController {
         return ResponseEntity.ok(alunos);
     }
 
+    @PostMapping("/reservas/{reservaId}/confirmar-retirada")
+    public ResponseEntity<?> confirmarRetirada(@PathVariable Long reservaId) {
+        try {
+            reservaService.transformarReservaEmEmprestimo(reservaId);
+            return ResponseEntity.ok("Retirada confirmada e empréstimo registrado com sucesso.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
     @PutMapping("/atualizar")
     public ResponseEntity<?> atualizarAlunoComoAdmin(@RequestBody AlunoDTO dto) {
         try {

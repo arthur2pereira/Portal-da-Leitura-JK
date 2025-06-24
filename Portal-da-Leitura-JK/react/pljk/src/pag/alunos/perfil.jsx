@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/css/perfil.css";
 import { useAuth } from "../../authContext.jsx";
 
+function formatDateNoTimezone(dateString) {
+  if (!dateString) return 'Data não disponível';
+  const [year, month, day] = dateString.split('-');
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString('pt-BR');
+}
+
 function Perfil() {
   const navigate = useNavigate();
   const { auth, logout } = useAuth();
@@ -128,8 +135,8 @@ function Perfil() {
             reservas.map((reserva, index) => (
               <div key={index}>
                 <p><strong>Livro:</strong> {reserva.titulo || "Sem título"}</p>
-                <p><strong>Data da Reserva:</strong> {reserva.dataReserva ? new Date(reserva.dataReserva).toLocaleDateString('pt-BR') : 'Data não disponível'}</p>
-                <p><strong>Data de Vencimento da Reserva:</strong> {reserva.dataVencimento ? new Date(reserva.dataVencimento).toLocaleDateString('pt-BR') : 'Data não disponível'}</p>
+                <p><strong>Data da Reserva:</strong> {formatDateNoTimezone(reserva.dataReserva)}</p>
+                <p><strong>Data de Vencimento da Reserva:</strong> {formatDateNoTimezone(reserva.dataVencimento)}</p>
               </div>
             ))
           )}

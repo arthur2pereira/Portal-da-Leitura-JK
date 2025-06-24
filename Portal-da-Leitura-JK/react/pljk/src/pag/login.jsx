@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/login.css";
-import { useAuth } from "../authContext"
+import { useAuth } from "../authContext";
 
 function Login() {
   const [emailOuMatricula, setEmailOuMatricula] = useState("");
@@ -12,59 +12,60 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     if (!emailOuMatricula || !senha) {
       setErro("Por favor, preencha todos os campos.");
       return;
     }
-  
-    const body = emailOuMatricula.includes('@')
+
+    const isEmail = emailOuMatricula.includes("@");
+    const body = isEmail
       ? { email: emailOuMatricula.trim().toLowerCase(), senha }
       : { matricula: emailOuMatricula.trim(), senha };
-  
+
     try {
-      // Tenta login como aluno
+      // Tenta autenticar como aluno
       const resAluno = await fetch("http://localhost:8081/alunos/autenticar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-  
+
       if (resAluno.ok) {
-        const data = await resAluno.json()
+        const data = await resAluno.json();
         login({
           token: data.token,
           tipo: "aluno",
-          nome: data.nome,
-          email: data.email,
+          nome: data.user.nome,
+          email: data.user.email,
         });
-        return navigate("/")
-      }  
-  
-      // Se falhou, tenta como bibliotecário
+        return navigate("/");
+      }
+
+      // Se falhar, tenta autenticar como bibliotecário
       const resBib = await fetch("http://localhost:8081/bibliotecarios/autenticar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: body.email, senha: body.senha }),
+        body: JSON.stringify({ email: body.email, senha }),
       });
-  
+
       if (resBib.ok) {
-        const data = await resBib.json()
+        const data = await resBib.json();
         login({
           token: data.token,
           tipo: "bibliotecario",
-          nome: data.nome,
-          email: data.email
+          nome: data.user.nome,
+          email: data.user.email,
         });
-        return navigate("/admin/area")
-      }  
-  
+        return navigate("/admin/area");
+      }
+
       throw new Error("Credenciais inválidas.");
     } catch (error) {
       setErro(error.message);
     }
   };
-  
+
   return (
     <div className="login-container">
       <div className="lado-esquerdo">

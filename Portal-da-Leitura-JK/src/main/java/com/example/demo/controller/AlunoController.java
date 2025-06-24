@@ -123,6 +123,12 @@ public class AlunoController {
         }
     }
 
+    @GetMapping("/{matricula}/temReservaAtiva")
+    public ResponseEntity<Boolean> temReservaAtiva(@PathVariable String matricula) {
+        boolean temReserva = alunoService.buscarReservaAtiva(matricula).isPresent();
+        return ResponseEntity.ok(temReserva);
+    }
+
     @PostMapping("/autenticar")
     public ResponseEntity<?> autenticar(@RequestBody AlunoModel alunoLogin) {
         System.out.println("Matrícula/Email recebidos: " + alunoLogin.getMatricula() + " / " + alunoLogin.getEmail());  // Debug

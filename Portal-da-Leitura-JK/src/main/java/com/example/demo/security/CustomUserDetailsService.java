@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (biblioOpt.isPresent()) {
             BibliotecarioModel biblio = biblioOpt.get();
             return User.builder()
-                    .username(biblio.getEmail())
+                    .username(String.valueOf(biblio.getBibliotecarioId()))
                     .password(biblio.getSenha())
                     .roles("ADMIN")
                     .build();

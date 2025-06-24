@@ -32,12 +32,12 @@ public class EmprestimoModel {
     @NotNull
     private LocalDate dataVencimento;
 
-    @NotNull
     private LocalDate dataDevolucao;
 
     @NotNull
     private int renovacoes = 0;
 
+    @NotNull
     private String status;
 
     public EmprestimoModel(Long emprestimoId, AlunoModel aluno, LivroModel livro, BibliotecarioModel bibliotecario, LocalDate dataEmprestimo, LocalDate dataVencimento, LocalDate dataDevolucao, int renovacoes, String status) {

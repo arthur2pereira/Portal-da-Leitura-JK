@@ -29,7 +29,7 @@ function Navbar() {
         if (tipo === "aluno" && matricula) {
           url = `http://localhost:8081/notificacoes/aluno/${matricula}/nao-lidas`
         } else if (tipo === "bibliotecario" && auth?.email) {
-          url = `http://localhost:8081/notificacoes/bibliotecario/${auth.email}/nao-lidas`
+          url = `http://localhost:8081/notificacoes/bibliotecario/${auth.bibliotecarioId}/nao-lidas`
         }
   
         if (url) {

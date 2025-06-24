@@ -21,7 +21,7 @@ function Catalogo() {
   const [autores, setAutores] = useState([]);
   const [editoras, setEditoras] = useState([]);
 
-  const livrosPorPagina = 20;
+  const livrosPorPagina = 12;
 
   const handleFiltroChange = (e) => {
     const { name, value } = e.target;
@@ -31,13 +31,14 @@ function Catalogo() {
 
   const montarQueryString = () => {
     const params = new URLSearchParams();
-    params.append("pagina", paginaAtual);
+    params.append("pagina", isNaN(paginaAtual) ? 0 : paginaAtual - 1);
     params.append("tamanho", livrosPorPagina);
-    if (filtros.pesquisa) params.append("titulo", filtros.pesquisa);
+
     if (filtros.curso) params.append("curso", filtros.curso);
     if (filtros.genero) params.append("genero", filtros.genero);
     if (filtros.autor) params.append("autor", filtros.autor);
     if (filtros.editora) params.append("editora", filtros.editora);
+
     return params.toString();
   };
 
@@ -45,23 +46,36 @@ function Catalogo() {
     const fetchLivros = async () => {
       try {
         const queryString = montarQueryString();
-        const token = localStorage.getItem('token');  // Supondo que o token esteja armazenado no localStorage
-        const response = await fetch(`http://localhost:8081/livros/buscar?${queryString}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,  // Passando o token no cabeçalho
-          },
-        });
-        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-        const data = await response.json();
-        setLivros(data || []);
-        setTotalPaginas(1);        
-      } catch (error) {
-        console.error("Erro ao buscar livros:", error);
+        const token = localStorage.getItem('token');
+
+        const endpoint = filtros.pesquisa
+          ? `http://localhost:8081/livros/buscar?titulo=${encodeURIComponent(filtros.pesquisa)}&pagina=${paginaAtual - 1}&tamanho=${livrosPorPagina}`
+          : `http://localhost:8081/livros/filtrar?${queryString}`;
+
+        const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+      const data = await response.json();
+      setLivros(data.livros || []);
+      setTotalPaginas(data.totalPaginas || 1);
+      if (typeof data.paginaAtual === 'number') {
+        setPaginaAtual(data.paginaAtual + 1);
       }
-    };    
-    fetchLivros();
+    } catch (error) {
+      console.error("Erro ao buscar livros:", error);
+      setLivros([]);
+      setTotalPaginas(1);
+    }
+  };
+  fetchLivros();
   }, [filtros, paginaAtual]);
+
 
   useEffect(() => {
     const fetchFiltros = async () => {
@@ -73,19 +87,28 @@ function Catalogo() {
           fetch('http://localhost:8081/livros/editoras')
         ]);
         const [resCursos, resGeneros, resAutores, resEditoras] = responses;
-        if (!resCursos.ok || !resGeneros.ok || !resAutores.ok || !resEditoras.ok) {
-          throw new Error("Falha ao carregar um ou mais filtros.");
-        }
-        setCursos(await resCursos.json());
-        setGeneros(await resGeneros.json());
-        setAutores(await resAutores.json());
-        setEditoras(await resEditoras.json());
+
+        const cursosJson = await resCursos.json();
+        const generosJson = await resGeneros.json();
+        const autoresJson = await resAutores.json();
+        const editorasJson = await resEditoras.json();
+
+        setCursos(cursosJson.filter(c => c !== null).sort((a, b) => a.localeCompare(b)));
+        setGeneros(generosJson.filter(g => g !== null).sort((a, b) => a.localeCompare(b)));
+        setAutores(
+          autoresJson
+            .filter(a => a !== null && a.toLowerCase() !== 'diversos')
+            .sort((a, b) => a.localeCompare(b))
+        );
+
+        setEditoras(editorasJson.filter(e => e !== null).sort((a, b) => a.localeCompare(b)));
       } catch (error) {
         console.error("Erro ao carregar filtros:", error);
       }
     };
-    fetchFiltros(); 
+    fetchFiltros();
   }, []);
+
 
   return (
     <div className="catalogo-wrapper">
@@ -94,36 +117,36 @@ function Catalogo() {
 
         <input
           type="text"
-          placeholder="Pesquisar por título ou autor"
+          placeholder="Pesquisar por título"
           name="pesquisa"
           value={filtros.pesquisa}
           onChange={handleFiltroChange}
         />
 
         <select name="curso" value={filtros.curso} onChange={handleFiltroChange}>
-          <option value="">Todos os cursos</option>
-          {cursos.map((curso, i) => (
+          <option value="">Nenhum curso selecionado</option>
+          {cursos.map((curso) => (
             <option key={curso} value={curso}>{curso}</option>
           ))}
         </select>
 
         <select name="autor" value={filtros.autor} onChange={handleFiltroChange}>
-          <option value="">Todos os autores</option>
-          {autores.map((autor, i) => (
+          <option value="">Nenhum autor selecionado</option>
+          {autores.map((autor) => (
             <option key={autor} value={autor}>{autor}</option>
           ))}
         </select>
 
         <select name="editora" value={filtros.editora} onChange={handleFiltroChange}>
-          <option value="">Todas as editoras</option>
-          {editoras.map((editora, i) => (
+          <option value="">Nenhuma editora selecionada</option>
+          {editoras.map((editora) => (
             <option key={editora} value={editora}>{editora}</option>
           ))}
         </select>
 
         <select name="genero" value={filtros.genero} onChange={handleFiltroChange}>
-          <option value="">Todos os gêneros</option>
-          {generos.map((genero, i) => (
+          <option value="">Nenhum genero selecionado</option>
+          {generos.map((genero) => (
             <option key={genero} value={genero}>{genero}</option>
           ))}
         </select>
@@ -137,10 +160,10 @@ function Catalogo() {
                 key={livro.livroId}
                 className="card-livro"
                 onClick={() => navigate(`/livro/${livro.livroId}`)}
-                style={{ cursor: 'pointer' }} // Opcional: mostra que o card é clicável
               >
                 <h4>{livro.titulo}</h4>
                 <p><strong>Autor:</strong> {livro.autor}</p>
+                <p><strong>Editora:</strong> {livro.editora}</p>
                 <p>{livro.descricao}</p>
               </div>
             ))

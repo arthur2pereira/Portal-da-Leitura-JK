@@ -2,13 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.EmprestimoDTO;
 import com.example.demo.model.EmprestimoModel;
+import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.service.EmprestimoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/emprestimos")
@@ -16,6 +21,16 @@ public class EmprestimoController {
 
     @Autowired
     private EmprestimoService emprestimoService;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @GetMapping
+    public ResponseEntity<List<EmprestimoDTO>> listarTodos() {
+        List<EmprestimoModel> emprestimos = emprestimoService.listarTodos();
+        return emprestimos.isEmpty() ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(emprestimoService.converterParaDTO(emprestimos));
+    }
 
     @GetMapping("/aluno/{matricula}")
     public ResponseEntity<List<EmprestimoDTO>> buscarPorAluno(@PathVariable String matricula) {
@@ -39,14 +54,26 @@ public class EmprestimoController {
     }
 
     @PutMapping("/{emprestimoId}/renovar-admin")
-    public ResponseEntity<String> renovarEmprestimoBibliotecario(@PathVariable Long emprestimoId, @RequestParam int dias, @RequestParam String emailBibliotecario) {
-        emprestimoService.renovarEmprestimoPorBibliotecario(emprestimoId, dias, emailBibliotecario);
-        return ResponseEntity.ok("Prazo do empréstimo prorrogado pelo bibliotecário.");
+    public ResponseEntity<?> renovarEmprestimoAdmin(
+            @PathVariable("emprestimoId") Long emprestimoId,
+            @RequestBody Map<String,Integer> body){
+
+        int dias = body.get("dias");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        Long bibliotecarioId = Long.parseLong(user.getUsername());
+
+        try {
+            emprestimoService.renovarEmprestimoPorBibliotecario(emprestimoId, dias, bibliotecarioId);
+            return ResponseEntity.ok("Empréstimo renovado com sucesso.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
-    @GetMapping("/{bibliotecarioId}/vencido")
-    public ResponseEntity<Boolean> estaVencido(@PathVariable Long bibliotecarioId) {
-        return ResponseEntity.ok(emprestimoService.estaVencido(bibliotecarioId));
+    @GetMapping("/{emprestimoId}/vencido")
+    public ResponseEntity<Boolean> estaVencido(@PathVariable Long emprestimoId) {
+        return ResponseEntity.ok(emprestimoService.estaVencido(emprestimoId));
     }
 
     @GetMapping("/bibliotecario/{bibliotecarioId}")
@@ -63,7 +90,7 @@ public class EmprestimoController {
     }
 
 
-    @PostMapping("/{emprestimoId}/devolver")
+    @PutMapping("/{emprestimoId}/devolver")
     public ResponseEntity<String> registrarDevolucao(@PathVariable Long emprestimoId) {
         emprestimoService.registrarDevolucao(emprestimoId);
         return ResponseEntity.ok("Devolução registrada com sucesso.");

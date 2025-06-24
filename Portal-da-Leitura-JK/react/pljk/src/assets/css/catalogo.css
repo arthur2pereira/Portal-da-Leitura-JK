@@ -1,76 +1,156 @@
 .catalogo-wrapper {
-    display: flex;
-    margin-top: 50px;
-    padding: 20px;
-    gap: 20px;
-  }
-  
-  .sidebar {
-    width: 250px;
-    display: flex;
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+  padding: 20px;
+  gap: 20px;
+  background-color: #005c5a;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  color: white;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  height: calc(100vh - 70px);
+  z-index: 10;
+  transform: none;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.ativa {
+  transform: none;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+}
+
+.sidebar input,
+.sidebar select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.toggle-sidebar {
+  background-color: #3ea66b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 11;
+  display: none;
+}
+
+.livros-container {
+  flex: 1;
+  margin-left: 250px;
+  padding-bottom: 40px;
+}
+
+.lista-livros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card-livro {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card-livro:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  background-color: #3ea66b;
+  color: white;
+}
+
+.card-livro h4 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.card-livro p {
+  font-size: 0.95rem;
+  margin: 4px 0;
+}
+
+.paginacao {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.paginacao button {
+  padding: 6px 12px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.paginacao button:hover {
+  background-color: #ccc;
+}
+
+.paginacao button.ativo {
+  background-color: white;
+  color: #005c5a;
+}
+
+.paginacao button.ativa:hover{
+  background-color: #3ea66b;
+  color: white;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .catalogo-wrapper {
     flex-direction: column;
-    gap: 7px;
+    padding: 10px;
+    background-color: #005c5a;
   }
-  
-  .sidebar label {
-    margin-bottom: 2px;
+
+  .sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    border-radius: 0;
+    display: none;
+    margin-left: 0;
+    z-index: 20;
   }
-  
-  .sidebar input,
-  .sidebar select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 0;
-  }  
-  
-  .sidebar input {
-    margin-bottom: 2px;
-  }
-  
-  .sidebar select {
-    margin-bottom: 2px;
-  }  
-  
+
   .livros-container {
-    flex: 1;
+    margin-left: 0;
+    padding-top: 80px;
   }
-  
-  .lista-livros {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .card-livro {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-  }
-  
-  .card-livro h4 {
-    margin-bottom: 5px;
-  }
-  
-  .paginacao {
-    margin-top: 20px;
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
-  
-  .paginacao button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #eee;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .paginacao button.ativo {
-    background-color: #007bff;
-    color: white;
-  }
-  
+}

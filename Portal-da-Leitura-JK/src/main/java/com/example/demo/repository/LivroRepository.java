@@ -1,24 +1,19 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.LivroModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface LivroRepository extends JpaRepository<LivroModel, Long>{
+public interface LivroRepository extends JpaRepository<LivroModel, Long>, JpaSpecificationExecutor<LivroModel> {
     Optional<LivroModel> findByLivroId(Long livroId);
-    List<LivroModel> findByTituloContainingIgnoreCase(String titulo);
-    List<LivroModel> findByAutorContainingIgnoreCase(String autor);
-    List<LivroModel> findByGeneroContainingIgnoreCase(String genero);
-    List<LivroModel> findByCursoContainingIgnoreCase(String curso);
-    List<LivroModel> findByEditoraContainingIgnoreCase(String editora);
-
-    List<LivroModel> findByTituloContainingIgnoreCaseAndAutorContainingIgnoreCaseAndGeneroContainingIgnoreCaseAndEditoraContainingIgnoreCaseAndCursoContainingIgnoreCase(
-            String titulo, String autor, String genero, String editora, String curso);
-
+    Page<LivroModel> findByTituloContainingIgnoreCase(String titulo, Pageable pageable);
     boolean existsByTituloAndAutor(String titulo, String autor);
     @Query("SELECT DISTINCT l.curso FROM LivroModel l")
     List<String> findAllCursosUnicos();

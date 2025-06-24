@@ -25,7 +25,6 @@ function BlocoLivros() {
     axios.get("/avaliacoes/mais-avaliados")
       .then(res => {
         const data = res.data;
-
         if (Array.isArray(data)) {
           setLivrosDestaque(data);
         } else if (data && Array.isArray(data.livros)) {
@@ -46,24 +45,24 @@ function BlocoLivros() {
   return (
     <section className="bloco-livros">
       <h3>Livros em Destaque</h3>
-        {carregando ? (
-          <p>Carregando livros em destaque...</p>
-        ) : livrosDestaque.length === 0 ? (
-          <p className="mensagem-vazia">Nenhum livro avaliado ainda.</p>
-        ) : (
-          <div className="linha-livros">
-            {livrosDestaque.map((livro) => (
-              <Link to={`/livros/${livro.id}`} key={livro.id} className="livro-card">
-                <h4>{livro.titulo}</h4>
-                <Estrelas nota={livro.notaMedia} />
-                <p>{livro.descricao}</p>
-              </Link>
-            ))}
-          </div>
-        )}
+      {carregando ? (
+        <p>Carregando livros em destaque...</p>
+      ) : livrosDestaque.length === 0 ? (
+        <p className="mensagem-vazia">Nenhum livro avaliado ainda.</p>
+      ) : (
+        <div className="linha-livros">
+          {livrosDestaque.map((livro) => (
+            <Link to={`/livros/${livro.id}`} key={livro.id} className="livro-card">
+              <h4>{livro.titulo}</h4>
+              <Estrelas nota={livro.notaMedia} />
+              <p>{livro.descricao}</p>
+            </Link>
+          ))}
+        </div>
+      )}
     </section>
   );
-};
+}
 
 const BlocoImagem = ({ dados, titulo, tipo }) => (
   <section className="bloco-imagem">
@@ -83,7 +82,7 @@ const Destaques = () => (
   <div className="container-destaques">
     <BlocoLivros />
     <BlocoImagem dados={autoresBrasileiros} titulo="Autores Brasileiros" tipo="autor" />
-    <BlocoImagem dados={autoresEstrangeiros} titulo="Autores Estrangeiros" tipo="autor"/>
+    <BlocoImagem dados={autoresEstrangeiros} titulo="Autores Estrangeiros" tipo="autor" />
     <BlocoImagem dados={editoras} titulo="Editoras" tipo="editora" />
   </div>
 );
@@ -118,7 +117,8 @@ const editoras = [
 let indexAtual = 0;
 const imagens = [
   "/imagens/biblioteca.png",
-  "/imagens/Biblioteca2.jpg" 
+  "/imagens/Biblioteca2.jpg",
+  "/imagens/Biblioteca3.jpg",
 ];
 
 function trocarSlide(direcao) {
@@ -133,7 +133,7 @@ function irParaSlide(indice) {
 
 function atualizarCarrossel() {
   const imagem = document.getElementById("imagem-carrossel");
-  imagem.src = imagens[indexAtual];
+  if (imagem) imagem.src = imagens[indexAtual];
 }
 
 function Index() {
@@ -143,7 +143,7 @@ function Index() {
         <div className="carrossel-container">
           <img
             id="imagem-carrossel"
-            src="/imagens/biblioteca.png"
+            src={imagens[0]}
             alt="Banner"
             className="carrossel-img"
           />
@@ -155,8 +155,8 @@ function Index() {
           </button>
         </div>
         <div className="carrossel-overlay">
-            <h1>Portal da Leitura Juscelino Kubitschek</h1>
-          </div>
+          <h1>Portal da Leitura Juscelino Kubitschek</h1>
+        </div>
       </section>
 
       <Destaques />
@@ -176,7 +176,7 @@ function Index() {
             </p>
         </div>
       </section>
-    </div> 
+    </div>
   );
 }
 

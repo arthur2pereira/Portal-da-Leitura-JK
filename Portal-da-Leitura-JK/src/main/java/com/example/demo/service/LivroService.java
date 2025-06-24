@@ -6,7 +6,12 @@ import com.example.demo.model.LivroModel;
 import com.example.demo.repository.AvaliacaoRepository;
 import com.example.demo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +25,9 @@ public class LivroService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
-    public List<LivroModel> listarLivros() {
-        return livroRepository.findAll();
+    public Page<LivroModel> listarLivrosPaginados(int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        return livroRepository.findAll(pageable);
     }
 
     public LivroModel buscarPorLivroId(Long livroId) {
@@ -45,24 +51,36 @@ public class LivroService {
         return livroRepository.findAllGenerosUnicos();
     }
 
-    public List<LivroModel> buscarPorTitulo(String titulo) {
-        return livroRepository.findByTituloContainingIgnoreCase(titulo);
+    public Page<LivroModel> buscarComFiltros(String titulo, String autor, String genero, String curso, String editora, Pageable pageable) {
+        Specification<LivroModel> spec = Specification.where(null);
+
+        if (StringUtils.hasText(titulo)) {
+            spec = spec.and((root, query, builder) ->
+                    builder.like(builder.lower(root.get("titulo")), "%" + titulo.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(autor)) {
+            spec = spec.and((root, query, builder) ->
+                    builder.like(builder.lower(root.get("autor")), "%" + autor.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(genero)) {
+            spec = spec.and((root, query, builder) ->
+                    builder.like(builder.lower(root.get("genero")), "%" + genero.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(curso)) {
+            spec = spec.and((root, query, builder) ->
+                    builder.like(builder.lower(root.get("curso")), "%" + curso.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(editora)) {
+            spec = spec.and((root, query, builder) ->
+                    builder.like(builder.lower(root.get("editora")), "%" + editora.toLowerCase() + "%"));
+        }
+
+        return livroRepository.findAll(spec, pageable);
     }
 
-    public List<LivroModel> buscarPorAutor(String autor) {
-        return livroRepository.findByAutorContainingIgnoreCase(autor);
-    }
-
-    public List<LivroModel> buscarPorGenero(String genero) {
-        return livroRepository.findByGeneroContainingIgnoreCase(genero);
-    }
-
-    public List<LivroModel> buscarPorCurso(String curso) {
-        return livroRepository.findByCursoContainingIgnoreCase(curso);
-    }
-
-    public List<LivroModel> buscarPorEditora(String editora) {
-        return livroRepository.findByEditoraContainingIgnoreCase(editora);
+    public Page<LivroModel> buscarPorTituloPaginado(String titulo, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        return livroRepository.findByTituloContainingIgnoreCase(titulo, pageable);
     }
 
     public LivroModel salvarLivro(LivroDTO livroDTO) {

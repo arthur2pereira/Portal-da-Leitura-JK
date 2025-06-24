@@ -5,8 +5,9 @@ import "../../assets/css/alunoAdmin.css";
 export default function AdminAlunos() {
   const [alunos, setAlunos] = useState([]);
   const [erro, setErro] = useState("");
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [busca, setBusca] = useState("");
-  const [alunoParaEditar, setAlunoParaEditar] = useState(null);  // Novo estado
+  const [alunoParaEditar, setAlunoParaEditar] = useState(null);
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function AdminAlunos() {
       })
       .then((data) => setAlunos(data))
       .catch((err) => {
-        console.error(err);
+        console.error("Erro no fetch: ", err);
         setErro("Erro ao buscar alunos.");
       });
   };
@@ -83,6 +84,9 @@ export default function AdminAlunos() {
           )
         );
         setAlunoParaEditar(null);
+        setMensagemSucesso("Aluno atualizado com sucesso!");
+
+        setTimeout(() => setMensagemSucesso(""), 20000);
       })
       .catch((err) => {
         console.error(err);
@@ -97,7 +101,7 @@ export default function AdminAlunos() {
   );
 
   return (
-    <div className="admin-alunos-container">
+    <div className="admin-alunos-wrapper">
       <h2>Gerenciar Alunos</h2>
 
       <input
@@ -109,6 +113,26 @@ export default function AdminAlunos() {
       />
 
       {erro && <div className="alert alert-danger">{erro}</div>}
+
+      {/* Mostrar mensagem de sucesso */}
+      {mensagemSucesso && (
+        <div
+          style={{
+            backgroundColor: "#d4edda",
+            color: "#155724",
+            padding: "10px 15px",
+            borderRadius: "5px",
+            marginBottom: "20px",
+            maxWidth: "400px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
+            fontWeight: "600",
+          }}
+        >
+          {mensagemSucesso}
+        </div>
+      )}
 
       {alunosFiltrados.length === 0 ? (
         <p className="text-muted">Nenhum aluno encontrado.</p>

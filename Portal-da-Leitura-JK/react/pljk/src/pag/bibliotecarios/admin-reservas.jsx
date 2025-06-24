@@ -59,6 +59,25 @@ export default function ReservasAdmin() {
     }
   };
 
+    const confirmarRetirada = async (reservaId) => {
+    try {
+      const response = await fetch(`http://localhost:8081/bibliotecarios/reservas/${reservaId}/confirmar-retirada`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) throw new Error();
+
+      await carregarReservas();
+      setFeedbackMsg({ tipo: 'sucesso', texto: 'Retirada confirmada e empréstimo registrado com sucesso.' });
+    } catch {
+      setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao confirmar retirada.' });
+    }
+  };
+
   useEffect(() => {
     if (auth && auth.token) {
       carregarReservas();
@@ -114,6 +133,11 @@ export default function ReservasAdmin() {
                   <td className="table-cell">
                     <button className="cancel-button" onClick={() => cancelarReserva(reserva.reservaId)}>
                       Cancelar
+                    </button>
+                    <button
+                      className="confirm-button"
+                      onClick={() => confirmarRetirada(reserva.reservaId)}>
+                      Confirmar Retirada
                     </button>
                   </td>
                 </tr>

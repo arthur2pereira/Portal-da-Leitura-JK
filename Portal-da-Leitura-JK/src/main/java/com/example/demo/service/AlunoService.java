@@ -7,7 +7,6 @@ import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -124,7 +123,6 @@ public class AlunoService {
             return Optional.empty();
         }
     }
-
 
     public Optional<AlunoModel> buscarPorMatricula(String matricula) {
         return alunoRepository.findByMatricula(matricula);
@@ -243,6 +241,7 @@ public class AlunoService {
         return new EmprestimoDTO(
                 model.getEmprestimoId(),
                 model.getAluno().getMatricula(),
+                model.getLivro().getTitulo(),
                 model.getLivro().getLivroId(),
                 model.getBibliotecario().getBibliotecarioId(),
                 model.getDataEmprestimo(),

@@ -5,8 +5,8 @@
   function GerenciarLivros() {
     const [livros, setLivros] = useState([]);
     const [filtro, setFiltro] = useState("");
-    const [pagina, setPagina] = useState(1);
-    const porPagina = 10;
+    const [paginaAtual, setPaginaAtual] = useState(0);
+    const [totalPaginas, setTotalPaginas] = useState(1);
     const { auth } = useAuth();
 
     const [formLivro, setFormLivro] = useState({
@@ -25,38 +25,36 @@
     const [mensagem, setMensagem] = useState(null);
 
     useEffect(() => {
-      buscarLivros();
+      buscarLivros(0);
     }, []);
 
-    const buscarLivros = async () => {
+    const buscarLivros = async (pagina = 0) => {
       try {
-        const resposta = await fetch("http://localhost:8081/livros/listar", {
+        const resposta = await fetch(`http://localhost:8081/livros/listar?pagina=${pagina}&tamanho=10`, {
           method: "GET",
           headers: {
             ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
             "Content-Type": "application/json"
           }
         });
-    
-        if (!resposta.ok) {
-          throw new Error(`Erro HTTP: ${resposta.status}`);
-        }
-    
+
+        if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
+
         const dados = await resposta.json();
-        setLivros(dados);
+        setLivros(dados.livros || []);
+        setPaginaAtual(dados.paginaAtual);
+        setTotalPaginas(dados.totalPaginas);
       } catch (err) {
         console.error("Erro ao buscar livros:", err);
         setMensagem({ tipo: "erro", texto: "Erro ao carregar livros." });
       }
-    };    
+    };
 
     const filtrarLivros = () => {
-      const filtrado = livros.filter((livro) =>
+      return livros.filter((livro) =>
         livro.titulo.toLowerCase().includes(filtro.toLowerCase())
       );
-      return filtrado.slice(0, pagina * porPagina);
-    };
-    
+    };  
 
     const handleChange = (e) => {
       setFormLivro({ ...formLivro, [e.target.name]: e.target.value });
@@ -128,7 +126,7 @@
         setMensagem({ tipo: "erro", texto: "Erro ao salvar o livro." });
       }
 
-      setTimeout(() => setMensagem(null), 3000);
+      setTimeout(() => setMensagem(null), 20000);
     };
 
     const editarLivro = (livro) => {
@@ -155,11 +153,6 @@
         }
         setTimeout(() => setMensagem(null), 3000);
       }
-    };
-
-
-    const carregarMais = () => {
-      setPagina(pagina + 1);
     };
 
     return (
@@ -191,19 +184,35 @@
           <ul className={styles.listaLivros}>
             {filtrarLivros().map((livro) => (
               <li key={livro.livroId}>
-                <span onClick={() => editarLivro(livro)}>
-                  #{livro.livroId} - {livro.titulo} (Qtd: {livro.quantidade})
-                </span>
-                <button onClick={() => excluirLivro(livro.livroId)} className={styles.excluirBtn}>
-                  Excluir
-                </button>
+                <div className={styles.infoLivro}>
+                  <span>
+                    #{livro.livroId} - {livro.titulo} (Qtd: {livro.quantidade})
+                  </span>
+                  <div className={styles.botoesLivro}>
+                    <button onClick={() => editarLivro(livro)} className={styles.editarBtn}>
+                      Editar
+                    </button>
+                    <button onClick={() => excluirLivro(livro.livroId)} className={styles.excluirBtn}>
+                      Excluir
+                    </button>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
 
-          {filtrarLivros().length < livros.filter((l) => l.titulo.toLowerCase().includes(filtro.toLowerCase())).length && (
-            <button onClick={carregarMais}>Carregar mais</button>
-          )}
+          <div className={styles.botaoPaginacaoContainer}>
+            {Array.from({ length: totalPaginas }, (_, i) => (
+              <button
+                key={i}
+                disabled={paginaAtual === i}
+                onClick={() => buscarLivros(i)}
+                className={`${styles.botaoPagina} ${paginaAtual === i ? styles.ativo : ''}`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
         </section>
 
         <section className={styles.secao}>

@@ -9,7 +9,7 @@ public class LivroDTO {
     private String genero;
     private String curso;
     private String editora;
-    private int anoPublicacao;
+    private Integer anoPublicacao;
     private String descricao;
     private Integer quantidade;
 
@@ -25,7 +25,7 @@ public class LivroDTO {
         this.quantidade = model.getQuantidade();
     }
 
-    public LivroDTO(Long livroId, String titulo, String autor, String genero, String curso, String editora, int anoPublicacao, String descricao, Integer quantidade) {
+    public LivroDTO(Long livroId, String titulo, String autor, String genero, String curso, String editora, Integer anoPublicacao, String descricao, Integer quantidade) {
         this.livroId = livroId;
         this.titulo = titulo;
         this.autor = autor;
@@ -88,7 +88,7 @@ public class LivroDTO {
         this.editora = editora;
     }
 
-    public int getAnoPublicacao() {
+    public Integer getAnoPublicacao() {
         return anoPublicacao;
     }
 

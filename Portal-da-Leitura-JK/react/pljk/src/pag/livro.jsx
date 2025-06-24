@@ -18,6 +18,8 @@ const Livro = () => {
   const [avaliacaoMensagem, setAvaliacaoMensagem] = useState("");
   const [avaliacoes, setAvaliacoes] = useState([]);
   const [notaMedia, setNotaMedia] = useState(null);
+  const [reservaAtiva, setReservaAtiva] = useState(false);
+
 
   useEffect(() => {
     setErro("");
@@ -74,6 +76,28 @@ const Livro = () => {
       .catch(() => {
         setAvaliacoes([]);
       });
+
+      if (token) {
+      const decoded = jwtDecode(token);
+      const matricula = decoded.sub;
+
+      fetch(`http://localhost:8081/alunos/${matricula}/temReservaAtiva`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Erro ao verificar reserva ativa");
+          return res.json();
+        })
+        .then((data) => {
+          setReservaAtiva(data);
+        })
+        .catch(() => {
+          setReservaAtiva(false);
+        });
+    }     
   }, [livroId, token]);
 
   const fazerReserva = () => {
@@ -150,13 +174,24 @@ const Livro = () => {
       <p><strong>Ano de Publicação:</strong> {livro.ano_publicacao}</p>
       <p><strong>Curso:</strong> {livro.curso}</p>
       <p><strong>Gênero:</strong> {livro.genero}</p>
-      <p><strong>Quantidade disponível:</strong> {livro.quantidade}</p>
+      <p><strong>Quantidade total:</strong> {livro.quantidadeTotal}</p>
+      <p><strong>Disponível para reserva:</strong> {livro.quantidadeDisponivel}</p>
       <p><strong>Nota média:</strong> {notaMedia !== null ? notaMedia.toFixed(2) : "Sem avaliações"}</p>
       <p><strong>Descrição:</strong> {livro.descricao}</p>
 
-      <button className="botao-reservar" onClick={fazerReserva}>
-        Reservar livro
-      </button>
+      {reservaAtiva ? (
+        <div className="alert alert-warning">
+          Você já possui uma reserva ativa.
+        </div>
+      ) : livro.quantidadeDisponivel === 0 ? (
+        <div className="alert alert-danger">
+          Não há exemplares disponíveis para reserva no momento.
+        </div>
+      ) : (
+        <button className="botao-reservar" onClick={fazerReserva}>
+          Reservar livro
+        </button>
+      )}
       {reservaMensagem && <div className="alert alert-info mt-2">{reservaMensagem}</div>}
 
       <div className="avaliacoes mt-4">

@@ -22,11 +22,13 @@ public class BibliotecarioDTO {
         this.senha = senha;
     }
 
-    public BibliotecarioDTO() {
+    public BibliotecarioDTO(Long bibliotecarioId, String nome, String email) {
+        this.bibliotecarioId = bibliotecarioId;
+        this.nome = nome;
+        this.email = email;
     }
 
-    public BibliotecarioDTO(String token, String admin, String nome, String email) {
-
+    public BibliotecarioDTO() {
     }
 
     public Long getBibliotecarioId() {

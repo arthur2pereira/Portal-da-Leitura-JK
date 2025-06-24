@@ -51,10 +51,13 @@ public class SecurityConfig {
                         .requestMatchers("/livros/avaliacoes/**").hasRole("USER")
                         .requestMatchers("/avaliacoes/**").hasRole("USER")
                         .requestMatchers("/reservas/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/emprestimos/*/renovar").hasRole("USER")
 
                         // Acesso bibliotecário (protegido)
                         .requestMatchers("/bibliotecarios/livros/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/emprestimos/*/renovar-admin").hasRole("ADMIN")
                         .requestMatchers("/bibliotecarios/**").hasRole("ADMIN")
+                        .requestMatchers("/emprestimos/*/devolver").hasRole("ADMIN")
 
                         // Rotas públicas de livros (GET apenas)
                         .requestMatchers(HttpMethod.GET,

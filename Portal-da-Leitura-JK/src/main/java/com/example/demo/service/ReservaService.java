@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ReservaDTO;
-import com.example.demo.model.AlunoModel;
-import com.example.demo.model.LivroModel;
-import com.example.demo.model.ReservaModel;
-import com.example.demo.repository.AlunoRepository;
-import com.example.demo.repository.LivroRepository;
-import com.example.demo.repository.ReservaRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +25,12 @@ public class ReservaService {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
+
+    @Autowired
+    private BibliotecarioRepository bibliotecarioRepository;
+
     public List<ReservaModel> buscarPorAluno(String matricula) {
         return reservaRepository.findByAlunoMatricula(matricula);
     }
@@ -38,22 +42,32 @@ public class ReservaService {
     }
 
     public ReservaModel criarReserva(String matricula, Long livroId) {
-        Optional<AlunoModel> alunoOpt = alunoRepository.findByMatricula(matricula);
-        if (alunoOpt.isEmpty()) throw new RuntimeException("Aluno não encontrado.");
+        AlunoModel aluno = alunoRepository.findByMatricula(matricula)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado."));
 
-        Optional<LivroModel> livroOpt = livroRepository.findByLivroId(livroId);
-        if (livroOpt.isEmpty()) throw new RuntimeException("Livro não encontrado.");
+        LivroModel livro = livroRepository.findByLivroId(livroId)
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado."));
 
-        LivroModel livro = livroOpt.get();
-        if (livro.getQuantidade() <= 0) throw new RuntimeException("Livro indisponível.");
+        boolean temReservaAtiva = reservaRepository.existsByAlunoAndStatusTrue(aluno);
+        if (temReservaAtiva) {
+            throw new RuntimeException("Você já possui uma reserva ativa.");
+        }
 
-        ReservaModel nova = new ReservaModel();
-        nova.setAluno(alunoOpt.get());
-        nova.setLivro(livro);
-        nova.setDataReserva(LocalDate.now());
-        nova.setDataVencimento(LocalDate.now().plusDays(3));
+        int reservasAtivas = reservaRepository.countByLivroAndStatusTrue(livro);
 
-        return reservaRepository.save(nova);
+        int disponiveis = livro.getQuantidade() - reservasAtivas;
+        if (disponiveis <= 0) {
+            throw new RuntimeException("Todas as unidades deste livro já estão reservadas.");
+        }
+
+        ReservaModel reserva = new ReservaModel();
+        reserva.setAluno(aluno);
+        reserva.setLivro(livro);
+        reserva.setStatus(true);
+        reserva.setDataReserva(LocalDate.now());
+        reserva.setDataVencimento(LocalDate.now().plusDays(3));
+
+        return reservaRepository.save(reserva);
     }
 
 
@@ -73,6 +87,39 @@ public class ReservaService {
             long diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(hoje, reserva.getDataVencimento());
             return "Reserva válida por mais " + diasRestantes + " dias.";
         }
+    }
+
+    public void transformarReservaEmEmprestimo(Long reservaId) {
+        ReservaModel reserva = reservaRepository.findByReservaId(reservaId)
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada."));
+
+        LivroModel livro = reserva.getLivro();
+
+        if (livro.getQuantidade() < 1) {
+            throw new RuntimeException("Livro indisponível para empréstimo.");
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        BibliotecarioModel bibliotecario = bibliotecarioRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("Bibliotecário não encontrado."));
+
+
+        EmprestimoModel emprestimo = new EmprestimoModel();
+        emprestimo.setAluno(reserva.getAluno());
+        emprestimo.setLivro(livro);
+        emprestimo.setBibliotecario(bibliotecario);
+        emprestimo.setDataEmprestimo(LocalDate.now());
+        emprestimo.setDataVencimento(LocalDate.now().plusDays(7));
+        emprestimo.setStatus("Ativa");
+
+        emprestimoRepository.save(emprestimo);
+
+        livro.setQuantidade(livro.getQuantidade() - 1);
+        livroRepository.save(livro);
+
+        reservaRepository.delete(reserva);
     }
 
     public ReservaDTO converterParaDTO(ReservaModel model) {

@@ -40,17 +40,11 @@ export const AuthProvider = ({ children }) => {
         setAuth(authData);
 
       } else if (dados.tipo === "bibliotecario") {
-        let email = dados.email;
-
-        if (!email) {
-          const payloadBase64 = dados.token.split('.')[1];
-          const payload = JSON.parse(atob(payloadBase64));
-          email = payload.sub || payload.email;
-        }
+        const email = dados.email;
 
         if (!email) throw new Error("Email do bibliotecário não encontrado");
 
-        const res = await fetch(`http://localhost:8081/bibliotecarios/${email}`, {
+        const res = await fetch(`http://localhost:8081/bibliotecarios/${encodeURIComponent(email)}`, {
           headers: { Authorization: `Bearer ${dados.token}` }
         });
 

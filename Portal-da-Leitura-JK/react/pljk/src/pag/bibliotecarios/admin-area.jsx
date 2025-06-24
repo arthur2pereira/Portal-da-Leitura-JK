@@ -38,8 +38,9 @@ function AdminArea() {
           <h2>Painel do Administrador</h2>
             <button onClick={() => irPara("/admin/livros")}>Gerenciar Livros</button>
             <button onClick={() => irPara("/admin/alunos")}>Gerenciar Alunos</button>
-            <button onClick={() => irPara("/admin/reservas")}>Ver Reservas</button>
-            <button onClick={() => irPara("/admin/notificacoes")}>Notificações</button>
+            <button onClick={() => irPara("/admin/reservas")}>Gerenciar Reservas</button>
+            <button onClick={() => irPara("/admin/emprestimos")}>Gerenciar Empréstimos</button> 
+            <button onClick={() => irPara("/admin/notificacoes")}>Ver Notificações</button>
         </section>
 
         {auth && (

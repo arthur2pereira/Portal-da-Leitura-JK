@@ -1,6 +1,6 @@
 .reservas-admin-container {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #fff;
     margin: 0;
     padding: 20px;
     padding-top: 60px;
@@ -39,13 +39,13 @@
   
   .table-header {
     background-color: #4CAF50;
-    color: white;
+    color: #fff;
     padding: 12px;
     text-align: left;
   }
   
   .table-row:hover {
-    background-color: #f1f1f1;
+    background-color: #fff;
   }
   
   .table-cell {
@@ -57,7 +57,7 @@
   .cancel-button {
     padding: 8px 16px;
     background-color: #e74c3c;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -66,6 +66,21 @@
   
   .cancel-button:hover {
     background-color: #c0392b;
+  }
+
+  .confirm-button {
+    padding: 8px 16px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .confirm-button:hover{
+    background-color: #4caf51;
   }
   
   /* Estilos para o carregamento e erro */
