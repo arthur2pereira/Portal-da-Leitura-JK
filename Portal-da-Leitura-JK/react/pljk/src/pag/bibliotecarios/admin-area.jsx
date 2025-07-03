@@ -1,56 +1,94 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../authContext.jsx";
-import "../../assets/css/perfilAdmin.css";
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../authContext.jsx"
+import { Book, Users, Bell, FileText, LogOut, Repeat } from "lucide-react"
+import "bootstrap/dist/css/bootstrap.min.css"
+import "../../assets/css/adminArea.css"
 
 function AdminArea() {
-  const navigate = useNavigate();
-  const { auth, logout } = useAuth();
-  const [adminInfo, setAdminInfo] = useState({
-    nome: "",
-    email: ""
-  });
+  const navigate = useNavigate()
+  const { auth, logout } = useAuth()
+  const [adminInfo, setAdminInfo] = useState({ nome: "", email: "" })
 
   useEffect(() => {
-    if (auth && auth.tipo === "bibliotecario") {
-      setAdminInfo({
-        nome: auth.nome || "",
-        email: auth.email || ""
-      });
+    if (auth?.tipo === "bibliotecario") {
+      setAdminInfo({ nome: auth.nome || "", email: auth.email || "" })
     } else {
-      navigate("/");
+      navigate("/")
     }
-  }, [auth, navigate]);
+  }, [auth, navigate])
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+    logout()
+    navigate("/")
+  }
 
-  const irPara = (rota) => {
-    navigate(rota);
-  };
+  const cards = [
+    {
+      icon: <Book className="text-success me-2" />,
+      title: "Livros",
+      description: "Gerencie os livros do acervo.",
+      rota: "/admin/livros"
+    },
+    {
+      icon: <Users className="text-success me-2" />,
+      title: "Alunos",
+      description: "Gerencie os alunos cadastrados.",
+      rota: "/admin/alunos"
+    },
+    {
+      icon: <Repeat className="text-success me-2" />,
+      title: "Reservas",
+      description: "Controle de reservas em andamento.",
+      rota: "/admin/reservas"
+    },
+    {
+      icon: <FileText className="text-success me-2" />,
+      title: "Empréstimos",
+      description: "Gerencie os empréstimos ativos.",
+      rota: "/admin/emprestimos"
+    },
+    {
+      icon: <Bell className="text-success me-2" />,
+      title: "Notificações",
+      description: "Envie e visualize notificações.",
+      rota: "/admin/notificacoes"
+    }
+  ]
 
   return (
-    <>
-      <main className="perfil-conteudo">
-        <section id="painel" className="secao">
-          <h2>Painel do Administrador</h2>
-            <button onClick={() => irPara("/admin/livros")}>Gerenciar Livros</button>
-            <button onClick={() => irPara("/admin/alunos")}>Gerenciar Alunos</button>
-            <button onClick={() => irPara("/admin/reservas")}>Gerenciar Reservas</button>
-            <button onClick={() => irPara("/admin/emprestimos")}>Gerenciar Empréstimos</button> 
-            <button onClick={() => irPara("/admin/notificacoes")}>Ver Notificações</button>
-        </section>
+    <main className="admin-area-wrapper">
+      <div className="container py-5">
+        <h2 className="mb-4 text-success fw-bold text-center">Painel do Administrador</h2>
 
-        {auth && (
-          <button className="btn-logout" onClick={handleLogout}>
-            Sair da conta
-          </button>
-        )}
-      </main>
-    </>
-  );
+        <div className="row g-4">
+          {cards.map((card, index) => (
+            <div key={index} className="col-md-6 col-lg-4">
+              <div
+                className="card h-100 shadow-sm border-0 card-hover"
+                role="button"
+                onClick={() => navigate(card.rota)}
+              >
+                <div className="card-body">
+                  <div className="d-flex align-items-center mb-2">
+                    {card.icon}
+                    <h5 className="card-title m-0 text-success">{card.title}</h5>
+                  </div>
+                  <p className="card-text text-muted">{card.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+          <button className="btn btn-danger d-flex align-items-center gap-2" onClick={handleLogout}>
+            <LogOut size={18} /> Sair da conta
+         </button>
+        </div> 
+      </div>
+    </main>
+  )
 }
 
-export default AdminArea;
+export default AdminArea

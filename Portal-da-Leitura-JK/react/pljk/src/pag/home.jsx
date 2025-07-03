@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../assets/css/index.css';
+import '../assets/css/home.css';
 
 const Estrelas = ({ nota }) => {
   const estrelasCheias = Math.floor(nota);
@@ -161,7 +161,7 @@ function Index() {
 
       <Destaques />
 
-      <section className="sobre-biblioteca">
+      <section className="sobre-biblioteca" id="sobre">
         <div className="container">
           <h2>Sobre a Biblioteca</h2>
           <p>

@@ -4,10 +4,10 @@ import { AuthProvider } from "./authContext.jsx";
 // Componentes
 import Navbar from './componentes/navbar'
 import Footer from './componentes/footer'
-import Livros from './componentes/livros'
+import Scroll from './componentes/scroll.jsx'
 
 // Paginas
-import Home from './pag/index' //pagina inicial
+import Home from './pag/home' //pagina inicial
 import Livro from './pag/livro' // tela do livro
 import Catalogo from './pag/catalogo' // tela do catalogo dos livros
 import Cadastro from './pag/cadastro'// tela do cadastro
@@ -36,6 +36,7 @@ function AppRoutes() {
   return (
     <>
       <Navbar />
+      <Scroll /> 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/livro/:livroId" element={<Livro />} />
