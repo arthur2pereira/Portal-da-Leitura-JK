@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/alunos/autenticar", "/alunos/salvar").permitAll()
                         .requestMatchers("/bibliotecarios/autenticar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/avaliacoes/mais-avaliados").permitAll()
 
                         // Acesso aluno (protegido)
                         .requestMatchers("/alunos/**").hasRole("USER")

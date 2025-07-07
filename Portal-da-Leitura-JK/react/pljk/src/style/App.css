@@ -1,42 +1,44 @@
+/* Importação das fontes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap');
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variáveis globais */
+:root {
+  --fonte-corpo: 'Inter', sans-serif;
+  --fonte-titulo: 'Poppins', sans-serif;
+
+  --cor-primaria: #005c5a;
+  --cor-secundaria: #3ea66b;
+  --cor-fundo: #f9f9f9;
+  --cor-texto: #333;
+  --cor-card: #fff;
+  --cor-borda: #ddd;
+}
+
+/* Estilo global */
+body {
+  font-family: var(--fonte-corpo);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+}
+
+/* Área principal */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
+  margin: 0;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+/* Títulos */
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  color: var(--cor-primaria);
 }

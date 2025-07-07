@@ -3,6 +3,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../assets/css/home.css';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination, EffectFade } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+
 const Estrelas = ({ nota }) => {
   const estrelasCheias = Math.floor(nota);
   const meiaEstrela = nota % 1 >= 0.5;
@@ -22,19 +30,38 @@ function BlocoLivros() {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    axios.get("/avaliacoes/mais-avaliados")
-      .then(res => {
-        const data = res.data;
+    setCarregando(true);
+
+    fetch("http://localhost:8081/avaliacoes/mais-avaliados")
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao buscar livros");
+        return res.json();
+      })
+      .then((data) => {
         if (Array.isArray(data)) {
-          setLivrosDestaque(data);
-        } else if (data && Array.isArray(data.livros)) {
-          setLivrosDestaque(data.livros);
+          const livrosProcessados = data.map(item => {
+            const livro = item.livro;
+            const notas = item.notas || [];
+
+            const numeroAvaliacoes = notas.length;
+            const notaMedia = numeroAvaliacoes > 0
+              ? notas.reduce((acc, n) => acc + n, 0) / numeroAvaliacoes
+              : 0;
+
+            return {
+              ...livro,
+              notaMedia,
+              numeroAvaliacoes
+            };
+          });
+
+          setLivrosDestaque(livrosProcessados);
         } else {
           setLivrosDestaque([]);
         }
       })
-      .catch(error => {
-        console.error("Erro ao buscar livros em destaque:", error);
+      .catch((err) => {
+        console.error("Erro ao buscar livros mais avaliados:", err);
         setLivrosDestaque([]);
       })
       .finally(() => {
@@ -52,9 +79,10 @@ function BlocoLivros() {
       ) : (
         <div className="linha-livros">
           {livrosDestaque.map((livro) => (
-            <Link to={`/livros/${livro.id}`} key={livro.id} className="livro-card">
+            <Link to={`/livros/${livro.livroId || livro.id}`} key={livro.livroId || livro.id} className="livro-card">
               <h4>{livro.titulo}</h4>
               <Estrelas nota={livro.notaMedia} />
+              <p className="avaliacoes-info">{livro.numeroAvaliacoes} avaliação{livro.numeroAvaliacoes !== 1 ? 's' : ''}</p>
               <p>{livro.descricao}</p>
             </Link>
           ))}
@@ -114,46 +142,31 @@ const editoras = [
   { nome: 'Saraiva', imagem: '/imagens/editora/saraiva.jpg' }
 ];
 
-let indexAtual = 0;
 const imagens = [
   "/imagens/biblioteca.png",
   "/imagens/Biblioteca2.jpg",
   "/imagens/Biblioteca3.jpg",
 ];
 
-function trocarSlide(direcao) {
-  indexAtual = (indexAtual + direcao + imagens.length) % imagens.length;
-  atualizarCarrossel();
-}
-
-function irParaSlide(indice) {
-  indexAtual = indice;
-  atualizarCarrossel();
-}
-
-function atualizarCarrossel() {
-  const imagem = document.getElementById("imagem-carrossel");
-  if (imagem) imagem.src = imagens[indexAtual];
-}
-
 function Index() {
   return (
     <div className="index-wrapper">
       <section className="carrossel">
-        <div className="carrossel-container">
-          <img
-            id="imagem-carrossel"
-            src={imagens[0]}
-            alt="Banner"
-            className="carrossel-img"
-          />
-          <button className="seta-prev" onClick={() => trocarSlide(-1)}>
-            <i className="fas fa-chevron-left"></i>
-          </button>
-          <button className="seta-next" onClick={() => trocarSlide(1)}>
-            <i className="fas fa-chevron-right"></i>
-          </button>
-        </div>
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination, EffectFade]}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{ delay: 15000, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          effect="fade"
+          className="carrossel-container"
+        >
+          {imagens.map((src, i) => (
+            <SwiperSlide key={i}>
+              <img src={src} alt={`Slide ${i + 1}`} className="carrossel-img" />
+            </SwiperSlide>
+          ))}
+        </Swiper>
         <div className="carrossel-overlay">
           <h1>Portal da Leitura Juscelino Kubitschek</h1>
         </div>
@@ -165,15 +178,15 @@ function Index() {
         <div className="container">
           <h2>Sobre a Biblioteca</h2>
           <p>
-              A Biblioteca Juscelino Kubitschek é um espaço dedicado ao incentivo à leitura, à pesquisa e ao aprendizado contínuo. Com um acervo diversificado que abrange literatura brasileira, estrangeira, obras técnicas dos cursos da escola e materiais de apoio escolar, ela se destaca como um ambiente acolhedor e silencioso, ideal para o desenvolvimento intelectual dos alunos.
-              A missão da biblioteca é servir como um ponto de encontro entre conhecimento, cultura e comunidade, reforçando a importância da leitura no processo de formação pessoal e profissional dos alunos.
-            </p>
-            <p>
-              Mais do que um local para empréstimos de livros, a biblioteca busca promover o hábito da leitura de forma leve e acessível, oferecendo atividades de incentivo como clubes de leitura, exposições temáticas e campanhas de doação. O espaço conta ainda com o apoio de bibliotecários capacitados, sempre prontos para orientar os estudantes na busca por informações e estimular o pensamento crítico.
-            </p>
-            <p>
-              A missão da biblioteca é servir como um ponto de encontro entre conhecimento, cultura e comunidade, reforçando a importância da leitura no processo de formação pessoal e profissional dos alunos.
-            </p>
+            A Biblioteca Juscelino Kubitschek é um espaço dedicado ao incentivo à leitura, à pesquisa e ao aprendizado contínuo. Com um acervo diversificado que abrange literatura brasileira, estrangeira, obras técnicas dos cursos da escola e materiais de apoio escolar, ela se destaca como um ambiente acolhedor e silencioso, ideal para o desenvolvimento intelectual dos alunos.
+            A missão da biblioteca é servir como um ponto de encontro entre conhecimento, cultura e comunidade, reforçando a importância da leitura no processo de formação pessoal e profissional dos alunos.
+          </p>
+          <p>
+            Mais do que um local para empréstimos de livros, a biblioteca busca promover o hábito da leitura de forma leve e acessível, oferecendo atividades de incentivo como clubes de leitura, exposições temáticas e campanhas de doação. O espaço conta ainda com o apoio de bibliotecários capacitados, sempre prontos para orientar os estudantes na busca por informações e estimular o pensamento crítico.
+          </p>
+          <p>
+            A missão da biblioteca é servir como um ponto de encontro entre conhecimento, cultura e comunidade, reforçando a importância da leitura no processo de formação pessoal e profissional dos alunos.
+          </p>
         </div>
       </section>
     </div>

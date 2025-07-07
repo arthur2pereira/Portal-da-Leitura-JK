@@ -1,0 +1,116 @@
+.admin-livros-wrapper {
+  padding-top: 80px;
+  margin: 0 auto;
+  background-color: #fff;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-livros-wrapper .filtro-input {
+  max-width: 500px;
+  margin: 0 auto 2.5rem auto;
+  height: 48px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+.admin-livros-wrapper .livros-grid .livro-card {
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.admin-livros-wrapper .livros-grid .livro-card:hover {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+  transform: translateY(-6px);
+}
+
+.admin-livros-wrapper .livro-titulo {
+  font-weight: 700;
+  color: #198754;
+  margin-bottom: 0.75rem;
+}
+
+.admin-livros-wrapper .livro-info li {
+  margin-bottom: 0.3rem;
+}
+
+.admin-livros-wrapper .descricao-livro {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.75rem;
+  min-height: 60px;
+}
+
+.admin-livros-wrapper .btn-group {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.admin-livros-wrapper .btn-group button {
+  border-radius: 8px;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.admin-livros-wrapper .btn-group button:hover {
+  filter: brightness(0.9);
+}
+
+.admin-livros-wrapper .paginacao {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.admin-livros-wrapper .paginacao button {
+  min-width: 40px;
+  border-radius: 6px;
+}
+
+.admin-livros-wrapper .livro-form {
+  background-color: #fff;
+  padding: 3.5rem 3rem 3.5rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+  margin: 3rem auto 0 auto;
+}
+
+.admin-livros-wrapper .livro-form input,
+.admin-livros-wrapper .livro-form textarea {
+  border-radius: 8px;
+  padding: 1.2rem 1rem;
+  font-size: 1.1rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease;
+}
+
+.admin-livros-wrapper .livro-form input:focus,
+.admin-livros-wrapper .livro-form textarea:focus {
+  border-color: #198754;
+  outline: none;
+}
+
+.admin-livros-wrapper .livro-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.admin-livros-wrapper .livro-form button {
+  padding: 0.8rem 2.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../authContext.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/css/alunoAdmin.css";
 
 export default function AdminAlunos() {
@@ -31,10 +32,7 @@ export default function AdminAlunos() {
         return response.json();
       })
       .then((data) => setAlunos(data))
-      .catch((err) => {
-        console.error("Erro no fetch: ", err);
-        setErro("Erro ao buscar alunos.");
-      });
+      .catch(() => setErro("Erro ao buscar alunos."));
   };
 
   const deletarAluno = (matricula) => {
@@ -48,20 +46,14 @@ export default function AdminAlunos() {
       },
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao deletar aluno");
-        }
+        if (!response.ok) throw new Error("Erro ao deletar aluno");
         setAlunos((prev) => prev.filter((a) => a.matricula !== matricula));
       })
-      .catch((err) => {
-        console.error(err);
-        alert("Erro ao deletar aluno.");
-      });
+      .catch(() => alert("Erro ao deletar aluno."));
   };
 
   const atualizarAluno = (e) => {
     e.preventDefault();
-    const updatedAluno = alunoParaEditar;
 
     fetch("http://localhost:8081/bibliotecarios/atualizar", {
       method: "PUT",
@@ -69,29 +61,21 @@ export default function AdminAlunos() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.token}`,
       },
-      body: JSON.stringify(updatedAluno),
+      body: JSON.stringify(alunoParaEditar),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao atualizar aluno");
-        }
+        if (!response.ok) throw new Error("Erro ao atualizar aluno");
         return response.json();
       })
       .then((data) => {
         setAlunos((prev) =>
-          prev.map((aluno) =>
-            aluno.matricula === data.matricula ? data : aluno
-          )
+          prev.map((aluno) => (aluno.matricula === data.matricula ? data : aluno))
         );
         setAlunoParaEditar(null);
         setMensagemSucesso("Aluno atualizado com sucesso!");
-
-        setTimeout(() => setMensagemSucesso(""), 20000);
+        setTimeout(() => setMensagemSucesso(""), 4000);
       })
-      .catch((err) => {
-        console.error(err);
-        alert("Erro ao atualizar aluno.");
-      });
+      .catch(() => alert("Erro ao atualizar aluno."));
   };
 
   const alunosFiltrados = alunos.filter(
@@ -101,125 +85,127 @@ export default function AdminAlunos() {
   );
 
   return (
-    <div className="admin-alunos-wrapper">
-      <h2>Gerenciar Alunos</h2>
+    <div className="admin-alunos-wrapper container py-5">
+      <h2 className="text-center text-success mb-4 fw-bold">Gerenciar Alunos</h2>
 
       <input
         type="text"
         placeholder="Buscar por nome ou matrícula..."
         value={busca}
         onChange={(e) => setBusca(e.target.value)}
-        className="form-control my-3"
+        className="form-control form-control-lg mx-auto mb-4 busca-input"
+        aria-label="Buscar alunos por nome ou matrícula"
       />
 
-      {erro && <div className="alert alert-danger">{erro}</div>}
+      {erro && <div className="alert alert-danger text-center">{erro}</div>}
 
-      {/* Mostrar mensagem de sucesso */}
       {mensagemSucesso && (
-        <div
-          style={{
-            backgroundColor: "#d4edda",
-            color: "#155724",
-            padding: "10px 15px",
-            borderRadius: "5px",
-            marginBottom: "20px",
-            maxWidth: "400px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            textAlign: "center",
-            fontWeight: "600",
-          }}
-        >
+        <div className="alert alert-success text-center mx-auto w-50">
           {mensagemSucesso}
         </div>
       )}
 
       {alunosFiltrados.length === 0 ? (
-        <p className="text-muted">Nenhum aluno encontrado.</p>
+        <p className="text-muted text-center">Nenhum aluno encontrado.</p>
       ) : (
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Matrícula</th>
-              <th>Email</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {alunosFiltrados.map((aluno) => (
-              <tr key={aluno.matricula}>
-                <td>{aluno.nome}</td>
-                <td>{aluno.matricula}</td>
-                <td>{aluno.email}</td>
-                <td>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => deletarAluno(aluno.matricula)}
-                  >
-                    Deletar
-                  </button>
-                  <button
-                    className="btn btn-sm btn-warning ms-2"
-                    onClick={() => setAlunoParaEditar(aluno)}
-                  >
-                    Alterar
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover align-middle shadow-sm">
+            <thead className="table-success">
+              <tr>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Email</th>
+                <th className="text-center">Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {alunosFiltrados.map((aluno) => (
+                <tr key={aluno.matricula}>
+                  <td>{aluno.nome}</td>
+                  <td>{aluno.matricula}</td>
+                  <td>{aluno.email}</td>
+                  <td className="text-center">
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => deletarAluno(aluno.matricula)}
+                    >
+                      Deletar
+                    </button>
+                    <button
+                      className="btn btn-sm btn-warning ms-2"
+                      onClick={() => setAlunoParaEditar(aluno)}
+                    >
+                      Alterar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {/* Modal de edição */}
+      {/* Modal */}
       {alunoParaEditar && (
-        <div className="modal" style={{ display: "block" }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Alterar Dados do Aluno</h5>
+        <div
+          className="modal show d-block"
+          tabIndex={-1}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modalTitle"
+          onClick={(e) => e.target === e.currentTarget && setAlunoParaEditar(null)}
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content shadow">
+              <div className="modal-header bg-success text-white">
+                <h5 className="modal-title" id="modalTitle">
+                  Alterar Dados do Aluno
+                </h5>
                 <button
                   type="button"
-                  className="close"
+                  className="btn-close btn-close-white"
+                  aria-label="Fechar"
                   onClick={() => setAlunoParaEditar(null)}
-                >
-                  ×
-                </button>
+                ></button>
               </div>
               <form onSubmit={atualizarAluno}>
                 <div className="modal-body">
-                  <div className="form-group">
-                    <label>Nome</label>
+                  <div className="mb-3">
+                    <label htmlFor="nome" className="form-label fw-semibold">
+                      Nome
+                    </label>
                     <input
+                      id="nome"
                       type="text"
                       className="form-control"
                       value={alunoParaEditar.nome}
                       onChange={(e) =>
-                        setAlunoParaEditar((prev) => ({
-                          ...prev,
-                          nome: e.target.value,
-                        }))
+                        setAlunoParaEditar((prev) => ({ ...prev, nome: e.target.value }))
                       }
+                      required
                     />
                   </div>
-                  <div className="form-group">
-                    <label>Email</label>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label fw-semibold">
+                      Email
+                    </label>
                     <input
+                      id="email"
                       type="email"
                       className="form-control"
                       value={alunoParaEditar.email}
                       onChange={(e) =>
-                        setAlunoParaEditar((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
+                        setAlunoParaEditar((prev) => ({ ...prev, email: e.target.value }))
                       }
+                      required
                     />
                   </div>
-                  <div className="form-group">
-                    <label>Matricula</label>
+                  <div className="mb-3">
+                    <label htmlFor="matricula" className="form-label fw-semibold">
+                      Matrícula
+                    </label>
                     <input
+                      id="matricula"
                       type="text"
                       className="form-control"
                       value={alunoParaEditar.matricula}
@@ -235,7 +221,7 @@ export default function AdminAlunos() {
                   >
                     Cancelar
                   </button>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-success">
                     Atualizar
                   </button>
                 </div>

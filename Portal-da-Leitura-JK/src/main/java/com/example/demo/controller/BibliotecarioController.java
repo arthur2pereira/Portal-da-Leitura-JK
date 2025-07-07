@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
-import com.example.demo.model.LivroModel;
 import com.example.demo.service.AlunoService;
 import com.example.demo.service.BibliotecarioService;
 import com.example.demo.service.LivroService;

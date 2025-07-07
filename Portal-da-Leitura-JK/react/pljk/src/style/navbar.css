@@ -1,52 +1,21 @@
-:root {
-  --verde-principal: #3ea66b;
-  --verde-escuro: #005c5a;
-  --branco: #ffffff;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-header {
-  background-color: var(--branco);
-  color: var(--verde-principal);
-}
-
 .navbar-custom {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 6px 20px;
-  background-color: var(--branco);
+  background-color: var(--cor-primaria); /* verde escuro */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 60px;
-  min-height: 60px;
   z-index: 1000;
 }
 
 .navbar-logo img {
   width: 110px;
   height: auto;
-}
-
-/* Toggle (hamburguer) */
-.navbar-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
-}
-
-.navbar-toggle div {
-  width: 25px;
-  height: 3px;
-  background-color: var(--verde-principal);
-  border-radius: 2px;
 }
 
 /* Links (desktop) */
@@ -60,39 +29,22 @@ header {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.navbar-links li {
-  position: relative;
+  color: var(--branco);
 }
 
 .navbar-links li a {
-  color: var(--verde-principal);
+  position: relative;
+  color: white;
   font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
-  padding-bottom: 3px;
   transition: color 0.3s ease;
 }
 
-.navbar-links li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 0%;
-  background-color: var(--verde-principal);
-  transition: width 0.3s ease;
-}
-
 .navbar-links li a:hover {
-  color: var(--verde-escuro);
+  color: var(--cor-secundaria);
 }
 
-.navbar-links li a:hover::after {
-  width: 100%;
-}
 
 /* Botões à direita */
 .navbar-botoes {
@@ -101,60 +53,49 @@ header {
   gap: 0.8rem;
 }
 
-.link-login,
-.link-cadastro {
-  padding: 5px 12px;
+/* Estilo base comum para todos os links dentro da navbar-botoes */
+.navbar-botoes a {
+  padding: 6px 14px;
   border-radius: 5px;
   font-weight: 600;
-  text-decoration: none;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-/* Login */
-.link-login {
-  background-color: var(--branco);
-  color: var(--verde-principal);
-  border: 2px solid var(--verde-principal);
-}
-
-.link-login:hover {
-  background-color: var(--verde-principal);
-  color: var(--branco);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Cadastro */
 .link-cadastro {
-  background-color: var(--verde-principal);
-  color: var(--branco);
-  border: 2px solid var(--verde-principal);
+  background-color: white;
+  color: var(--cor-primaria);
 }
 
 .link-cadastro:hover {
-  background-color: var(--verde-escuro);
-  border-color: var(--verde-escuro);
+  background-color: var(--cor-secundaria);
+  color: white;
 }
 
+/* Entrar */
+.link-login {
+  background-color: var(--cor-secundaria);
+  color: white;
+}
+
+.link-login:hover {
+  background-color: white;
+  color: var(--cor-primaria);
+}
+
+/* Links especiais (usuário logado) */
 .link-aluno, .link-admin {
-  background-color: var(--verde-principal);
-  color: var(--branco);
-  padding: 6px 15px;
-  border-radius: 5px;
-  font-weight: 600;
-  text-decoration: none;
-  border: 2px solid var(--verde-principal);
-  transition: background-color 0.3s ease;
-  display: inline-block;
+  background-color: var(--cor-secundaria);
+  color: white;
 }
 
 .link-aluno:hover, .link-admin:hover {
-  background-color: var(--verde-escuro);
-  border-color: var(--verde-escuro);
-  text-decoration: none;
-  color: var(--branco);
+  background-color: white;
+  color: var(--cor-primaria);
 }
-
 
 /* Notificação */
 .notification-container {
@@ -164,7 +105,8 @@ header {
 
 .notification-icon {
   font-size: 1.5em;
-  color: black;
+  color: white;
+  transition: color 0.3s ease;
 }
 
 .notification-badge {
@@ -180,6 +122,10 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.notification-container:hover .notification-icon {
+  color: var(--cor-secundaria);
 }
 
 /* ======================== */
@@ -201,7 +147,7 @@ header {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    background-color: var(--branco);
+    background-color: var(--cor-primaria);
     width: 100%;
     padding: 1rem 0;
   }
@@ -209,5 +155,13 @@ header {
   .navbar-custom {
     flex-wrap: wrap;
     height: auto;
+  }
+
+  .navbar-links li a {
+    color: white;
+  }
+
+  .navbar-links li a:hover {
+    color: var(--cor-secundaria);
   }
 }

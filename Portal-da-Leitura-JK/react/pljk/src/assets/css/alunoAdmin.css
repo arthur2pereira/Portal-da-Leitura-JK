@@ -1,258 +1,64 @@
 .admin-alunos-wrapper {
-  padding: 60px;
-  background-color: white;
+  background-color: #fff;
   min-height: 100vh;
-  box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #004d4b;
+  padding-top: 3rem; /* só pra dar um espaço de topo */
 }
 
-/* Título */
-.admin-alunos-wrapper h2 {
-  font-size: 2.2rem;
+/* Busca: deixa input maior e centralizado */
+.busca-input {
+  max-width: 480px;
   text-align: center;
-  font-weight: bold;
-  color: #005c5a;
-  margin-bottom: 30px;
+  border-color: #3ea66b;
+  border-width: 2px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Input de busca */
-.admin-alunos-wrapper input[type="text"] {
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  padding: 14px 18px;
-  border: 2px solid #3ea66b;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  margin: 0 auto 25px auto;
-  display: block;
-}
-
-.admin-alunos-wrapper input[type="text"]:focus {
-  outline: none;
+.busca-input:focus {
   border-color: #005c5a;
   box-shadow: 0 0 10px #3ea66b80;
-}
-
-/* Erro */
-.admin-alunos-wrapper .alert-danger {
-  background-color: #ffdddd;
-  color: #7a1f1f;
-  border: 1px solid #e99c9c;
-  padding: 12px;
-  border-radius: 8px;
-  max-width: 400px;
-  margin: 0 auto 15px auto;
-  text-align: center;
-}
-
-/* Tabela */
-.admin-alunos-wrapper .table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  font-size: 0.95rem;
-  color: #004d4b;
-  table-layout: auto;
-}
-
-.admin-alunos-wrapper .table thead th {
-  background-color: #005c5a;
-  color: white;
-  padding: 14px;
-  text-align: left;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.admin-alunos-wrapper .table tbody tr {
-  background-color: #e6faf2;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 92, 90, 0.05);
-}
-
-.admin-alunos-wrapper .table td {
-  padding: 12px 14px;
-}
-
-/* Botões */
-.admin-alunos-wrapper .btn {
-  padding: 8px 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.admin-alunos-wrapper .btn-danger {
-  background-color: #d32f2f;
-  color: white;
-}
-
-.admin-alunos-wrapper .btn-danger:hover {
-  background-color: #b71c1c;
-}
-
-.admin-alunos-wrapper .btn-warning {
-  background-color: #ffb300;
-  color: #3e2723;
-}
-
-.admin-alunos-wrapper .btn-warning:hover {
-  background-color: #ffa000;
-}
-
-.admin-alunos-wrapper .ms-2 {
-  margin-left: 10px;
-}
-
-.admin-alunos-wrapper .text-muted {
-  color: #777;
-  font-style: italic;
-  padding-top: 10px;
-  text-align: center;
-}
-
-/* Modal */
-.admin-alunos-wrapper .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 92, 90, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.admin-alunos-wrapper .modal-dialog {
-  background-color: white;
-  width: 100%;
-  max-width: 500px;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.admin-alunos-wrapper .modal-header {
-  background-color: #005c5a;
-  padding: 20px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.admin-alunos-wrapper .modal-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.admin-alunos-wrapper .modal-header .close {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-.admin-alunos-wrapper .modal-body {
-  padding: 20px;
-}
-
-.admin-alunos-wrapper .modal-body .form-group {
-  margin-bottom: 16px;
-}
-
-.admin-alunos-wrapper .modal-body label {
-  display: block;
-  font-weight: bold;
-  color: #005c5a;
-  margin-bottom: 5px;
-}
-
-.admin-alunos-wrapper .modal-body input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 2px solid #3ea66b;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.admin-alunos-wrapper .modal-body input:focus {
   outline: none;
-  border-color: #005c5a;
-  box-shadow: 0 0 5px #3ea66b80;
 }
 
-.admin-alunos-wrapper .modal-footer {
-  padding: 16px 20px;
-  display: flex;
-  justify-content: flex-end;
-  background-color: #f5f5f5;
-  gap: 10px;
+/* Botões na tabela com espaçamento */
+.table .btn {
+  min-width: 75px;
 }
 
-.admin-alunos-wrapper .modal-footer .btn-secondary {
-  background-color: #888;
-  color: white;
+/* Modal cabeçalho personalizado */
+.modal-header {
+  border-bottom: none;
 }
 
-.admin-alunos-wrapper .modal-footer .btn-secondary:hover {
-  background-color: #666;
+.modal-footer {
+  border-top: none;
 }
 
-.admin-alunos-wrapper .modal-footer .btn-primary {
-  background-color: #3ea66b;
-  color: white;
+/* Modal sombra */
+.modal-content {
+  box-shadow: 0 10px 25px rgba(0, 92, 90, 0.3);
 }
 
-.admin-alunos-wrapper .modal-footer .btn-primary:hover {
-  background-color: #2e8f5a;
+/* Tabela responsiva com sombra leve */
+.table-responsive {
+  box-shadow: 0 2px 12px rgba(0, 92, 90, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 768px) {
+/* Mensagem de sucesso e erro centralizadas */
+.alert {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Para telas pequenas, ajusta padding */
+@media (max-width: 576px) {
   .admin-alunos-wrapper {
-    padding: 60px 20px 60px 20px;
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
-  
-  .admin-alunos-wrapper .table thead {
-    display: none; /* Esconder cabeçalho da tabela para layout mobile */
-  }
-
-  .admin-alunos-wrapper .table tbody tr {
-    display: block;
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #e6faf2;
-    box-shadow: 0 2px 4px rgba(0, 92, 90, 0.05);
-  }
-
-  .admin-alunos-wrapper .table tbody tr td {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #cce5db;
-    font-size: 0.9rem;
-  }
-  
-  .admin-alunos-wrapper .table tbody tr td:last-child {
-    border-bottom: none;
-  }
-
-  /* Adiciona labels antes dos dados para ajudar a identificar */
-  .admin-alunos-wrapper .table tbody tr td:nth-child(1)::before { content: "Nome:"; font-weight: 700; color: #005c5a; }
-  .admin-alunos-wrapper .table tbody tr td:nth-child(2)::before { content: "Matrícula:"; font-weight: 700; color: #005c5a; }
-  .admin-alunos-wrapper .table tbody tr td:nth-child(3)::before { content: "Email:"; font-weight: 700; color: #005c5a; }
-  .admin-alunos-wrapper .table tbody tr td:nth-child(4)::before { content: "Ações:"; font-weight: 700; color: #005c5a; }
 }

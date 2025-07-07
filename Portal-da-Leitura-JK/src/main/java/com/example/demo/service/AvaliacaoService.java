@@ -7,9 +7,8 @@ import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class    AvaliacaoService {
@@ -95,15 +94,28 @@ public class    AvaliacaoService {
         return avaliacaoRepository.findByLivroLivroId(livroId);
     }
 
-    public List<LivroModel> buscarLivrosMaisAvaliados() {
+    public List<Map<String, Object>> buscarLivrosMaisAvaliadosComAvaliacoes() {
         List<Object[]> resultados = avaliacaoRepository.buscarLivrosMaisAvaliados();
-        List<LivroModel> livrosMaisAvaliados = new ArrayList<>();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
         for (Object[] resultado : resultados) {
             LivroModel livro = (LivroModel) resultado[0];
-            livrosMaisAvaliados.add(livro);
+            List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByLivroLivroId(livro.getLivroId());
+
+            List<Integer> notas = avaliacoes.stream()
+                    .map(AvaliacaoModel::getNota)
+                    .collect(Collectors.toList());
+
+            Map<String, Object> mapa = new HashMap<>();
+            mapa.put("livro", livro);
+            mapa.put("notas", notas);
+
+            lista.add(mapa);
         }
-        return livrosMaisAvaliados;
+
+        return lista;
     }
+
 
     private AvaliacaoDTO converterParaDTO(AvaliacaoModel model) {
         return new AvaliacaoDTO(

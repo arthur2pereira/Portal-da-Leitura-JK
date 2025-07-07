@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AvaliacaoDTO;
-import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.*;
 import com.example.demo.service.*;
 import com.example.demo.repository.*;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/avaliacoes")
@@ -72,23 +71,12 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/mais-avaliados")
-    public ResponseEntity<List<LivroDTO>> buscarLivrosMaisAvaliados() {
-        List<LivroModel> livros = avaliacaoService.buscarLivrosMaisAvaliados();
-        if (livros.isEmpty()) {
+    public ResponseEntity<List<Map<String, Object>>> buscarLivrosMaisAvaliados() {
+        List<Map<String, Object>> livrosComAvaliacoes = avaliacaoService.buscarLivrosMaisAvaliadosComAvaliacoes();
+        if (livrosComAvaliacoes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        List<LivroDTO> livrosDTO = livros.stream()
-                .map(livro -> new LivroDTO(livro.getLivroId(),
-                        livro.getTitulo(),
-                        livro.getAutor(),
-                        livro.getGenero(),
-                        livro.getCurso(),
-                        livro.getEditora(),
-                        livro.getAnoPublicacao(),
-                        livro.getDescricao(),
-                        livro.getQuantidade()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(livrosDTO);
+        return ResponseEntity.ok(livrosComAvaliacoes);
     }
 
 
