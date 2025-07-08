@@ -121,6 +121,7 @@ public class    AvaliacaoService {
         return new AvaliacaoDTO(
                 model.getAvaliacaoId(),
                 model.getAluno().getMatricula(),
+                model.getLivro().getTitulo(),
                 model.getLivro().getLivroId(),
                 model.getNota(),
                 model.getComentario()

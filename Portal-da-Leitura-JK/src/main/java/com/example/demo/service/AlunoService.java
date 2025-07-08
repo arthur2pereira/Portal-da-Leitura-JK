@@ -92,6 +92,7 @@ public class AlunoService {
                 .map(a -> new AvaliacaoDTO(
                         a.getAvaliacaoId(),
                         a.getAluno().getMatricula(),
+                        a.getLivro().getTitulo(),
                         a.getLivro().getLivroId(),
                         a.getNota(),
                         a.getComentario()

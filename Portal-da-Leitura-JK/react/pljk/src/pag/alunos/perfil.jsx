@@ -19,7 +19,6 @@ function Perfil() {
   const [comentarios, setComentarios] = useState([]);
   const [erro, setErro] = useState("");
 
-  // Inicializa o formulário com os dados do auth (nome e email)
   const [userInfo, setUserInfo] = useState({
     nome: "",
     email: "",
@@ -28,8 +27,6 @@ function Perfil() {
 
   useEffect(() => {
     if (!auth || !auth.matricula) return;
-
-    // Inicializa userInfo com dados do auth quando carregar
     setUserInfo((prev) => ({
       ...prev,
       nome: auth.nome || "",
@@ -162,10 +159,10 @@ function Perfil() {
             <p>Você ainda não comentou nenhum livro.</p>
           ) : (
             comentarios.map((comentario, index) => (
-              <div key={index}>
-                <p><strong>Livro:</strong> {comentario.livro?.titulo || comentario.livro || "Sem título"}</p>
-                <p><strong>Nota:</strong> {comentario.nota}</p>
-                <p><strong>Comentário:</strong> {comentario.comentario}</p>
+              <div key={index} className="comentario-card">
+              <h4>{comentario.titulo || "Sem título"}</h4>
+                  {"★".repeat(comentario.nota)}{"☆".repeat(5 - comentario.nota)}
+                <p>{comentario.comentario}</p>
               </div>
             ))
           )}
@@ -206,7 +203,7 @@ function Perfil() {
               }
             />
 
-            <button type="submit">Salvar Alterações</button>
+            <button type="submit" className="perfil-btn-salvar">Salvar Alterações</button>
           </form>
         </section>
 
