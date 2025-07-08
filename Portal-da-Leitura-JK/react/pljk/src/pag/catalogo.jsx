@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import '../assets/css/catalogo.css';
 
 function Catalogo() {
@@ -12,6 +13,7 @@ function Catalogo() {
     pesquisa: ''
   });
 
+  const formatarOpcoes = (lista) => lista.map(item => ({ value: item, label: item }));
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [livros, setLivros] = useState([]);
   const [totalPaginas, setTotalPaginas] = useState(1);
@@ -111,8 +113,8 @@ function Catalogo() {
 
 
   return (
-    <div className="catalogo-wrapper">
-      <aside className="sidebar">
+    <div className="catalogo-area">
+      <aside className="catalogo-filtros">
         <h3>Filtros</h3>
 
         <input
@@ -123,42 +125,54 @@ function Catalogo() {
           onChange={handleFiltroChange}
         />
 
-        <select name="curso" value={filtros.curso} onChange={handleFiltroChange}>
-          <option value="">Nenhum curso selecionado</option>
-          {cursos.map((curso) => (
-            <option key={curso} value={curso}>{curso}</option>
-          ))}
-        </select>
+        <Select
+          name="curso"
+          placeholder="Nenhum curso selecionado"
+          isClearable
+          options={formatarOpcoes(cursos)}
+          value={filtros.curso ? { value: filtros.curso, label: filtros.curso } : null}
+          onChange={(opcao) => handleFiltroChange({ target: { name: 'curso', value: opcao?.value || '' } })}
+          noOptionsMessage={() => 'Nenhum curso disponível'}
+        />
 
-        <select name="autor" value={filtros.autor} onChange={handleFiltroChange}>
-          <option value="">Nenhum autor selecionado</option>
-          {autores.map((autor) => (
-            <option key={autor} value={autor}>{autor}</option>
-          ))}
-        </select>
+        <Select
+          name="autor"
+          placeholder="Nenhum autor selecionado"
+          isClearable
+          options={formatarOpcoes(autores)}
+          value={filtros.autor ? { value: filtros.autor, label: filtros.autor } : null}
+          onChange={(opcao) => handleFiltroChange({ target: { name: 'autor', value: opcao?.value || '' } })}
+          noOptionsMessage={() => 'Nenhum autor disponível'}
+        />
 
-        <select name="editora" value={filtros.editora} onChange={handleFiltroChange}>
-          <option value="">Nenhuma editora selecionada</option>
-          {editoras.map((editora) => (
-            <option key={editora} value={editora}>{editora}</option>
-          ))}
-        </select>
+        <Select
+          name="editora"
+          placeholder="Nenhuma editora selecionada"
+          isClearable
+          options={formatarOpcoes(editoras)}
+          value={filtros.editora ? { value: filtros.editora, label: filtros.editora } : null}
+          onChange={(opcao) => handleFiltroChange({ target: { name: 'editora', value: opcao?.value || '' } })}
+          noOptionsMessage={() => 'Nenhuma editora disponível'}
+        />
 
-        <select name="genero" value={filtros.genero} onChange={handleFiltroChange}>
-          <option value="">Nenhum genero selecionado</option>
-          {generos.map((genero) => (
-            <option key={genero} value={genero}>{genero}</option>
-          ))}
-        </select>
+        <Select
+          name="genero"
+          placeholder="Nenhum gênero selecionado"
+          isClearable
+          options={formatarOpcoes(generos)}
+          value={filtros.genero ? { value: filtros.genero, label: filtros.genero } : null}
+          onChange={(opcao) => handleFiltroChange({ target: { name: 'genero', value: opcao?.value || '' } })}
+          noOptionsMessage={() => 'Nenhum gênero disponível'}
+        />
       </aside>
 
-      <main className="livros-container">
-        <div className="lista-livros">
+      <main className="catalogo-livros">
+        <div className="catalogo-grade">
           {livros.length > 0 ? (
             livros.map((livro) => (
               <div
                 key={livro.livroId}
-                className="card-livro"
+                className="catalogo-card"
                 onClick={() => navigate(`/livro/${livro.livroId}`)}
               >
                 <h4>{livro.titulo}</h4>
@@ -172,7 +186,7 @@ function Catalogo() {
           )}
         </div>
 
-        <div className="paginacao">
+        <div className="catalogo-paginacao">
           {Array.from({ length: totalPaginas }, (_, i) => (
             <button
               key={i + 1}
