@@ -13,12 +13,45 @@ function Navbar() {
   const matricula = auth?.matricula
 
   const [temNotificacao, setTemNotificacao] = useState(false)
+  const [menuAberto, setMenuAberto] = useState(false)
+  const [seccaoAtiva, setSeccaoAtiva] = useState("")
 
-  const isActive = (path) => (location.pathname === path ? "ativo" : "")
+  useEffect(() => {
+    function onScroll() {
+      const scrollY = window.scrollY
+      const sobreElement = document.getElementById("sobre")
+      if (sobreElement) {
+        const topSobre = sobreElement.offsetTop
+        const bottomSobre = topSobre + sobreElement.offsetHeight
+
+        if (scrollY + 80 >= topSobre && scrollY + 80 < bottomSobre) {
+          setSeccaoAtiva("sobre")
+          return
+        }
+      }
+      setSeccaoAtiva("")
+    }
+
+    window.addEventListener("scroll", onScroll)
+    onScroll() // para inicializar corretamente
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  const isActive = (path, secao) => {
+    if (secao === "sobre") {
+      return seccaoAtiva === "sobre" && location.pathname === "/" ? "ativo" : ""
+    }
+    return location.pathname === path ? "ativo" : ""
+  }
 
   const handleNotificacaoClick = () => {
     if (tipo === "aluno") navigate("/aluno/notificacoes")
     else if (tipo === "bibliotecario") navigate("/admin/notificacoes")
+    setMenuAberto(false)
+  }
+
+  const toggleMenu = () => {
+    setMenuAberto(!menuAberto)
   }
 
   useEffect(() => {
@@ -55,28 +88,23 @@ function Navbar() {
   return (
     <header>
       <nav className="navbar-custom">
-        {/* Logo à esquerda */}
         <div className="navbar-logo">
-          <Link to="/">
+          <Link to="/" onClick={() => { setMenuAberto(false); setSeccaoAtiva("") }}>
             <img src="/imagens/logo.png" width="150" height="50" alt="Logo" />
           </Link>
         </div>
 
-        {/* Links centrais — Livros e Sobre */}
         <ul className="navbar-links">
           <li className={isActive("/Catalogo") || isActive("/livros")}>
-            <Link className="link-livros" to="/Catalogo">
-              Livros
-            </Link>
+            <Link to="/Catalogo">Livros</Link>
           </li>
-          <li className={isActive("/")}>
-            <HashLink smooth to="/#sobre" className="link-sobre">
+          <li className={isActive("/", "sobre")}>
+            <HashLink smooth to="/#sobre">
               Sobre
             </HashLink>
           </li>
         </ul>
 
-        {/* Área direita */}
         <div className="navbar-botoes">
           {!isAuthenticated ? (
             <>
@@ -89,19 +117,17 @@ function Navbar() {
             </>
           ) : (
             <>
-              {/* Link área aluno ou área admin antes do sino */}
               {tipo === "aluno" && (
-                <Link className="link-aluno" to="/aluno/perfil" style={{ marginRight: "15px" }}>
+                <Link className="link-aluno" to="/aluno/perfil">
                   Área aluno
                 </Link>
               )}
               {tipo === "bibliotecario" && (
-                <Link className="link-admin" to="/admin/area" style={{ marginRight: "15px" }}>
+                <Link className="link-admin" to="/admin/area">
                   Área admin
                 </Link>
               )}
 
-              {/* Sino de notificação */}
               <div
                 className="notification-container"
                 onClick={handleNotificacaoClick}
@@ -112,6 +138,39 @@ function Navbar() {
               </div>
             </>
           )}
+        </div>
+
+        <div className="navbar-toggle" onClick={toggleMenu} aria-label="Menu">
+          <i className={menuAberto ? "fas fa-times" : "fas fa-bars"}></i>
+        </div>
+
+        <div className={`navbar-mobile-menu ${menuAberto ? "active" : ""}`}>
+          <ul className="navbar-mobile-links">
+            <li className={isActive("/Catalogo") || isActive("/livros") ? "ativo" : ""}>
+              <Link to="/Catalogo" onClick={() => setMenuAberto(false)}>
+                Livros
+              </Link>
+            </li>
+            <li className={isActive("/", "sobre") ? "ativo" : ""}>
+              <HashLink smooth to="/#sobre" onClick={() => setMenuAberto(false)}>
+                Sobre
+              </HashLink>
+            </li>
+            {isAuthenticated && (
+              <li className={isActive(tipo === "aluno" ? "/aluno/perfil" : "/admin/area") ? "ativo" : ""}>
+                <Link to={tipo === "aluno" ? "/aluno/perfil" : "/admin/area"} onClick={() => setMenuAberto(false)}>
+                  {tipo === "aluno" ? "Área aluno" : "Área admin"}
+                </Link>
+              </li>
+            )}
+            {isAuthenticated && (
+              <li className={isActive(tipo === "aluno" ? "/aluno/notificacoes" : "/admin/notificacoes") ? "ativo" : ""}>
+                <Link to={tipo === "aluno" ? "/aluno/notificacoes" : "/admin/notificacoes"} onClick={() => setMenuAberto(false)}>
+                  Notificações
+                </Link>
+              </li>
+            )}
+          </ul>
         </div>
       </nav>
     </header>
