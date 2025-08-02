@@ -16,7 +16,7 @@ function CadastroAluno() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { nome, matricula, email, senha} = formData;
+    const { nome, matricula, email, senha } = formData;
 
     if (matricula.length !== 13 || !/^\d{13}$/.test(matricula)) {
       alert("A matrícula deve conter exatamente 13 dígitos numéricos.");
@@ -33,21 +33,21 @@ function CadastroAluno() {
       matricula,
       email,
       senha,
-      status: true
+      status: true,
     };
 
     try {
       const response = await fetch("http://localhost:8081/alunos/salvar", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(aluno)
+        body: JSON.stringify(aluno),
       });
 
       if (response.status === 201) {
         alert("Cadastro realizado com sucesso!");
-        window.location.href = "/login"; // ou useNavigate do React Router
+        window.location.href = "/login";
       } else if (response.status === 409) {
         const mensagem = await response.text();
         alert("Erro: " + mensagem);
@@ -61,11 +61,12 @@ function CadastroAluno() {
   };
 
   return (
-    <div className="cadastro-container">
-      <div className="formulario">
-        <h2>Cadastro de Aluno</h2>
-        <form onSubmit={handleSubmit}>
-          <label>Matrícula</label>
+    <div className="register-page">
+      <div className="register-form-area">
+        <form className="register-form" onSubmit={handleSubmit}>
+          <h2>Cadastro de Aluno</h2>
+
+          <label htmlFor="matricula">Matrícula</label>
           <input
             type="text"
             name="matricula"
@@ -74,7 +75,7 @@ function CadastroAluno() {
             onChange={handleChange}
           />
 
-          <label>Nome</label>
+          <label htmlFor="nome">Nome</label>
           <input
             type="text"
             name="nome"
@@ -83,7 +84,7 @@ function CadastroAluno() {
             onChange={handleChange}
           />
 
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
@@ -92,7 +93,7 @@ function CadastroAluno() {
             onChange={handleChange}
           />
 
-          <label>Senha</label>
+          <label htmlFor="senha">Senha</label>
           <input
             type="password"
             name="senha"
@@ -100,11 +101,13 @@ function CadastroAluno() {
             value={formData.senha}
             onChange={handleChange}
           />
-          <button type="submit">Cadastrar</button>
+
+          <button type="submit" className="register-btn">Cadastrar</button>
         </form>
       </div>
-      <div className="lado-direito">
-        <img src="/imagens/logo.png" alt="Logo do projeto" className="logo" />
+
+      <div className="register-logo-area">
+        <img src="/imagens/logo.png" alt="Logo do projeto" />
       </div>
     </div>
   );

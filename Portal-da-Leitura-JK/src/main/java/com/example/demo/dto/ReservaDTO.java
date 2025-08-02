@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class ReservaDTO {
     private Long reservaId;
     private String matricula;
+    private String nome;
     private Long livroId;
     private String titulo;
     private boolean status;
@@ -16,6 +17,7 @@ public class ReservaDTO {
     public ReservaDTO(ReservaModel model) {
         this.reservaId = model.getReservaId();
         this.matricula = model.getAluno().getMatricula();
+        this.nome = model.getAluno().getNome();
         this.livroId = model.getLivro().getLivroId();
         this.titulo = model.getLivro().getTitulo();
         this.status = model.getStatus();
@@ -23,9 +25,10 @@ public class ReservaDTO {
         this.dataVencimento = model.getDataVencimento();
     }
 
-    public ReservaDTO(Long reservaId, String matricula, Long livroId, String titulo, boolean status, LocalDate dataReserva, LocalDate dataVencimento) {
+    public ReservaDTO(Long reservaId, String matricula,String nome, Long livroId, String titulo, boolean status, LocalDate dataReserva, LocalDate dataVencimento) {
         this.reservaId = reservaId;
         this.matricula = matricula;
+        this.nome = nome;
         this.livroId = livroId;
         this.titulo = titulo;
         this.status = status;
@@ -50,6 +53,14 @@ public class ReservaDTO {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Long getLivroId() {

@@ -1,0 +1,121 @@
+.admin-notificacoes-container {
+  padding: 100px 60px 40px;
+  background-color: #f7fcfb;
+  min-height: 100vh;
+}
+
+.admin-notificacoes-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--cor-primaria);
+  margin-bottom: 25px;
+}
+
+.admin-notificacoes-feedback {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.admin-notificacoes-feedback.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.admin-notificacoes-feedback.error {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.admin-notificacoes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.admin-notificacoes-form textarea {
+  resize: none;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cor-borda);
+  font-size: 16px;
+}
+
+.btn-enviar {
+  background-color: var(--cor-primaria);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.btn-enviar:hover {
+  background-color: var(--cor-secundaria);
+}
+
+.notificacoes-table-wrapper {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 92, 90, 0.1);
+  padding: 10px;
+}
+
+.notificacoes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notificacoes-table th,
+.notificacoes-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 15px;
+}
+
+.notificacoes-table th {
+  background-color: var(--cor-primaria);
+  color: white;
+}
+
+.notificacoes-table td {
+  background-color: #f9f9f9;
+}
+
+.admin-notificacoes-btn {
+  background-color: var(--cor-primaria);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin: 0 3px;
+}
+
+.admin-notificacoes-btn:hover {
+  background-color: var(--cor-secundaria);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .admin-notificacoes-btn {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+  }
+
+  .notificacoes-table th,
+  .notificacoes-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

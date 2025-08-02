@@ -154,7 +154,7 @@ export default function AdminLivros() {
   return (
     <main className="admin-livros-wrapper bg-white px-3 px-md-5">
       <header className="mb-5 text-center">
-        <h2 className="fw-bold text-success d-flex align-items-center justify-content-center gap-2">
+        <h2 className="fw-bold d-flex align-items-center justify-content-center gap-2">
           <Book size={28} /> Gerenciar Livros
         </h2>
 
@@ -167,10 +167,9 @@ export default function AdminLivros() {
         <input
           type="text"
           placeholder="Buscar por título..."
-          className="form-control mt-4 w-100 w-md-50 mx-auto"
+          className="livro-busca-input"
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          style={{ height: "48px" }} // input maior
         />
       </header>
 

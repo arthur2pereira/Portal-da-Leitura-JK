@@ -1,158 +1,95 @@
-/* Estilo base */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #4CAF50;
-  background-color: #f0f9f7;
-  margin: 0;
-}
-
-/* Área principal */
 .admin-emprestimos-container {
-  width: 100%;
-  padding: 60px;
-  padding: 100px 60px 60px 60px;
-  background-color: transparent;
+  padding: 100px 60px 40px;
+  background-color: #fff;
+  min-height: 100vh;
 }
 
-/* Título */
 .admin-emprestimos-title {
   text-align: center;
-  margin-bottom: 30px;
-  color: #4CAF50;
-  font-size: 2.2rem;
-  font-weight: bold;
+  font-size: 2rem;
+  color: var(--cor-primaria);
+  margin-bottom: 25px;
+  font-family: var(--fonte-titulo);
 }
 
-/* Mensagem de erro */
-.admin-error-text {
-  background-color: #fdecea;
-  color: #b73a3a;
-  padding: 12px 16px;
+.admin-emprestimos-feedback {
+  margin-bottom: 15px;
+  padding: 12px;
   border-radius: 8px;
   text-align: center;
-  font-weight: 600;
-  max-width: 500px;
-  margin: 0 auto 20px auto;
-  box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+  font-weight: 500;
 }
 
-/* Tabela */
-.admin-emprestimos-table {
+.admin-emprestimos-feedback.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.admin-emprestimos-feedback.error {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.emprestimos-table-wrapper {
+  overflow-x: auto;
+  background-color: var(--cor-card);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 92, 90, 0.1);
+  padding: 10px;
+}
+
+.emprestimos-table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 92, 90, 0.1);
 }
 
-/* Cabeçalho da tabela */
-.admin-emprestimos-table thead {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: 700;
-}
-
-.admin-emprestimos-table th,
-.admin-emprestimos-table td {
-  padding: 14px 16px;
+.emprestimos-table th,
+.emprestimos-table td {
+  padding: 14px;
   text-align: center;
+  border-bottom: 1px solid var(--cor-borda);
   font-size: 15px;
-  border-bottom: 1px solid #d1eee7;
+  color: var(--cor-texto);
 }
 
-/* Hover */
-.admin-emprestimos-table tbody tr:hover {
-  background-color: #e9f8f6;
+.emprestimos-table th {
+  background-color: var(--cor-primaria);
+  color: var(--cor-card);
+  font-family: var(--fonte-titulo);
 }
 
-/* Status por linha */
-.linha-ativa {
-  background-color: #e6faf2;
+.emprestimos-table td {
+  background-color: var(--cor-fundo);
 }
 
-.linha-vencida {
-  background-color: #ffe0e0;
-  font-weight: 600;
-  color: #b33939;
-}
-
-.linha-finalizado {
-  background-color: #f4f4f4;
-}
-
-/* Status de texto */
-.status-ativo {
-  color: #3ea66b;
-  font-weight: bold;
-}
-
-.status-finalizado {
-  color: #999;
-  font-style: italic;
-}
-
-/* Mensagem de vazio */
-.admin-emprestimos-table tbody tr td[colspan] {
-  padding: 25px 0;
-  font-style: italic;
-  color: #7f8c8d;
-}
-
-/* Botões */
-.admin-btn {
-  margin: 0 5px;
-  padding: 7px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
+.admin-emprestimos-btn {
+  background-color: var(--cor-primaria);
+  color: var(--cor-card);
   border: none;
+  padding: 6px 14px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin: 0 3px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 92, 90, 0.15);
+  font-family: var(--fonte-corpo);
+  font-weight: 500;
 }
 
-.admin-btn:hover {
-  opacity: 0.9;
+.admin-emprestimos-btn:hover {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-card);
 }
 
-.admin-btn:active {
-  transform: scale(0.96);
-}
+@media (max-width: 768px) {
+  .admin-emprestimos-btn {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+  }
 
-/* Botão de devolução - verde escuro */
-.admin-btn-devolver {
-  background-color: #005c5a;
-  color: white;
-}
-
-.admin-btn-devolver:hover {
-  background-color: #00403f;
-}
-
-/* Botão de renovação - verde claro */
-.admin-btn-renovar {
-  background-color: #3ea66b;
-  color: white;
-}
-
-.admin-btn-renovar:hover {
-  background-color: #349c60;
-}
-
-/* Select de dias */
-.admin-select-dias {
-  margin: 0 5px;
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  outline: none;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
-}
-
-.admin-select-dias:focus {
-  border-color: #3ea66b;
+  .emprestimos-table th,
+  .emprestimos-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

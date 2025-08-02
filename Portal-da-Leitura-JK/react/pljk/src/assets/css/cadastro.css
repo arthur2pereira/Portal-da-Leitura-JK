@@ -1,62 +1,93 @@
-.cadastro-container {
-    display: flex;
-    height: 680px;
-    padding-top: 50px;
-  }
-  
-  .formulario {
-    flex: 1;
-    background-color: #ffffff;
-    padding: 60px;
-    display: flex;
+.register-page {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #fff;
+  margin-top: 60px;
+}
+
+.register-form-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form h2 {
+  text-align: center;
+  color: #005c5a;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.register-form label {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.register-form input {
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.register-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background-color: #005c5a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #3ea66b;
+}
+
+.register-logo-area {
+  flex: 1;
+  background-color: #005c5a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.register-logo-area img {
+  max-width: 70%;
+  height: auto;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .register-page {
     flex-direction: column;
-    justify-content: center;
   }
-  
-  .formulario h2 {
-    margin-bottom: 30px;
-    text-align: center;
+
+  .register-logo-area {
+    display: none;
   }
-  
-  .formulario form {
-    display: flex;
-    flex-direction: column;
+
+  .register-form-area {
+    width: 100%;
+    padding: 2rem;
   }
-  
-  .formulario label {
-    margin-top: 10px;
+
+  .register-form {
+    max-width: 100%;
   }
-  
-  .formulario input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .formulario button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #2e8b57;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .formulario button:hover {
-    background-color: #246b44;
-  }
-  
-  .lado-direito {
-    flex: 1;
-    background-color: #2e8b57;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .logo {
-    max-width: 60%;
-  }
-  
+}

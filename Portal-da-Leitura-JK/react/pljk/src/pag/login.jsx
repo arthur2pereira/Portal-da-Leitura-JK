@@ -67,16 +67,17 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="lado-esquerdo">
-        <img src="/imagens/logo.png" alt="Logo do projeto" className="logo" />
+    <div className="login-page">
+      <div className="login-logo-area">
+        <img src="/imagens/logo.png" alt="Logo do projeto" />
       </div>
 
-      <div className="formulario">
-        <h2>Login</h2>
-        {erro && <p style={{ color: "red" }}>{erro}</p>}
-        <form onSubmit={handleLogin}>
-          <label>E-mail ou Matrícula</label>
+      <div className="login-form-area">
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Login</h2>
+          {erro && <p className="login-error">{erro}</p>}
+
+          <label htmlFor="emailOuMatricula">E-mail ou Matrícula</label>
           <input
             type="text"
             id="emailOuMatricula"
@@ -85,7 +86,7 @@ function Login() {
             onChange={(e) => setEmailOuMatricula(e.target.value)}
           />
 
-          <label>Senha</label>
+          <label htmlFor="senha">Senha</label>
           <input
             type="password"
             id="senha"
@@ -94,7 +95,7 @@ function Login() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          <button type="submit" className="btn-login">Entrar</button>
+          <button type="submit" className="login-btn">Entrar</button>
         </form>
       </div>
     </div>

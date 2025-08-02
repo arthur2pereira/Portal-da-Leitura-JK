@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../authContext.jsx";
 import "../../assets/css/adminEmprestimo.css";
 
-function formatDate(dateString) {
+function formatarData(dateString) {
   if (!dateString) return "Data não disponível";
   const [year, month, day] = dateString.split("-");
   return `${day}/${month}/${year}`;
@@ -213,42 +213,36 @@ export default function EmprestimosAdmin() {
 
   return (
     <div className="admin-emprestimos-container">
-      <h1 className="admin-emprestimos-title">Empréstimos Registrados</h1>
+      <h2 className="admin-emprestimos-title">Gerenciamento de Empréstimos</h2>
 
-      {error && <p className="admin-error-text">{error}</p>}
-
-      <table className="admin-emprestimos-table">
-        <thead>
-          <tr>
-            <th>Aluno</th>
-            <th>Livro</th>
-            <th>Data de Empréstimo</th>
-            <th>Data Prevista de Devolução</th>
-            <th>Data de Devolução</th>
-            <th>Dias de Atraso</th>
-            <th>Vencido</th>
-            <th>Renovações</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {emprestimos.length === 0 ? (
+      <div className="emprestimos-table-wrapper">
+        <table className="emprestimos-table">
+          <thead>
             <tr>
-              <td colSpan="10">Nenhum empréstimo encontrado.</td>
+              <th>Matrícula</th>
+              <th>Título</th>
+              <th>Empréstimo</th>
+              <th>Vencimento</th>
+              <th>Devolução</th>
+              <th>Atraso (dias)</th>
+              <th>Vencido</th>
+              <th>Renovações</th>
+              <th>Status</th>
+              <th>Ações</th>
             </tr>
-          ) : (
-            emprestimos.map((emp) => (
+          </thead>
+          <tbody>
+            {emprestimos.map((emp) => (
               <EmprestimoRow
                 key={emp.emprestimoId}
                 emp={emp}
                 registrarDevolucao={registrarDevolucao}
                 renovarEmprestimo={renovarEmprestimo}
               />
-            ))
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

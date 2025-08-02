@@ -1,0 +1,129 @@
+.admin-penalidades-container {
+  padding: 100px 60px 40px;
+  background-color: #f7fcfb;
+  min-height: 100vh;
+}
+
+.admin-penalidades-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--cor-primaria);
+  margin-bottom: 25px;
+}
+
+.admin-feedback {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.admin-feedback.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.admin-feedback.error {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.penalidade-form {
+  background: white;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 92, 90, 0.1);
+}
+
+.penalidade-form h4 {
+  margin-bottom: 15px;
+  color: var(--cor-primaria);
+}
+
+.penalidade-form form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.penalidade-form select {
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  min-width: 200px;
+}
+
+.btn-aplicar {
+  background-color: var(--cor-primaria);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-aplicar:hover {
+  background-color: var(--cor-secundaria);
+}
+
+.penalidades-tabela-wrapper {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 92, 90, 0.1);
+  overflow-x: auto;
+}
+
+.penalidades-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.penalidades-table th,
+.penalidades-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 15px;
+}
+
+.penalidades-table th {
+  background-color: var(--cor-primaria);
+  color: white;
+}
+
+.penalidades-table td {
+  background-color: #f9f9f9;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.status.ativa {
+  color: #d9534f;
+}
+
+.status.inativa {
+  color: #5cb85c;
+}
+
+@media (max-width: 768px) {
+  .penalidade-form form {
+    flex-direction: column;
+  }
+
+  .penalidade-form select {
+    width: 100%;
+  }
+}

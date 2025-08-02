@@ -6,12 +6,26 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.admin-livros-wrapper .filtro-input {
-  max-width: 500px;
-  margin: 0 auto 2.5rem auto;
-  height: 48px;
-  font-size: 1.1rem;
-  border-radius: 8px;
+.admin-livros-wrapper header h2 {
+  color: #005c5a;
+  margin-bottom: 2rem;
+}
+
+.livro-busca-input {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  display: block;
+  border: 2px solid var(--cor-secundaria);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 1.05rem;
+  transition: 0.3s ease;
+}
+
+.livro-busca-input:focus {
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 10px #3ea66b80;
+  outline: none;
 }
 
 .admin-livros-wrapper .livros-grid .livro-card {

@@ -125,6 +125,7 @@ public class ReservaService {
         return new ReservaDTO(
                 model.getReservaId(),
                 model.getAluno().getMatricula(),
+                model.getAluno().getNome(),
                 model.getLivro().getLivroId(),
                 model.getLivro().getTitulo(),
                 model.getStatus(),

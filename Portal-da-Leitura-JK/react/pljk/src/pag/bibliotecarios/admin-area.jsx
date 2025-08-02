@@ -53,6 +53,12 @@ function AdminArea() {
       title: "Notificações",
       description: "Envie e visualize notificações.",
       rota: "/admin/notificacoes"
+    },
+    {
+      icon: <FileText className="text-success me-2" />,
+      title: "Penalidades",
+      description: "Visualize e gerencie penalidades dos alunos.",
+      rota: "/admin/penalidades"
     }
   ]
 

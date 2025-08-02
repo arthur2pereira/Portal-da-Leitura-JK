@@ -7,23 +7,24 @@ import Footer from './componentes/footer'
 import Scroll from './componentes/scroll.jsx'
 
 // Paginas
-import Home from './pag/home' //pagina inicial
-import Livro from './pag/livro' // tela do livro
-import Catalogo from './pag/catalogo' // tela do catalogo dos livros
-import Cadastro from './pag/cadastro'// tela do cadastro
-import Login from './pag/login' // tela do login
+import Home from './pag/home'
+import Livro from './pag/livro'
+import Catalogo from './pag/catalogo'
+import Cadastro from './pag/cadastro'
+import Login from './pag/login'
 
 // Aluno
-import NotificacoesAluno from './pag/alunos/notificacoes' // tela de notificações 
-import Perfil from './pag/alunos/perfil' // tela de perfil do aluno
+import NotificacoesAluno from './pag/alunos/notificacoes'
+import Perfil from './pag/alunos/perfil'
 
 // Bibliotecário
-import AdminAlunos from './pag/bibliotecarios/admin-alunos' // tela de gerenciamento de alunos do adm
-import AdminLivros from './pag/bibliotecarios/admin-livros' // tela de gerenciamento de livros do adm
-import AdminNotificacoes from './pag/bibliotecarios/admin-notificacoes'// tela de gerenciamento de notificações do adm
-import AdminReservas from './pag/bibliotecarios/admin-reservas' // tela de gerenciamento de reservas do adm
+import AdminAlunos from './pag/bibliotecarios/admin-alunos'
+import AdminLivros from './pag/bibliotecarios/admin-livros'
+import AdminNotificacoes from './pag/bibliotecarios/admin-notificacoes'
+import AdminReservas from './pag/bibliotecarios/admin-reservas'
 import AdminArea from './pag/bibliotecarios/admin-area'
 import AdminEmprestimos from './pag/bibliotecarios/admin-emprestimo.jsx'
+import AdminPenalidades from './pag/bibliotecarios/admin-penalidades.jsx'
 
 import RotaProtegida from "./componentes/RotaProtegida"
 
@@ -83,6 +84,11 @@ function AppRoutes() {
               <AdminNotificacoes />
             </RotaProtegida>
           } />
+          <Route path="/admin/penalidades" element={
+            <RotaProtegida tipoPermitido="bibliotecario">
+              <AdminPenalidades />
+            </RotaProtegida>
+          }/>
         </Routes>
       {!esconderLayout && <Footer />}
     </>

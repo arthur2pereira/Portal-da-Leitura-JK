@@ -1,19 +1,19 @@
-.admin-reservas-wrapper {
+.admin-alunos-wrapper {
   background-color: var(--cor-fundo);
   min-height: 100vh;
   padding: 5rem 1rem 6rem;
   font-family: var(--fonte-corpo);
 }
 
-.admin-reservas-wrapper h2 {
+.admin-alunos-wrapper h2 {
   font-family: var(--fonte-titulo);
   color: var(--cor-primaria);
   margin-bottom: 2.5rem;
   text-align: center;
 }
 
-/* Feedback */
-.admin-reservas-alert {
+/* Feedback (erros e sucessos) */
+.admin-alunos-alert {
   max-width: 500px;
   margin: 0 auto 2rem;
   font-weight: 500;
@@ -22,7 +22,7 @@
 }
 
 /* Container da tabela */
-.reservas-table-wrapper {
+.alunos-table-wrapper {
   border-radius: 12px;
   overflow-x: auto;
   box-shadow: 0 6px 20px rgba(0, 92, 90, 0.15);
@@ -31,70 +31,43 @@
 }
 
 /* Tabela */
-.reservas-table {
+.alunos-table {
   width: 100%;
   background-color: var(--cor-card);
   border-radius: 12px;
   font-size: 0.92rem;
   border-collapse: collapse;
   min-width: 700px;
+  border: none;
 }
 
-.reservas-table thead {
+.alunos-table thead {
   background-color: var(--cor-primaria);
   color: white;
 }
 
-.reservas-table th,
-.reservas-table td {
+.alunos-table thead th {
+  border: none;
+  padding: 0.75rem 0.6rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.alunos-table th,
+.alunos-table td {
   text-align: center;
   vertical-align: middle;
   padding: 0.75rem 0.6rem;
   border: 1px solid #ddd;
 }
 
-.reservas-table tbody tr:hover {
+.alunos-table tbody tr:hover {
   background-color: #d6f3ec;
 }
 
-/* Ações */
-.reservas-acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-/* Botões */
-.reservas-btn {
-  min-width: 80px;
-  font-weight: 500;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  transition: all 0.2s ease-in-out;
-  border: none;
-  color: white;
-}
-
-.reservas-btn-cancelar {
-  background-color: #d9534f;
-}
-
-.reservas-btn-cancelar:hover {
-  background-color: #c9302c;
-}
-
-.reservas-btn-retirada {
-  background-color: #f0ad4e;
-}
-
-.reservas-btn-retirada:hover {
-  background-color: #ec971f;
-}
-
-.reserva-busca-input {
-  max-width: 700px;
+/* Input de busca */
+.busca-input {
+  max-width: 290px;
   margin: 0 auto 2rem;
   display: block;
   border: 2px solid var(--cor-secundaria);
@@ -104,26 +77,21 @@
   transition: 0.3s ease;
 }
 
-.reserva-busca-input:focus {
+.busca-input:focus {
   border-color: var(--cor-primaria);
   box-shadow: 0 0 10px #3ea66b80;
   outline: none;
 }
 
-/* Responsivo */
+/* Responsividade */
 @media (max-width: 768px) {
-  .reservas-table {
+  .alunos-table {
     font-size: 0.85rem;
     min-width: 100%;
   }
 
-  .reservas-table th,
-  .reservas-table td {
+  .alunos-table th,
+  .alunos-table td {
     padding: 0.6rem 0.4rem;
-  }
-
-  .reservas-acoes {
-    flex-direction: column;
-    gap: 0.4rem;
   }
 }

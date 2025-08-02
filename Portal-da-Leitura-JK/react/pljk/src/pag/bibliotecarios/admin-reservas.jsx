@@ -1,65 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../authContext.jsx';
-import '../../assets/css/adminReserva.css';
+import React, { useState, useEffect } from 'react'
+import { useAuth } from '../../authContext.jsx'
+import '../../assets/css/adminReserva.css'
 
-function formatDateNoTimezone(dateString) {
-  if (!dateString) return 'Data não disponível';
-  const [year, month, day] = dateString.split('-');
-  const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString('pt-BR');
+function formatDate(dateString) {
+  if (!dateString) return 'Data não disponível'
+  const [year, month, day] = dateString.split('-')
+  return new Date(year, month - 1, day).toLocaleDateString('pt-BR')
 }
 
 export default function ReservasAdmin() {
-  const { auth } = useAuth();
-  const [reservasList, setReservasList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [feedbackMsg, setFeedbackMsg] = useState(null);
+  const { auth } = useAuth()
+  const [reservasList, setReservasList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState(null)
+  const [feedbackMsg, setFeedbackMsg] = useState(null)
+  const [busca, setBusca] = useState('')
 
   const carregarReservas = async () => {
-    if (!auth || !auth.token) return;
-
+    if (!auth?.token) return
     try {
       const response = await fetch('http://localhost:8081/bibliotecarios/reservas', {
-        method: 'GET',
         headers: {
           Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'application/json',
         },
-      });
-
-      if (!response.ok) throw new Error();
-
-      const data = await response.json();
-      setReservasList(data);
-      setIsLoading(false);
+      })
+      if (!response.ok) throw new Error()
+      const data = await response.json()
+      setReservasList(data)
     } catch {
-      setErrorMsg('Erro ao carregar as reservas.');
-      setIsLoading(false);
+      setErrorMsg('Erro ao carregar as reservas.')
+    } finally {
+      setIsLoading(false)
     }
-  };
-
+  }
 
   const cancelarReserva = async (reservaId) => {
     try {
       const response = await fetch(`http://localhost:8081/bibliotecarios/reservas/cancelar/${reservaId}`, {
         method: 'DELETE',
         headers: {
-          ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
+          Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'application/json',
         },
-      });
-
-      if (!response.ok) throw new Error();
-
-      await carregarReservas();
-      setFeedbackMsg({ tipo: 'sucesso', texto: 'Reserva cancelada com sucesso' });
+      })
+      if (!response.ok) throw new Error()
+      await carregarReservas()
+      setFeedbackMsg({ tipo: 'sucesso', texto: 'Reserva cancelada com sucesso' })
     } catch {
-      setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao cancelar a reserva' });
+      setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao cancelar a reserva' })
     }
-  };
+  }
 
-    const confirmarRetirada = async (reservaId) => {
+  const confirmarRetirada = async (reservaId) => {
     try {
       const response = await fetch(`http://localhost:8081/bibliotecarios/reservas/${reservaId}/confirmar-retirada`, {
         method: 'POST',
@@ -67,84 +60,95 @@ export default function ReservasAdmin() {
           Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'application/json',
         },
-      });
-
-      if (!response.ok) throw new Error();
-
-      await carregarReservas();
-      setFeedbackMsg({ tipo: 'sucesso', texto: 'Retirada confirmada e empréstimo registrado com sucesso.' });
+      })
+      if (!response.ok) throw new Error()
+      await carregarReservas()
+      setFeedbackMsg({ tipo: 'sucesso', texto: 'Retirada confirmada com sucesso' })
     } catch {
-      setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao confirmar retirada.' });
+      setFeedbackMsg({ tipo: 'erro', texto: 'Erro ao confirmar retirada' })
     }
-  };
+  }
 
   useEffect(() => {
-    if (auth && auth.token) {
-      carregarReservas();
-    } 
-  }, [auth]);
+    if (auth?.token) carregarReservas()
+  }, [auth])
 
-
-  if (isLoading) return <p className="loading-text">Carregando reservas...</p>;
-  if (errorMsg) return <p className="error-text">{errorMsg}</p>;
+  const reservasFiltradas = reservasList.filter((reserva) => {
+    const termo = busca.toLowerCase()
+    return (
+      (reserva.nome ?? '').toLowerCase().includes(termo) ||
+      (reserva.titulo ?? '').toLowerCase().includes(termo)
+    )
+  })
 
   return (
-    <div className="reservas-admin-container">
-      <h1 className="reservas-admin-title">Gerenciamento de Reservas</h1>
+    <main className="admin-reservas-wrapper">
+      <h2>Gerenciamento de Reservas</h2>
+
+      <input
+        type="text"
+        className="reserva-busca-input"
+        placeholder="Buscar por aluno ou livro..."
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
+      {isLoading && <p className="text-center text-muted">Carregando reservas...</p>}
+      {errorMsg && <p className="text-center text-danger">{errorMsg}</p>}
 
       {feedbackMsg && (
-        <div className={`feedback-message ${feedbackMsg.tipo === 'erro' ? 'error' : 'success'}`}>
+        <div className={`admin-reservas-alert alert ${feedbackMsg.tipo === 'erro' ? 'alert-danger' : 'alert-success'} text-center`}>
           {feedbackMsg.texto}
         </div>
       )}
 
-      <table className="reservas-table">
-        <thead>
-          <tr>
-            <th className="table-header">Aluno</th>
-            <th className="table-header">Livro</th>
-            <th className="table-header">Data da Reserva</th>
-            <th className="table-header">Data de Vencimento</th>
-            <th className="table-header">Ações</th>
-          </tr>
-        </thead>
+      <div className="reservas-table-wrapper">
+        <table className="reservas-table">
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Nome</th>
+              <th>Livro</th>
+              <th>Data da Reserva</th>
+              <th>Data de Vencimento</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
           <tbody>
-            {reservasList.length === 0 ? (
+            {reservasFiltradas.length === 0 ? (
               <tr>
-                <td colSpan="5" className="table-cell" style={{ textAlign: 'center' }}>
-                  Nenhuma reserva encontrada.
-                </td>
+                <td colSpan="6" className="text-center">Nenhuma reserva encontrada.</td>
               </tr>
             ) : (
-              reservasList.map((reserva) => (
-                <tr key={reserva.reservaId} className="table-row">
-                  <td className="table-cell">{reserva.matricula ?? 'Aluno não disponível'}</td>
-                  <td className="table-cell">{reserva.titulo ?? 'Livro não disponível'}</td>
-                  <td className="table-cell">
-                    {reserva.dataReserva
-                      ? formatDateNoTimezone(reserva.dataReserva)
-                      : 'Data não disponível'}
-                  </td>
-                  <td className="table-cell">
-                    {reserva.dataVencimento
-                      ? formatDateNoTimezone(reserva.dataVencimento)
-                      : 'Data não disponível'}
-                  </td>
-                  <td className="table-cell">
-                    <button className="cancel-button" onClick={() => cancelarReserva(reserva.reservaId)}>
-                      Cancelar
-                    </button>
-                    <button
-                      className="confirm-button"
-                      onClick={() => confirmarRetirada(reserva.reservaId)}>
-                      Confirmar Retirada
-                    </button>
+              reservasFiltradas.map((reserva) => (
+                <tr key={reserva.reservaId}>
+                  <td>{reserva.matricula ?? 'N/A'}</td>
+                  <td>{reserva.nome ?? 'Nome não disponível'}</td>
+                  <td>{reserva.titulo ?? 'Livro não disponível'}</td>
+                  <td>{formatDate(reserva.dataReserva)}</td>
+                  <td>{formatDate(reserva.dataVencimento)}</td>
+                  <td>
+                    <div className="reservas-acoes">
+                      <button
+                        className="reservas-btn reservas-btn-cancelar"
+                        onClick={() => cancelarReserva(reserva.reservaId)}
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        className="reservas-btn reservas-btn-retirada"
+                        onClick={() => confirmarRetirada(reserva.reservaId)}
+                      >
+                        Confirmar Retirada
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
             )}
           </tbody>
-      </table>
-    </div>
-  );
+        </table>
+      </div>
+    </main>
+  )
 }
