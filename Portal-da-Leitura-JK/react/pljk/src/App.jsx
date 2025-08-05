@@ -12,6 +12,8 @@ import Livro from './pag/livro'
 import Catalogo from './pag/catalogo'
 import Cadastro from './pag/cadastro'
 import Login from './pag/login'
+import EsqueciSenha from './pag/esqueciSenha.jsx'
+import RedefinirSenha from './pag/redefinirSenha.jsx'
 
 // Aluno
 import NotificacoesAluno from './pag/alunos/notificacoes'
@@ -31,7 +33,7 @@ import RotaProtegida from "./componentes/RotaProtegida"
 function AppRoutes() {
   const location = useLocation()
 
-  const rotasSemLayout = ['/login', '/cadastro']
+  const rotasSemLayout = ['/login', '/cadastro', '/esqueci-senha', '/redefinir-senha']
   const esconderLayout = rotasSemLayout.includes(location.pathname)
 
   return (
@@ -44,6 +46,8 @@ function AppRoutes() {
           <Route path="/Catalogo" element={<Catalogo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path='/esqueci-senha' element={<EsqueciSenha />} />
+          <Route path="/redefinir-senha" element={<RedefinirSenha />} />
           <Route path="/aluno/perfil" element={
             <RotaProtegida tipoPermitido="aluno">
               <Perfil />
@@ -104,7 +108,5 @@ function App() {
     </Router>
   )
 }
-
-
 
 export default App

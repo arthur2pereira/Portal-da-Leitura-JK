@@ -146,31 +146,45 @@ function Navbar() {
 
         <div className={`navbar-mobile-menu ${menuAberto ? "active" : ""}`}>
           <ul className="navbar-mobile-links">
-            <li className={isActive("/Catalogo") || isActive("/livros") ? "ativo" : ""}>
-              <Link to="/Catalogo" onClick={() => setMenuAberto(false)}>
-                Livros
-              </Link>
-            </li>
-            <li className={isActive("/", "sobre") ? "ativo" : ""}>
-              <HashLink smooth to="/#sobre" onClick={() => setMenuAberto(false)}>
-                Sobre
-              </HashLink>
-            </li>
-            {isAuthenticated && (
+          <li className={isActive("/Catalogo") || isActive("/livros") ? "ativo" : ""}>
+            <Link to="/Catalogo" onClick={() => setMenuAberto(false)}>
+              Livros
+            </Link>
+          </li>
+          <li className={isActive("/", "sobre") ? "ativo" : ""}>
+            <HashLink smooth to="/#sobre" onClick={() => setMenuAberto(false)}>
+              Sobre
+            </HashLink>
+          </li>
+
+          {!isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/login" onClick={() => setMenuAberto(false)}>
+                  Entrar
+                </Link>
+              </li>
+              <li>
+                <Link to="/cadastro" onClick={() => setMenuAberto(false)}>
+                  Cadastro
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
               <li className={isActive(tipo === "aluno" ? "/aluno/perfil" : "/admin/area") ? "ativo" : ""}>
                 <Link to={tipo === "aluno" ? "/aluno/perfil" : "/admin/area"} onClick={() => setMenuAberto(false)}>
                   {tipo === "aluno" ? "Área aluno" : "Área admin"}
                 </Link>
               </li>
-            )}
-            {isAuthenticated && (
               <li className={isActive(tipo === "aluno" ? "/aluno/notificacoes" : "/admin/notificacoes") ? "ativo" : ""}>
                 <Link to={tipo === "aluno" ? "/aluno/notificacoes" : "/admin/notificacoes"} onClick={() => setMenuAberto(false)}>
                   Notificações
                 </Link>
               </li>
-            )}
-          </ul>
+            </>
+          )}
+        </ul>
         </div>
       </nav>
     </header>

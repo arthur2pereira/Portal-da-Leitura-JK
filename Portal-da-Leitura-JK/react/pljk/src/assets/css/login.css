@@ -78,6 +78,21 @@
   text-align: center;
 }
 
+.esqueci-senha {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #005c5a;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.esqueci-senha:hover {
+  color: #3ea66b;
+  text-decoration: underline;
+}
+
+
 /* Responsivo */
 @media (max-width: 768px) {
   .login-page {

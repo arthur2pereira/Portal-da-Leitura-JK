@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // Permissões públicas
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/alunos/autenticar", "/alunos/salvar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/alunos/esqueci-senha", "/alunos/redefinir-senha").permitAll()
                         .requestMatchers("/bibliotecarios/autenticar").permitAll()
                         .requestMatchers(HttpMethod.GET, "/avaliacoes/mais-avaliados").permitAll()
 
@@ -76,8 +77,7 @@ public class SecurityConfig {
                                 "/livros/generos",
                                 "/livros/editoras",
                                 "/livros/autores",
-                                "/livros/**",
-                                "/livros/avaliacoes/**"
+                                "/livros/**"
                         ).permitAll()
 
                         // As outras operações (POST, PUT, DELETE) em /livros/** são para ADMIN
@@ -85,7 +85,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/livros/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/livros/**").hasRole("ADMIN")
 
-                        // O restante exige autenticaçãov
+                        // O restante exige autenticação
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

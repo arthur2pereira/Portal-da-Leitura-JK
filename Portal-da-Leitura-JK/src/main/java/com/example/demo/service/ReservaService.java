@@ -53,8 +53,8 @@ public class ReservaService {
         }
 
         int reservasAtivas = reservaRepository.countByLivroAndStatusTrue(livro);
-
         int disponiveis = livro.getQuantidade() - reservasAtivas;
+
         if (disponiveis <= 0) {
             throw new RuntimeException("Todas as unidades deste livro já estão reservadas.");
         }
@@ -68,7 +68,6 @@ public class ReservaService {
 
         return reservaRepository.save(reserva);
     }
-
 
     public void cancelarReserva(Long reservaId) {
         ReservaModel reserva = reservaRepository.findByReservaId(reservaId)

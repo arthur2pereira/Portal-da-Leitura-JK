@@ -1,94 +1,211 @@
-.livro-detalhes {
-  padding: 30px;
-  background-color: #fdfdfd;
-  font-family: Arial, sans-serif;
-  color: #333;
-  border-radius: 8px;
-  margin-top: 50px;
+/* Container principal */
+.detalhes-livro {
+  max-width: 720px;
+  margin: 3rem auto 4rem;
+  padding: 2rem 2.5rem;
+  background-color: var(--cor-card);
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 14px rgb(0 92 90 / 0.15);
+  font-family: var(--fonte-corpo);
+  color: var(--cor-texto);
+  text-align: left;
 }
 
-.titulo {
-  font-size: 2rem;
-  color: #0d6efd;
-  margin-bottom: 20px;
+/* Título */
+.titulo-livro {
+  font-family: var(--fonte-titulo);
+  font-size: 2.5rem;
+  color: var(--cor-primaria);
+  margin-bottom: 1.5rem;
 }
 
-.livro-detalhes p {
-  font-size: 1rem;
-  margin: 8px 0;
+/* Parágrafos de info */
+.detalhes-livro p {
+  font-size: 1.05rem;
+  margin: 0.6rem 0;
 }
 
-.avaliacoes {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #ccc;
-}
-
-.avaliacoes h4 {
-  color: #6c757d;
-}
-
-.sem-avaliacoes {
-  font-style: italic;
-  color: #999;
-}
-
-/* Botão de reserva */
+/* Botão de reservar */
 .botao-reservar {
-  background-color: #0d6efd;
+  background-color: var(--cor-secundaria);
   color: white;
   border: none;
-  padding: 10px 16px;
-  margin-top: 20px;
-  border-radius: 6px;
+  padding: 0.9rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-family: var(--fonte-titulo);
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.25s ease;
+  margin-top: 1.5rem;
+  display: inline-block;
 }
 
 .botao-reservar:hover {
-  background-color: #0b5ed7;
+  background-color: #44b875;
 }
 
-/* Avaliação */
-.avaliacao-form {
-  margin-top: 25px;
+/* Alerts */
+.alert {
+  max-width: 720px;
+  margin: 1.25rem auto;
+  padding: 1rem 1.75rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  font-family: var(--fonte-corpo);
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 92 90 / 0.1);
 }
 
-.avaliacao-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
+.alerta-erro {
+  background-color: #ffe3e3;
+  color: #b02a37;
+  border: 1px solid #f5c2c7;
 }
 
-.avaliacao-form select,
-.avaliacao-form textarea {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
+.alerta-aviso {
+  background-color: #fff8e1;
+  color: #725b00;
+  border: 1px solid #ffecb3;
 }
 
-.avaliacao-form button {
-  background-color: #198754;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+.alerta-info {
+  background-color: #d1f0f0;
+  color: #064547;
+  border: 1px solid #a3d5d5;
+}
+
+/* Avaliações */
+.avaliacoes-livro {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1.4px solid var(--cor-borda);
+}
+
+.avaliacoes-livro h4 {
+  color: var(--cor-secundaria);
+  font-family: var(--fonte-titulo);
+  font-size: 1.6rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Botão de toggle avaliação */
+.botao-toggle-avaliacao {
+  background-color: transparent;
+  border: 2px solid var(--cor-primaria);
+  padding: 0.45rem 1.3rem;
+  border-radius: 0.4rem;
+  color: var(--cor-primaria);
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+  font-family: var(--fonte-titulo);
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.botao-toggle-avaliacao:hover {
+  background-color: var(--cor-primaria);
+  color: white;
+}
+
+/* Formulário avaliação */
+.form-avaliacao {
+  margin-top: 1.5rem;
+}
+
+.form-avaliacao label {
+  display: block;
+  font-weight: 700;
+  font-family: var(--fonte-titulo);
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+.form-avaliacao input[type="number"],
+.form-avaliacao textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  border: 1.3px solid var(--cor-borda);
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.25s ease;
+}
+
+.form-avaliacao input[type="number"]:focus,
+.form-avaliacao textarea:focus {
+  outline: none;
+  border-color: var(--cor-secundaria);
+  box-shadow: 0 0 6px var(--cor-secundaria);
+}
+
+/* Botão enviar avaliação */
+.botao-enviar-avaliacao {
+  background-color: var(--cor-primaria);
+  color: white;
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-family: var(--fonte-titulo);
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.avaliacao-form button:hover {
-  background-color: #157347;
+.botao-enviar-avaliacao:hover {
+  background-color: #004b48;
 }
 
-/* Nota média */
-.nota-media {
-  font-size: 1.1rem;
-  margin-top: 15px;
-  color: #555;
+/* Lista avaliações */
+.lista-avaliacoes {
+  list-style-type: none;
+  margin-top: 1.5rem;
+  padding-left: 0;
+}
+
+.avaliacao-item {
+  border-bottom: 1px solid var(--cor-borda);
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: var(--cor-texto);
+}
+
+.avaliacao-item:last-child {
+  border-bottom: none;
+}
+
+/* Texto sem avaliações */
+.sem-avaliacoes {
+  font-style: italic;
+  color: #777;
+  margin-top: 1rem;
+}
+
+/* Texto de carregando */
+.texto-carregando {
+  font-size: 1.2rem;
+  color: var(--cor-primaria);
+  margin-top: 3rem;
+  font-family: var(--fonte-titulo);
+  text-align: center;
+}
+
+/* Responsividade simples */
+@media (max-width: 600px) {
+  .detalhes-livro {
+    margin: 2rem 1rem 3rem;
+    padding: 1.5rem 1.5rem;
+  }
+
+  .titulo-livro {
+    font-size: 2rem;
+  }
+
+  .botao-reservar,
+  .botao-enviar-avaliacao,
+  .botao-toggle-avaliacao {
+    width: 100%;
+    padding: 0.9rem;
+  }
 }

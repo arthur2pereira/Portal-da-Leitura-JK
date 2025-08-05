@@ -96,6 +96,11 @@ function Login() {
           />
 
           <button type="submit" className="login-btn">Entrar</button>
+
+          <p className="esqueci-senha" onClick={() => navigate("/esqueci-senha")}>
+            Esqueceu sua senha?
+          </p>
+
         </form>
       </div>
     </div>

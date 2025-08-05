@@ -106,6 +106,27 @@
   color: white;
 }
 
+.admin-notificacoes-form input.form-control,
+.admin-notificacoes-form select.form-control {
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid var(--cor-borda);
+}
+
+.admin-notificacoes-form input.form-control:focus,
+.admin-notificacoes-form select.form-control:focus,
+.admin-notificacoes-form textarea:focus {
+  outline: none;
+  border-color: var(--cor-secundaria);
+  box-shadow: 0 0 5px var(--cor-secundaria);
+}
+
+.admin-notificacoes-table-wrapper table td textarea {
+  resize: none;
+}
+
+
 @media (max-width: 768px) {
   .admin-notificacoes-btn {
     display: block;

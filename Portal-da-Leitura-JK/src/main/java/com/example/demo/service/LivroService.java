@@ -4,7 +4,9 @@ import com.example.demo.dto.LivroDTO;
 import com.example.demo.model.AvaliacaoModel;
 import com.example.demo.model.LivroModel;
 import com.example.demo.repository.AvaliacaoRepository;
+import com.example.demo.repository.EmprestimoRepository;
 import com.example.demo.repository.LivroRepository;
+import com.example.demo.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,12 @@ import java.util.Optional;
 
 @Service
 public class LivroService {
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
 
     @Autowired
     private LivroRepository livroRepository;
@@ -121,6 +129,21 @@ public class LivroService {
             return livroRepository.save(livroAtualizado);
         }
         return null;
+    }
+
+    public int getQuantidadeDisponivel(Long livroId) {
+        LivroModel livro = livroRepository.findById(livroId).orElse(null);
+        if (livro == null) {
+            return 0;
+        }
+
+        int total = livro.getQuantidade();
+        int reservadas = reservaRepository.countByLivroAndStatusTrue(livro);
+        int emprestadas = emprestimoRepository.countByLivroAndDataDevolucaoIsNull(livro);
+
+        int disponivel = total - reservadas - emprestadas;
+
+        return Math.max(disponivel, 0);
     }
 
     public double getMediaAvaliacao(Long livroId) {

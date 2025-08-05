@@ -15,4 +15,5 @@ public interface EmprestimoRepository extends JpaRepository<EmprestimoModel, Lon
     List<EmprestimoModel> findByAlunoMatricula(String matricula);
     List<EmprestimoModel> findByBibliotecarioBibliotecarioId(Long bibliotecarioId);
     boolean existsByAlunoAndLivro(AlunoModel aluno, LivroModel livro);
+    int countByLivroAndDataDevolucaoIsNull(LivroModel livro);
 }

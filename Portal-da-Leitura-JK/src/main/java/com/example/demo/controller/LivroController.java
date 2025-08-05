@@ -192,6 +192,12 @@ public class LivroController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/quantidade-disponivel/{livroId}")
+    public ResponseEntity<Integer> obterQuantidadeDisponivel(@PathVariable Long livroId) {
+        int disponivel = livroService.getQuantidadeDisponivel(livroId);
+        return ResponseEntity.ok(disponivel);
+    }
+
     @GetMapping("/avaliacao/media/{livroId}")
     public ResponseEntity<Double> obterMediaAvaliacao(@PathVariable Long livroId) {
         double media = livroService.getMediaAvaliacao(livroId);

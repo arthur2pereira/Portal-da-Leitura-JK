@@ -6,7 +6,6 @@ import com.example.demo.model.ReservaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +17,4 @@ public interface ReservaRepository extends JpaRepository<ReservaModel, Long> {
     List<ReservaModel> findReservasByAlunoMatricula(String matricula);
     boolean existsByAlunoAndStatusTrue(AlunoModel aluno);
     int countByLivroAndStatusTrue(LivroModel livro);
-
 }

@@ -7,11 +7,14 @@ import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,9 +33,6 @@ public class AlunoService {
     private PenalidadeRepository penalidadeRepository;
 
     @Autowired
-    private NotificacaoRepository notificacaoRepository;
-
-    @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
@@ -40,6 +40,12 @@ public class AlunoService {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private ReseteSenhaTokenRepository tokenRepository;
+
+    @Autowired
+    private ReseteSenhaService emailService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -53,23 +59,6 @@ public class AlunoService {
             return List.of();
         }
         return emprestimos.stream().map(this::converterParaDTO).collect(Collectors.toList());
-    }
-
-    public List<NotificacaoDTO> listarNotificacoes(String matricula) {
-        List<NotificacaoModel> notificacoes = notificacaoRepository.findByAlunoMatricula(matricula);
-        if (notificacoes.isEmpty()) {
-            return List.of();
-        }
-        return notificacoes.stream()
-                .map(n -> new NotificacaoDTO(
-                        n.getNotificacaoId(),
-                        n.getAluno().getMatricula(),
-                        n.getBibliotecario().getBibliotecarioId(),
-                        n.getMensagem(),
-                        n.getTipo(),
-                        n.isLida()
-                ))
-                .collect(Collectors.toList());
     }
 
     public List<AlunoDTO> listarTodos() {
@@ -194,6 +183,51 @@ public class AlunoService {
             return Optional.of(new TokenDTO(token, "USER", alunoDTO));
         }
         return Optional.empty();
+    }
+
+    public void solicitarResetSenha(String email) {
+        AlunoModel aluno = alunoRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Aluno não encontrado"));
+
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expiracao = LocalDateTime.now().plusMinutes(15);
+
+        ReseteSenhaToken reset = new ReseteSenhaToken();
+        reset.setToken(token);
+        reset.setExpiracao(expiracao);
+        reset.setAluno(aluno);
+
+        tokenRepository.save(reset);
+
+        String link = "http://localhost:5173/redefinir-senha?token=" + token;
+
+        String conteudo =
+                "Olá, " + aluno.getNome() + "!\n\n" +
+                        "Recebemos um pedido para redefinir a senha da sua conta.\n\n" +
+                        "Clique no link abaixo para criar uma nova senha:\n" +
+                        link + "\n\n" +
+                        "Atenção: este link é válido por apenas 15 minutos.\n\n" +
+                        "Se você não solicitou essa alteração, por favor, ignore este e-mail.\n\n" +
+                        "Obrigado por usar nossos serviços!\n" +
+                        "Equipe Biblioteca ETEJK ";
+
+        emailService.enviar(aluno.getEmail(), "Recuperação de Senha", conteudo);
+    }
+
+    public void redefinirSenha(String token, String novaSenha) {
+        ReseteSenhaToken reset = tokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("Token inválido"));
+
+        if (reset.isUso() || reset.getExpiracao().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Token expirado ou já utilizado");
+        }
+
+        AlunoModel aluno = reset.getAluno();
+        aluno.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
+
+        reset.setUso(true);
+        tokenRepository.save(reset);
+        alunoRepository.save(aluno);
     }
 
     public AlunoDTO atualizarAluno(AlunoDTO dto) {

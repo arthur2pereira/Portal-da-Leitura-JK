@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,13 +28,6 @@ public class AlunoController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{matricula}/notificacoes")
-    public ResponseEntity<List<NotificacaoDTO>> visualizarNotificacoes(@PathVariable String matricula) {
-        List<NotificacaoDTO> notificacoes = alunoService.listarNotificacoes(matricula);
-        if (notificacoes.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(notificacoes);
-    }
-
     @GetMapping("/{matricula}/emprestimos")
     public ResponseEntity<List<EmprestimoDTO>> visualizarEmprestimos(@PathVariable String matricula) {
         List<EmprestimoDTO> emprestimos = alunoService.listarEmprestimos(matricula);
@@ -44,6 +38,21 @@ public class AlunoController {
         boolean temMais = emprestimos.size() > limite;
 
         return ResponseEntity.ok().header("X-Tem-Mais", String.valueOf(temMais)).body(emprestimosLimitados);
+    }
+
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<?> solicitarReset(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        alunoService.solicitarResetSenha(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/redefinir-senha")
+    public ResponseEntity<?> redefinirSenha(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        String novaSenha = body.get("novaSenha");
+        alunoService.redefinirSenha(token, novaSenha);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{matricula}/reservas")
