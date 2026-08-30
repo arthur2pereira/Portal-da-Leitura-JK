@@ -1,0 +1,43 @@
+/* Importação das fontes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap');
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variáveis globais */
+:root {
+  --fonte-corpo: 'Inter', sans-serif;
+  --fonte-titulo: 'Poppins', sans-serif;
+
+  --cor-primaria: #005c5a;
+  --cor-secundaria: #3ea66b;
+  --cor-texto: #333;
+  --cor-card: #fff;
+  --cor-borda: #ddd;
+}
+
+/* Estilo global */
+body {
+  font-family: var(--fonte-corpo);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+}
+
+/* Área principal */
+#root {
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  color: var(--cor-primaria);
+}

@@ -1,0 +1,280 @@
+/* Menu fixo no topo */
+.menu-aluno {
+  background-color: #e6f4ea;
+  padding: 65px 20px 10px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.menu-aluno ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1600px;
+  width: 100%;
+}
+
+.menu-aluno a {
+  text-decoration: none;
+  color: var(--cor-primaria);
+  font-weight: bold;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+}
+
+/* Conteúdo do perfil */
+.perfil-conteudo {
+  padding: 30px 5%;
+  background-color: white;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Seções e títulos */
+.perfil-conteudo .secao {
+  margin-bottom: 60px;
+}
+
+.perfil-conteudo .secao h2 {
+  color: var(--cor-primaria);
+  margin-bottom: 15px;
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+}
+
+/* Cards principais */
+.card-principal {
+  background-color: var(--cor-primaria);
+  color: white;
+  padding: 1.2rem 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  word-wrap: break-word;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+.card-principal:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Comentários */
+.comentario-card {
+  background-color: var(--cor-primaria);
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  word-wrap: break-word;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+}
+
+.comentario-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.comentario-card h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: white;
+}
+
+.comentario-card .estrelas {
+  color: gold;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.comentario-card p {
+  margin: 0.2rem 0 0.5rem 0;
+}
+
+/* Botões do comentário lado a lado sem div */
+.comentario-card button {
+  margin-right: 8px;
+  margin-bottom: 0;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.comentario-card button:last-child {
+  margin-right: 0;
+}
+
+/* Botões principais */
+.perfil-btn-renovar-emprestimo,
+.perfil-btn-cancelar-reserva,
+.perfil-btn-editar-comentario,
+.perfil-btn-excluir-comentario,
+.perfil-btn-salvar,
+.perfil-btn-sair {
+  box-shadow: none;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.perfil-btn-renovar-emprestimo {
+  background-color: var(--cor-secundaria);
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.perfil-btn-renovar-emprestimo:hover {
+  background-color: #45a049;
+}
+
+.perfil-btn-cancelar-reserva {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.perfil-btn-cancelar-reserva:hover {
+  background-color: #d32f2f;
+}
+
+.perfil-btn-editar-comentario {
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.perfil-btn-editar-comentario:hover {
+  background-color: #45a049;
+}
+
+.perfil-btn-excluir-comentario {
+  background-color: #f44336;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.perfil-btn-excluir-comentario:hover {
+  background-color: #d32f2f;
+}
+
+.perfil-btn-salvar {
+  background-color: var(--cor-primaria);
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+.perfil-btn-salvar:hover {
+  background-color: var(--cor-secundaria);
+}
+
+/* Botão de Sair da Conta */
+.perfil-btn-sair {
+  background-color: #9e9e9e;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.perfil-btn-sair:hover {
+  background-color: #757575;
+}
+
+.perfil-btn-desativar,
+.perfil-btn-excluir {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 250px;
+}
+.perfil-btn-desativar {
+  background-color: black;
+}
+
+.perfil-btn-desativar:hover {
+  background-color: #e68900;
+}
+
+.perfil-btn-excluir {
+  background-color: black;
+}
+
+.perfil-btn-excluir:hover {
+  background-color: #d32f2f;
+}
+
+/* Containers de ações */
+.perfil-acoes-topo,
+.perfil-botoes-finais {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Inputs */
+.perfil-conteudo input[type="text"],
+.perfil-conteudo input[type="email"],
+.perfil-conteudo input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .menu-aluno ul { flex-direction: column; gap: 15px; padding: 15px; }
+  .perfil-conteudo { padding: 20px 6%; }
+  .perfil-botoes-finais { margin-top: 50px; }
+}
+
+@media (max-width: 480px) {
+  .menu-aluno { padding: 60px 10px 10px; }
+  .perfil-conteudo { padding: 20px 5%; }
+  .perfil-conteudo .secao div,
+  .comentario-card { padding: 0.7rem; }
+  .perfil-conteudo input,
+  .perfil-conteudo button { font-size: 0.95rem; }
+  .comentario-card h4 { font-size: 0.95rem; }
+  .comentario-card .estrelas { font-size: 0.95rem; }
+}
+
+@media (min-width: 1200px) {
+  .perfil-conteudo { padding: 40px 10%; }
+  .menu-aluno ul { gap: 50px; }
+  .perfil-conteudo .secao div,
+  .comentario-card { font-size: 1rem; padding: 1.2rem 1.5rem; }
+  .perfil-conteudo .secao h2 { font-size: 2rem; }
+}

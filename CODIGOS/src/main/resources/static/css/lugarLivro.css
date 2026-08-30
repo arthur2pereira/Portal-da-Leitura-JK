@@ -1,0 +1,39 @@
+.livros-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .filtros {
+    margin-bottom: 2rem;
+  }
+  
+  .filtros form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .filtros input,
+  .filtros select {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .lista-livros {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .livro {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+    #lista-livros .card {
+    border-radius: 0.75rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  }
+  

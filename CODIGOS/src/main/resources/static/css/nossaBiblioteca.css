@@ -1,0 +1,23 @@
+.texto {
+    color: black;
+}
+
+.secao-conteudo {
+    background-color: #ffffff;
+  }
+  
+  .secao-conteudo p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .secao-conteudo ul li {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  
+  .galeria-fotos img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  

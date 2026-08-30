@@ -1,0 +1,32 @@
+/* menuPrincipal.css */
+
+main h2 {
+    font-weight: 600;
+  }
+  
+  #saudacaoUsuario {
+    font-style: italic;
+  }
+  
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 1.5rem;
+  }
+  
+  footer {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .nav-link {
+    color: #333;
+    margin-left: 1rem;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+  

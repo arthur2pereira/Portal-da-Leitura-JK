@@ -1,0 +1,74 @@
+.form-container {
+  max-width: 400px;
+  margin: 6rem auto;
+  padding: 2rem;
+  background-color: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  font-family: var(--fonte-corpo);
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-login label {
+  text-align: left;
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+.form-login input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: var(--fonte-corpo);
+  transition: border-color 0.3s ease;
+}
+
+.form-login input:focus {
+  outline: none;
+  border-color: var(--cor-secundaria);
+}
+
+.form-login button {
+  padding: 0.75rem 1rem;
+  background-color: var(--cor-primaria);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-login button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-login button:hover:not(:disabled) {
+  background-color: var(--cor-secundaria);
+}
+
+.input-erro {
+  border: 1px solid red;
+}
+
+.msg-sucesso {
+  margin-top: 1rem;
+  color: green;
+  font-weight: 600;
+}
+
+.msg-erro {
+  margin-top: 1rem;
+  color: red;
+  font-weight: 600;
+}

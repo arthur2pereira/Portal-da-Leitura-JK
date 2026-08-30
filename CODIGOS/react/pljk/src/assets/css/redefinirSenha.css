@@ -1,0 +1,86 @@
+.form-container {
+  max-width: 400px;
+  margin: 100px auto 30px;
+  padding: 30px;
+  background: var(--branco, #fff);
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
+  font-family: 'Inter', sans-serif;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  color: var(--cor-primaria, #005c5a);
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-login label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--cor-secundaria, #3ea66b);
+  font-size: 1rem;
+}
+
+.form-login input {
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.form-login input:focus {
+  outline: none;
+  border-color: var(--cor-primaria, #005c5a);
+  box-shadow: 0 0 6px var(--cor-primaria);
+}
+
+.form-login button {
+  background-color: var(--cor-primaria, #005c5a);
+  color: var(--branco, #fff);
+  padding: 14px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-login button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.form-login button:hover:not(:disabled) {
+  background-color: var(--cor-secundaria, #3ea66b);
+}
+
+.msg-sucesso {
+  margin-top: 24px;
+  color: #228B22; /* verde escuro */
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.msg-erro {
+  margin-top: 24px;
+  color: #B22222; /* vermelho escuro */
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
